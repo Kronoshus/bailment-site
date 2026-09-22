@@ -1,5 +1,14 @@
 @import url("tokens.css?v=3");
 
+/* Self-hosted fonts. No request leaves the visitor's browser for a third party.
+   Files in assets/fonts/, latin subset, from Google Fonts under the SIL Open Font License. */
+@font-face{font-family:Poppins;font-style:normal;font-weight:300;font-display:swap;src:url("assets/fonts/poppins-300.woff2") format("woff2")}
+@font-face{font-family:Poppins;font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/poppins-400.woff2") format("woff2")}
+@font-face{font-family:Poppins;font-style:normal;font-weight:500;font-display:swap;src:url("assets/fonts/poppins-500.woff2") format("woff2")}
+@font-face{font-family:Poppins;font-style:normal;font-weight:600;font-display:swap;src:url("assets/fonts/poppins-600.woff2") format("woff2")}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url("assets/fonts/jetbrains-mono-var.woff2") format("woff2")}
+
+
 /* ---------------------------------------------------------------------------
    Bailment / Bailee — shared stylesheet
    Dark canvas, glass panels, hairline borders, radial halos, pill chips.
