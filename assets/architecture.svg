@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="372" viewBox="0 0 880 372" role="img" aria-labelledby="archTitle archDesc">
+  <rect width="100%" height="100%" fill="#05070D"/>
+<style>
+  .dg-box{fill:#0d121a;stroke:#2A2F33}
+  .dg-box-a{fill:#0f1726;stroke:#3A86FF;stroke-opacity:.35}
+  .dg-t{fill:#F6F8FA;font-family:Poppins,system-ui,sans-serif;font-size:13px}
+  .dg-s{fill:#9BA7B4;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em}
+  .dg-l{fill:#3A86FF;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em}
+  .dg-line{stroke:#2A2F33;stroke-width:1.2;fill:none}
+  .dg-line-a{stroke:#3A86FF;stroke-width:1.4;fill:none;opacity:.85}
+</style>
+
+  <title id="archTitle">Baliff architecture flow</title>
+  <desc id="archDesc">The client portal and the firm portal both reach the firm-owned appliance. The appliance drives the shared AI thread, the template and vault store with matter vectors, and queries the public corpus on Bailment GPUs. From the store, a blinded period root goes to the Client Communication Protocol on one shared contract, and a deliberate per-document commitment goes to Document Record on a per-matter contract. Document Record settles on Cardano level one in USDM or ADA.</desc>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="10" y="52" width="176" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="98.0" y="78.0" text-anchor="middle">Client portal</text>
+  <text class="dg-s" x="98.0" y="96.0" text-anchor="middle">BROWSER</text>
+
+  <rect x="10" y="172" width="176" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="98.0" y="198.0" text-anchor="middle">Firm portal</text>
+  <text class="dg-s" x="98.0" y="216.0" text-anchor="middle">VPN OR mTLS</text>
+
+  <rect x="228" y="110" width="176" height="64" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="316.0" y="139.0" text-anchor="middle">Appliance</text>
+  <text class="dg-s" x="316.0" y="157.0" text-anchor="middle">FIRM-OWNED GPU</text>
+
+  <rect x="446" y="14" width="176" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="534.0" y="40.0" text-anchor="middle">Shared AI thread</text>
+  <text class="dg-s" x="534.0" y="58.0" text-anchor="middle">ATTRIBUTED, ADOPTED</text>
+
+  <rect x="446" y="106" width="176" height="72" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="534.0" y="139.0" text-anchor="middle">Templates + vault</text>
+  <text class="dg-s" x="534.0" y="157.0" text-anchor="middle">+ MATTER VECTORS</text>
+
+  <rect x="446" y="212" width="176" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="534.0" y="238.0" text-anchor="middle">Public corpus</text>
+  <text class="dg-s" x="534.0" y="256.0" text-anchor="middle">BAILMENT GPUs</text>
+
+  <rect x="664" y="70" width="206" height="64" rx="10" class="dg-box"/>
+  <text class="dg-t" x="767.0" y="99.0" text-anchor="middle">Client Communication Protocol</text>
+  <text class="dg-s" x="767.0" y="117.0" text-anchor="middle">ONE SHARED CONTRACT</text>
+
+  <rect x="664" y="176" width="206" height="64" rx="10" class="dg-box"/>
+  <text class="dg-t" x="767.0" y="205.0" text-anchor="middle">Document Record</text>
+  <text class="dg-s" x="767.0" y="223.0" text-anchor="middle">PER-MATTER CONTRACT</text>
+
+  <rect x="664" y="286" width="206" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="767.0" y="312.0" text-anchor="middle">Cardano L1</text>
+  <text class="dg-s" x="767.0" y="330.0" text-anchor="middle">USDM / ADA</text>
+
+  <path class="dg-line" d="M186 81 H207 V136 H222" marker-end="url(#ah)" style="color:#2A2F33"/>
+
+  <path class="dg-line" d="M186 201 H207 V148 H222" marker-end="url(#ah)" style="color:#2A2F33"/>
+
+  <path class="dg-line" d="M404 132 H425 V43 H440" marker-end="url(#ah)" style="color:#2A2F33"/>
+
+  <path class="dg-line" d="M404 142 H440" marker-end="url(#ah)" style="color:#2A2F33"/>
+
+  <path class="dg-line" d="M404 152 H425 V241 H440" marker-end="url(#ah)" style="color:#2A2F33"/>
+
+  <path class="dg-line-a" d="M622 128 H642 V102 H658" marker-end="url(#ah)" style="color:#3A86FF"/>
+
+  <path class="dg-line-a" d="M622 152 H642 V208 H658" marker-end="url(#ah)" style="color:#3A86FF"/>
+
+  <path class="dg-line" d="M767 240 V280" marker-end="url(#ah)" style="color:#2A2F33"/>
+
+  <text class="dg-l" x="636" y="92" text-anchor="end">PERIOD ROOT</text>
+  <text class="dg-l" x="636" y="222" text-anchor="end">PER DOC, DELIBERATE</text>
+</svg>
