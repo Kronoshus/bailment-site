@@ -1,8 +1,8 @@
 {
   "_comment": "What an administrator can change on the public pages without editing HTML. Served free and keyless by GET /v1/site-config; written by PUT /admin/site-config; read by site/app/config.js. This file is also the static fallback, so a page opened from a file keeps working.",
-  "headline": "Keep your A.I. usage secure and verifiable",
+  "headline": "Keep Your A.I. Usage Secure and Verifiable",
   "subline": "Courts want proof of how you used AI. Bailee makes a certificate anyone can check.",
-  "contactEmail": "bestfriendkevin@gmail.com",
+  "contactEmail": "admin@bailment.tech",
   "demoBanner": {
     "show": true,
     "text": "demo"
@@ -42,10 +42,10 @@
       "plan": "Plan"
     },
     "footer": {
-      "executiveSummary": "Executive summary",
-      "productAndTechnology": "Product and technology",
-      "businessModel": "Business model and pricing",
-      "financials": "Financials and risk",
+      "executiveSummary": "Executive Summary",
+      "productAndTechnology": "Product and Technology",
+      "businessModel": "Business Model and Pricing",
+      "financials": "Financials and Risk",
       "registry": "registry.json"
     }
   },

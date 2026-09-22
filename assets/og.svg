@@ -28,7 +28,7 @@
       <circle cx="22.6" cy="13.1" r="2.6" fill="none" stroke="#3A86FF" stroke-width="1.9"/>
       <path d="M22.6 15.7v5.9M20.2 19.4h4.8" stroke="#3A86FF" stroke-width="1.9" stroke-linecap="round"/>
     </g>
-    <text x="58" y="30" font-family="Poppins,system-ui,sans-serif" font-size="25" font-weight="500" fill="#F6F8FA" letter-spacing="-.5">Bailment<tspan fill="#9BA7B4">.AI</tspan></text>
+    <text x="58" y="30" font-family="Poppins,system-ui,sans-serif" font-size="25" font-weight="500" fill="#F6F8FA" letter-spacing="-.5">Bailment</text>
     <text x="215" y="29" font-family="'JetBrains Mono',monospace" font-size="14" fill="#3A86FF" letter-spacing="3.2">BAILEE</text>
   </g>
 
