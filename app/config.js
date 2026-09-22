@@ -193,6 +193,8 @@
       for (var i = 0; i < els.length; i++) {
         // A link with elements inside it is the brand, logo and all. Leave it alone.
         if (els[i].firstElementChild) continue;
+        // An opted-out link keeps the words the page author wrote.
+        if (els[i].hasAttribute('data-keep-label')) continue;
         els[i].textContent = text;
         changed++;
       }
