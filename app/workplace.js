@@ -978,6 +978,7 @@
         : (d.notarized ? '<span class="ok">notarized</span>' : '<span class="muted">clean</span>');
       const act = d.notarized
         ? '<code>' + esc(UI.short ? UI.short(d.notarized.commitment, 8) : d.notarized.commitment) + '</code>'
+          + ' <button class="btn ghost" data-act="certify" data-id="' + esc(d.id) + '">Certify this document</button>'
           + (st.api.extras ? ' <button class="btn ghost" data-act="cert" data-id="' + esc(d.id) + '">Issue certificate</button>' : '')
         : '<button class="btn ghost" data-act="notarize" data-id="' + esc(d.id) + '">Notarize</button>';
       return '<tr><td>' + esc(d.filename) + '</td><td class="mono">'
@@ -1243,6 +1244,24 @@
           note(st, 'ok', '402 Payment required. Nothing was recorded and nothing was '
             + 'charged \u2014 the terms are below.');
         }
+      } else if (name === 'certify') {
+        // The Certificate Generator, opened over the matter instead of in another tab.
+        // Same widget, same code: only the fields it cannot know are filled in from here,
+        // and never an identifier \u2014 a certificate carries none.
+        const doc = (st.docs || []).filter((x) => x.id === id)[0];
+        const dlg = typeof document !== 'undefined' ? document.getElementById('wp-certify') : null;
+        if (!doc || !dlg) return;
+        const put = function (sel, value) {
+          const box = dlg.querySelector(sel);
+          if (box && value) { box.value = value; }
+        };
+        put('#ct-digest', doc.digest);
+        put('#ct-atty', st.lawyerName);
+        const model = (st.messages || []).filter((x) => x.modelId)[0];
+        if (model) put('#ct-modelver', model.modelId);
+        if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', 'open');
+        note(st, 'ok', 'Certificate generator opened over this matter, with the notarised '
+          + 'digest already in it. Nothing identifying the client is carried across.');
       } else if (name === 'cert') {
         const doc = (st.docs || []).filter((x) => x.id === id)[0];
         const model = (st.messages || []).filter((x) => x.origin === 'model')[0] || {};

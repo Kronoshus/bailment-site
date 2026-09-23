@@ -878,7 +878,7 @@
       <div class="field wm-field">
         ${ctLabel('ct-digest', 'Document digest (SHA-256, from the notarize step)', 'documentDigest')}
         <input id="ct-digest" class="wm-text mono" placeholder="64 hex characters">
-        <p class="wm-hint">No digest yet? Notarize a document in <a href="workplace.html#notarize">Workplace Product</a> first.</p>
+        <p class="wm-hint">No digest yet? Notarize a document in the <a href="workplace.html#notarize">Workplace</a> first.</p>
       </div>
 
       <h3>Step 2 &mdash; Filing</h3>

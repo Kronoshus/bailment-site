@@ -743,3 +743,16 @@
 .wp-fold > summary:hover{color:var(--accent)}
 .wp-fold > *:last-child{margin-bottom:14px}
 .wp-fold .widget{border:0;background:none;padding:0}
+
+/* Certify without leaving the matter: the generator, over the page. */
+.wp-dialog{
+  width:min(960px,94vw);max-height:88vh;overflow:auto;padding:0 20px 20px;
+  background:var(--bg-surface,#121b24);color:var(--ink);
+  border:1px solid var(--border-hairline);border-radius:var(--radius-lg);
+}
+.wp-dialog::backdrop{background:rgba(2,5,12,.72)}
+.wp-dialog-top{
+  position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:16px 0;background:inherit;border-bottom:1px solid var(--border-hairline);
+}
+.wp-dialog .widget{border:0;background:none;padding:0}

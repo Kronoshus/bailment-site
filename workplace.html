@@ -23,7 +23,7 @@
   <meta name="twitter:description" content="A client and their lawyer in one thread, with AI on the firm's own hardware. Flip the switch and see what each side can see.">
   <meta name="twitter:image" content="https://bailment.tech/assets/og.png">
   <link rel="stylesheet" href="style.css?v=7">
-  <link rel="stylesheet" href="app/app.css?v=8">
+  <link rel="stylesheet" href="app/app.css?v=9">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -72,6 +72,18 @@
       </section>
       <!-- END MOUNT POINT -->
     </details>
+
+<dialog id="wp-certify" class="wp-dialog" aria-label="Certificate generator">
+  <form method="dialog" class="wp-dialog-top">
+    <strong>Certify this document</strong>
+    <button class="btn ghost" value="close">Close</button>
+  </form>
+  <!-- MOUNT POINT: the same certificate builder the Certificate Generator page mounts -->
+  <section class="widget" id="widget-certificate" data-widget="certificate" aria-label="Certificate builder">
+    <p class="widget-placeholder">Loading&hellip;</p>
+  </section>
+  <!-- END MOUNT POINT -->
+</dialog>
     <p class="muted" style="margin-top:22px">
       Connect an appliance and it runs live. Notarising there spends one certified filing.
       <a href="plan.html#the-shared-ai-thread">The four rules are in the plan &rarr;</a>
@@ -133,7 +145,8 @@
 <script src="app/crypto.js?v=5"></script>
 <script src="app/ui.js?v=8"></script>
 <script src="app/notarize.js?v=8"></script>
-<script src="app/workplace.js?v=12"></script>
+<script src="app/certificate.js?v=10"></script>
+<script src="app/workplace.js?v=13"></script>
 <script>
 window.addEventListener('load', function () {
   setTimeout(function () {
