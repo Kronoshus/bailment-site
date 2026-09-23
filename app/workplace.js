@@ -908,20 +908,29 @@
     const notarised = record
       ? '<div class="wp-foot">Notarised. <span class="mono">' + esc(String(record.commitment).slice(0, 16))
         + '\u2026</span> ' + esc(String(record.identifiersRemoved)) + ' identifier(s) redacted here first.</div>'
-      : '';
+        + '<div class="wp-sendrow"><button class="btn" data-act="certify-msg" data-id="'
+        + esc(m.id) + '">Certify this message</button></div>'
+      : '<div class="wp-sendrow"><button class="btn ghost" data-act="notarize-msg" data-id="'
+        + esc(m.id) + '">Notarize this message</button></div>';
     return '<article class="' + cls + '"><header class="wp-attrib"><b>' + who + '</b>'
       + '<span class="wp-chips">' + chips + '</span></header>'
       + '<p>' + esc(m.body) + '</p>' + foot + notarised + '</article>';
   }
 
   function threadHtml(st) {
-    const list = st.messages || [];
+    const all = st.messages || [];
+    // The draft you are working on is in the box below, not doubled as a card up here.
+    // Any OLDER unsent draft stays visible: nothing the firm holds is hidden from the firm.
+    const working = st.party === 'client' ? null
+      : all.filter((m) => m.side === 'lawyer' && !m.sent).slice(-1)[0];
+    const list = working ? all.filter((m) => m.id !== working.id) : all;
     const head = st.party === 'client'
       ? 'What the client sees'
       : 'What the lawyer sees';
     const sub = st.party === 'client'
       ? 'Sent messages and their own work. No drafts, because none were sent to them.'
-      : 'Everything, including drafts that are not out of the building yet.';
+      : 'The conversation. Everything, including drafts that are not out of the building '
+        + 'yet \u2014 except the draft you are working on, which is open in the box below.';
     const body = list.length
       ? list.map((m) => msgHtml(m, st.party, (st.records || {})[m.id])).join('')
       : '<p class="muted">Nothing in this thread yet.</p>';
@@ -956,12 +965,10 @@
         + '</select></label>'
       : '';
     // Everything you can do to a message, before you reply to it.
+    // Notarising and certifying sit on the message they are about, in the thread.
     const onTarget = target ? '<button class="btn ghost" data-act="doc-from-msg" data-id="'
-        + esc(target.id) + '">Save as a document</button>'
-      + (rec ? '<button class="btn ghost" data-act="certify-msg" data-id="' + esc(target.id)
-          + '">Certify this message</button>'
-        : '<button class="btn ghost" data-act="notarize-msg" data-id="' + esc(target.id)
-          + '">Notarize this message</button>') : '';
+        + esc(target.id) + '">Save as a document</button>' : '';
+    void rec;
     const sendRow = pending
       ? '<button class="btn" data-act="send" data-id="' + esc(pending.id) + '">Send (this is adoption)</button>'
         + '<button class="btn ghost" data-act="send-auto" data-id="' + esc(pending.id)
