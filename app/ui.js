@@ -251,8 +251,7 @@
       + (s.label ? `<span class="wm-labelrow"><label for="${esc(pick)}">${esc(s.label)}</label>`
           + help(s.help) + '</span>' : '')
       + `<select class="wm-select" id="${esc(pick)}" data-wm-select="${esc(id)}">${optionsHTML}</select>`
-      + `<div class="wm-own"><button type="button" class="btn ghost" data-wm-own="${esc(id)}"`
-      + (own ? ' style="display:none"' : '') + `>${WM_OWN_LABEL}</button>${box}</div>`
+      + box
 
       + '</div>';
   }

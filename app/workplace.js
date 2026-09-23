@@ -57,6 +57,19 @@
   // signed model manifest (rule 1 in the plan). The stand-in says which model it pretends
   // to be for the same reason the real one must: a message that cannot say where it came
   // from is not storable.
+  // What the compose bar offers. The appliance is the only one that actually runs today;
+  // the rest are here so the switch is visible, and the log records what was asked for.
+  const MODELS = [
+    ['appliance/llama-3.1-70b-instruct@2026.9.3', 'Llama 3.1 70B \u2014 firm appliance'],
+    ['appliance/qwen-2.5-72b-instruct@2026.8.1', 'Qwen 2.5 72B \u2014 firm appliance'],
+    ['appliance/mistral-large@2026.7.2', 'Mistral Large \u2014 firm appliance'],
+  ];
+  const HARNESSES = [
+    ['drafting', 'Drafting'],
+    ['citation-check', 'Citation check'],
+    ['redacted', 'Redacted research'],
+  ];
+
   const MODEL = {
     id: 'appliance/llama-3.1-70b-instruct@2026.9.3',
     manifest: 'bailee-pipeline/2026.9.3',
@@ -854,34 +867,38 @@
   }
 
   function composeHtml(st) {
-    if (st.party === 'client') {
-      return '<div class="panel local wp-compose"><h3>Client Pane \u2014 Live' + help('Their own work, their own materials. What they write is sent.') + '</h3>'
-        + wmField({ id: 'wp-text', label: 'Message', options: CLIENT_LINES,
-            multiline: true, rows: 4,
-            help: 'Pick a line to try the demo, or write my own and say it in your own words.' })
-        + '<div class="actions">'
-        + '<button class="btn" data-act="post">Send</button>'
-        + '<button class="btn ghost" data-act="assist">Ask the model</button>'
-        + '<button class="btn ghost" data-act="post-bare">Try a message with no attribution</button>'
-        + '</div></div>';
-    }
-    // maySend comes from the API, not from the switch. A console holding only the firm's
-    // licence key may draft all day and will be refused on every send.
-    const cannot = st.maySend === false
+    const client = st.party === 'client';
+    const lines = client ? CLIENT_LINES : LAWYER_LINES;
+    const cannot = !client && st.maySend === false
       ? '<p class="bad">This view is holding the firm\u2019s licence key, not an interactive '
         + 'lawyer session. It can draft and ask the model. Every send will be refused 403.</p>'
       : '';
-    return '<div class="panel chain wp-compose"><h3>Lawyer Pane \u2014 Compose, Then Send' + help('Model output arrives here as a draft. Nothing leaves without a send.') + '</h3>'
+    const pick = (id, label, list, chosen) => '<label class="wp-pick"><span>' + esc(label) + '</span>'
+      + '<select class="wp-select" id="' + esc(id) + '" data-act="' + esc(id) + '">'
+      + list.map(function (o) {
+        return '<option value="' + esc(o[0]) + '"' + (o[0] === chosen ? ' selected' : '') + '>'
+          + esc(o[1]) + '</option>';
+      }).join('') + '</select></label>';
+    return '<div class="panel wp-compose' + (client ? ' local' : ' chain') + '">'
       + cannot
-      + wmField({ id: 'wp-text', label: 'Message', options: LAWYER_LINES,
-          multiline: true, rows: 4,
-          help: 'Pick a line to try the demo, or write my own. Either way it is a draft '
-            + 'until you send it, and sending it is adoption.' })
+      + wmField({ id: 'wp-text', label: client ? 'Write to your lawyer' : 'Write to your client',
+          options: lines, multiline: true, rows: 3,
+          help: client
+            ? 'Pick a line to try the demo, or write my own and say it in your own words.'
+            : 'Pick a line to try the demo, or write my own. Either way it is a draft until you '
+              + 'send it, and sending it is adoption.' })
+      + '<div class="wp-composebar">'
+      + '<div class="wp-composeleft">'
+      + '<label class="btn ghost wp-attach" for="wp-file">Attach a document</label>'
+      + '<input type="file" id="wp-file" class="wp-file">'
+      + pick('wp-model', 'Model', MODELS, st.model)
+      + pick('wp-harness', 'Harness', HARNESSES, st.harness)
+      + '</div>'
       + '<div class="actions">'
-      + '<button class="btn ghost" data-act="post">Hold as a draft</button>'
       + '<button class="btn ghost" data-act="assist">Ask the model</button>'
-      + '<button class="btn ghost" data-act="post-bare">Try a message with no attribution</button>'
-      + '</div></div>';
+      + '<button class="btn ghost" data-act="post-bare">No attribution</button>'
+      + '<button class="btn" data-act="post">' + (client ? 'Send' : 'Hold as a draft') + '</button>'
+      + '</div></div></div>';
   }
 
   function docsHtml(st) {
@@ -897,7 +914,6 @@
         + esc(UI.short ? UI.short(d.digest, 8) : d.digest) + '</td><td>' + state + '</td><td>' + act + '</td></tr>';
     }).join('');
     return '<div class="panel wp-docs"><h3>Documents' + help('Files are hashed in this browser. The bytes never move. A document out of the thread carries the taint with it, and notarize refuses it.') + '</h3>'
-      + '<div class="field"><label for="wp-file">Add a file</label><input type="file" id="wp-file"></div>'
       + (rows ? '<table><thead><tr><th>File</th><th>SHA-256</th><th>State</th><th></th></tr></thead><tbody>'
           + rows + '</tbody></table>' : '<p class="muted">No documents yet.</p>')
       + '</div>';
@@ -949,7 +965,6 @@
       + '<button class="' + (st.party === 'lawyer' ? 'on' : '') + '" aria-pressed="'
       + (st.party === 'lawyer') + '" data-act="role" data-role="lawyer">View as lawyer</button>'
       + '</div>'
-      + '<span class="chip' + (live ? ' on' : '') + '" id="wp-mode">' + esc(st.api.label) + '</span>'
       + '<button class="btn ghost" data-act="connect-toggle">' + (live ? 'Go offline' : 'Connect an appliance') + '</button>'
       + '</div>';
   }
@@ -993,7 +1008,7 @@
     slot.innerHTML = barHtml(st) + connectHtml(st) + matterHtml(st)
       + (st.banner ? '<p class="bad">' + esc(st.banner) + '</p>' : '')
       + railHtml(st.progress)
-      + '<div class="cols">' + threadHtml(st) + composeHtml(st) + '</div>'
+      + threadHtml(st) + composeHtml(st)
       + paymentHtml(st) + docsHtml(st) + closeHtml(st) + logHtml(st);
   }
 
@@ -1068,7 +1083,13 @@
     const auth = session(st);
 
     try {
-      if (name === 'role') {
+      if (name === 'wp-model') {
+        st.model = target.value;
+        note(st, 'ok', 'Model for the next request: ' + st.model + '. The appliance stub answers either way.');
+      } else if (name === 'wp-harness') {
+        st.harness = target.value;
+        note(st, 'ok', 'Harness for the next request: ' + st.harness + '.');
+      } else if (name === 'role') {
         st.party = target.dataset.role === 'lawyer' ? 'lawyer' : 'client';
         note(st, 'ok', 'Viewing as the ' + st.party + '. The thread is re-fetched for that party.');
       } else if (name === 'post') {
@@ -1083,7 +1104,8 @@
         // The demonstration of R1: ask for a message with no origin and be refused.
         await st.api.postMessage(auth, st.matterId, { body: text() || 'No attribution on this one.' });
       } else if (name === 'assist') {
-        const m = await st.api.assist(auth, st.matterId, { prompt: text() });
+        const m = await st.api.assist(auth, st.matterId,
+          { prompt: text(), model: st.model, harness: st.harness });
         clear();
         note(st, 'ok', st.party === 'lawyer'
           ? 'Model output landed in the lawyer pane as an unsent draft, attributed to ' + m.modelId + '.'
@@ -1176,7 +1198,7 @@
     st.docs = [];
     st.messages = [];
     st.log = [];
-    st.party = 'client';
+    st.party = st.party === 'lawyer' ? 'lawyer' : 'client';
     // Credentials belong to the matter that is about to be opened, not to the page.
     st.clientToken = null;
     st.lawyerToken = null;
@@ -1196,6 +1218,7 @@
   function render(el) {
     const st = {
       party: 'client', api: null, matterId: null,
+      model: MODELS[0][0], harness: HARNESSES[0][0],
       // Two participant tokens, because there are two parties and the API issues one to
       // each. The role switch swaps which one the page is holding.
       clientToken: null, lawyerToken: null, maySend: true,

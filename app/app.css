@@ -714,3 +714,18 @@
   .widget .nt-pay-k{flex:1 1 100%}
   .widget .nt-copy{width:100%}
 }
+
+/* Workplace compose bar: the thread is the page, the box sits under it. */
+.wp-compose{margin-top:14px}
+.wp-composebar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:10px}
+.wp-composeleft{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.wp-file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.wp-attach{cursor:pointer}
+.wp-pick{display:inline-flex;align-items:center;gap:7px;font-size:.86rem;color:var(--fg-muted)}
+.widget .wp-pick .wp-select{
+  background:var(--chip-bg);color:var(--ink);border:1px solid var(--border-hairline);
+  border-radius:999px;padding:8px 12px;font-family:var(--font-body);font-size:.9rem;
+  appearance:none;-webkit-appearance:none;
+}
+.widget .wp-pick .wp-select:hover{border-color:var(--accent-ring)}
+.wp-thread{min-height:340px}
