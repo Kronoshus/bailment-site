@@ -1233,9 +1233,7 @@
   function ctRender(el, mode) {
     const showBuilder = mode !== 'verify';
     el.innerHTML = `
-      <h2>Certificate a court can check</h2>
-      <p class="lede">Four claims, one signature, one URL. The court gets proof of the process
-      without ever seeing the document, the client, the matter, or which lawyer acted.</p>
+      <h2>A Certificate a Court Can Check</h2>
       ${showBuilder ? certFormHTML(CERT_DEFAULTS) : ''}
       <div id="ct-out"></div>
       <hr>

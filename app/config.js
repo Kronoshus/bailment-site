@@ -194,7 +194,7 @@
         // A link with elements inside it is the brand, logo and all. Leave it alone.
         if (els[i].firstElementChild) continue;
         // An opted-out link keeps the words the page author wrote.
-        if (els[i].hasAttribute('data-keep-label')) continue;
+        if (els[i].getAttribute && els[i].getAttribute('data-keep-label') !== null) continue;
         els[i].textContent = text;
         changed++;
       }
