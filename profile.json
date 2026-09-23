@@ -17,8 +17,9 @@
     ],
     "email": "admin@bailment.tech",
     "phone": "845-587-4420",
-    "licence": "blf_lk_demo_bailment_law_0001",
-    "registryEntry": "bailee-pipeline/2026.9.3"
+    "licence": "blf_lk_demo_bailment_law_free",
+    "registryEntry": "bailee-pipeline/2026.9.3",
+    "licenceNote": "Free public demo key. It opens matters and pays for certified filings on an appliance you run yourself. Printed on purpose: a key everyone holds proves nothing about who used it."
   },
   "keys": {
     "id": "demo-attorney-mohr",

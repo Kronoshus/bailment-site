@@ -8,6 +8,7 @@
 (function (root) {
   'use strict';
   const UI = (root.Bailee && root.Bailee.ui) || {};
+  const help = UI.help || (() => '');
   const esc = UI.esc || ((s) => String(s == null ? '' : s));
   const KEY_HISTORY = 'bailee.profile.history.v1';
   const KEY_EDITS = 'bailee.profile.edits.v1';
@@ -121,7 +122,8 @@
   }
   const field = (id, label, value) => '<label class="pf-field"><span>' + esc(label) + '</span>'
     + '<input id="' + esc(id) + '" value="' + esc(value || '') + '"></label>';
-  const line = (k, v) => '<div class="pf-line"><span>' + esc(k) + '</span><b>' + esc(v || '\u2014') + '</b></div>';
+  const line = (k, v, why) => '<div class="pf-line"><span>' + esc(k) + (why ? help(why) : '')
+    + '</span><b>' + esc(v || '\u2014') + '</b></div>';
 
   function copyBox(id, label, value, warn) {
     return '<div class="pf-key"><span class="pf-keylabel">' + esc(label) + '</span>'
@@ -163,7 +165,9 @@
     if (tab === 'firm') {
       return line('Firm', f.name) + line('Address', (f.address || []).join(', '))
         + line('Email', f.email) + line('Phone', f.phone)
-        + line('Licence', f.licence) + line('Registry entry', f.registryEntry)
+        + line('Licence key', f.licence, 'A licence key is the firm\'s credential with the appliance API. It is one string, it is issued once by the Bailment admin console, and only its SHA-256 hash is kept — lose it and the fix is to revoke it and issue another. It identifies the FIRM, not a person: it opens matters and pays for certified filings at 25 USD each, and it is deliberately not allowed to send a message, because sending is adoption and only a named human does that. The key here is the free public demo key, printed on purpose: a key everyone holds proves nothing about who used it, which is exactly why a demo is a demo.')
+        + line('Appliance API', f.appliance || 'http://127.0.0.1:8402', 'The Appliance API is the firm\'s own server — the box in the firm\'s building, or its own cloud account, that runs the model and holds the matter. This page talks to it over HTTP: open a matter, write a draft, ask the model, notarise, issue a certificate. Bailment does not host it and cannot read it. Leave it unconnected and everything above runs on a stand-in inside this page, which is why the demo works with no server at all. Point it at http://127.0.0.1:8402 to drive the real API on your own machine.')
+        + line('Registry entry', f.registryEntry)
         + line('Signing key id', k.id) + line('Key fingerprint', k.fingerprint)
         + '<p class="muted">The licence is what pays for a certified filing. The registry entry is '
         + 'the pipeline a verifier checks this firm\u2019s certificates against.</p>';
