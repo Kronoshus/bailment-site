@@ -95,44 +95,96 @@
   document.addEventListener('bailee:certify', toCertify);
 
   // ---- Part 2 -> 3: the certificate is signed. Your record goes into the next batch.
+  // The real verification URL carries the whole signed certificate and runs to hundreds of
+  // characters. The demo hands the reader a 20-character stand-in and keeps the real one here.
+  // ponytail: in-page alias only, it dies with the tab; a real short link needs a resolver service.
+  var links = {};
+  function shortLink(url) {
+    var abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', b = new Uint8Array(8), code = '';
+    crypto.getRandomValues(b);
+    for (var i = 0; i < 8; i++) code += abc[b[i] % abc.length];
+    var link = 'bailee.link/' + code;   // 12 + 8 = 20 characters
+    links[link] = url;
+    return link;
+  }
+  var copyLink = function (link, label) {
+    return '<button type="button" class="btn btn-ghost" data-copy="' + UI.esc(link) + '">' + (label || 'Copy') + '</button>';
+  };
+
   document.addEventListener('bailee:certified', function (e) {
     state.url = (e.detail || {}).url || '';
-    var proto = document.getElementById('widget-protocol');
-    proto.dataset.seed = state.commitment || state.digest;
-    var out = proto.querySelector('#pk-out');
-    if (out) out.innerHTML = '';   // the demo batch from page load is not yours
-    say(2, 'Certified and signed.');
+    state.link = shortLink(state.url);
+    // Part 2 shows the short link instead of the full certificate (hidden on this page by app.css).
+    var box = document.getElementById('together-link') || document.createElement('div');
+    box.id = 'together-link';
+    box.className = 'together-link';
+    box.innerHTML = '<span>Your verification link</span> <code>' + UI.esc(state.link) + '</code> '
+      + copyLink(state.link) + '<span class="muted">Copy it. You need it in part 4 to verify.</span>';
+    fold(2).parentNode.insertBefore(box, fold(2));   // outside the fold: still there when part 2 closes
+    UI.wireCopy(box);
+    say(2, 'Certified and signed. Your verification link is below.');
     popup('Your certificate is signed!',
-      '<p>Next is part 3, <strong>Publish</strong>. Your notarized record joins this period’s batch, '
+      '<p>Copy your verification link now. You will need it in part 4 to verify.</p>'
+        + '<p><code class="mono together-hash">' + UI.esc(state.link) + '</code></p>'
+        + '<p>Next is part 3, <strong>Publish</strong>. Your notarized record joins this period’s batch, '
         + 'alongside every other firm’s records. The whole batch folds into one 32-byte root, and only '
-        + 'that root goes on the blockchain.</p>'
-        + '<p>No names, no documents, no count of how many there were. Press '
-        + '<em>Build the period root</em> to publish.</p>',
+        + 'that root goes on the blockchain. No names, no documents, no count.</p>',
       'Go to Publish', function () {
         closePart(2);
-        say(3, 'Press Build the period root to batch your record and publish one root.');
         openPart(3);
-      });
+        buildPeriod();
+      }, copyLink(state.link, 'Copy the link'));
   });
 
-  // ---- Part 3 -> 4: a root with your record in it was published.
+  // ---- Part 3: the root is already built when the reader arrives, with their record in it.
+  // The Build button moves under the result, so pressing it is the step that publishes.
+  function buildPeriod() {
+    var proto = document.getElementById('widget-protocol');
+    proto.dataset.seed = state.commitment || state.digest;
+    var btn = proto.querySelector('#pk-go');
+    if (btn && !btn.parentNode.classList.contains('together-bottom')) {
+      var bottom = document.createElement('div');
+      bottom.className = 'actions together-bottom';
+      proto.appendChild(bottom);
+      bottom.appendChild(btn);
+    }
+    state.previewing = true;          // this build is the preview, not the publish
+    if (btn) btn.click();
+    say(3, 'Your record is communication #1 in this batch. Look it over, then press Build the period root at the bottom.');
+  }
+
+  // ---- Part 3 -> 4: the reader pressed Build the period root.
   document.addEventListener('bailee:published', function (e) {
     if (fold(3).hidden || !(e.detail || {}).seeded) return;
+    if (state.previewing) { state.previewing = false; return; }
     say(3, 'Published. Your record is communication #1, and the chain holds only the root.');
     var v = document.getElementById('widget-verifier');
-    put(v, '#ct-payload', state.url);
+    var payload = v.querySelector('#ct-payload');
+    if (payload) payload.placeholder = 'Paste your verification link, e.g. ' + state.link;
     put(v, '#ct-mydigest', state.digest);
     popup('Published to the chain!',
-      '<p>Next is part 4, <strong>Verify</strong>. This is what a court does with your filing. The '
-        + 'certificate and your document’s hash are already filled in.</p>'
-        + '<p>Press <em>Verify</em>. The court’s own browser checks the signature, the registry and all '
-        + 'four claims. Nothing is uploaded.</p>',
+      '<p>Next is part 4, <strong>Verify</strong>. This is what a court does with your filing.</p>'
+        + '<p>Paste your verification link into the verifier and press <em>Verify</em>. The court’s own '
+        + 'browser checks the signature, the registry and all four claims. Nothing is uploaded.</p>'
+        + '<p><code class="mono together-hash">' + UI.esc(state.link) + '</code></p>',
       'Go to Verify', function () {
         closePart(3);
-        say(4, 'Check it the way a court would: press Verify.');
+        say(4, 'Paste your verification link, then press Verify.');
         openPart(4);
-      });
+      }, copyLink(state.link, 'Copy the link'));
   });
+
+  // Part 4: a pasted short link is swapped for the real certificate just before the
+  // verifier reads the box (capture phase runs first), then put back so the reader sees
+  // what they pasted. Anything else is left for the verifier to judge.
+  document.getElementById('widget-verifier').addEventListener('click', function (e) {
+    if (!e.target.closest || !e.target.closest('#ct-verify')) return;
+    var box = this.querySelector('#ct-payload');
+    var typed = box ? box.value.trim().replace(/^https?:\/\//, '') : '';
+    if (!links[typed]) return;
+    box.value = links[typed];
+    setTimeout(function () { box.value = typed; }, 0);
+  }, true);
 
   // ---- Part 4: it verified. Everything closes, and the reader is told what they did.
   document.addEventListener('bailee:verified', function (e) {

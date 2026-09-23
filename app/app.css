@@ -796,3 +796,10 @@
 .together-pop p{color:var(--fg-muted);line-height:1.6}
 .together-docs .copied,.together-pop .copied{border-color:var(--tint-lime);color:var(--tint-lime)}
 .widget .together-glow{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-ring)}
+/* All Together, part 2: sign and move on. The full certificate, tamper, forge and print stay on product.html. */
+#part-2 #ct-out,#part-2 #ct-break,#part-2 #ct-forge,#part-2 #ct-print{display:none}
+.together-link{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px;padding:14px 16px;
+  border:1px solid var(--accent-ring);border-radius:var(--radius-sm);background:var(--chip-bg);color:var(--ink)}
+.together-link code{font-family:var(--font-mono);font-size:1.05rem;color:var(--ink);user-select:all}
+.together-link .copied{border-color:var(--tint-lime);color:var(--tint-lime)}
+.together-bottom{margin-top:16px}
