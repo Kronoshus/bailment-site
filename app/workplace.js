@@ -984,12 +984,12 @@
   // lawyer are chosen from a list, or written in, and the matter is opened through the
   // same createMatter() call the rest of the screen uses.
   function matterHtml(st) {
-    return '<div class="panel wp-matter"><h3>The Matter This Demo Opens' + help('Change any of these and open it again. The API does the work; this page holds no back door.') + '</h3>'
+    return '<div class="panel wp-matter"><h3>The Matter This Demo Opens' + help('Change any of these and press Reset: the demo opens a fresh matter with those names. The API does the work; this page holds no back door.') + '</h3>'
       + '<div class="inline">'
       + wmField({ id: 'wp-title', label: 'Matter title', options: MATTER_TITLES, value: st.matterTitle })
       + wmField({ id: 'wp-client', label: 'Client name', options: CLIENT_NAMES, value: st.clientName })
       + wmField({ id: 'wp-lawyer', label: 'Lawyer', options: LAWYER_NAMES, value: st.lawyerName })
-      + '<button class="btn ghost" data-act="reopen">Open this matter</button>'
+      + '<button class="btn ghost" data-act="reopen">Reset</button>'
       + '</div></div>';
   }
 
