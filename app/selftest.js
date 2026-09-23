@@ -673,8 +673,10 @@
       /* --------------------------------------------- the "?" explainers */
       // Every one of these was named as confusing. Each gets a "?" that opens on hover
       // AND on keyboard focus, with aria-describedby tying the two together.
-      const NEEDS_HELP = ['identifiersReachedModel', 'version', 'manifestDigest',
-        'sendRecordDigest', 'retrievalLogDigest', 'pipelineStep'];
+      // The three computed digests left the form with the note that explained them, so
+      // the list is the fields a reader still fills in.
+      const NEEDS_HELP = ['identifiersReachedModel', 'version', 'pipelineStep',
+        'documentDigest'];
       ok('every field Kevin named as confusing has a "?" explainer in the form',
         NEEDS_HELP.every((k) => form.indexOf('id="ct-help-' + k + '"') >= 0),
         NEEDS_HELP.join(', '));

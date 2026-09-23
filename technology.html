@@ -133,6 +133,18 @@
     </p>
   </div>
 </section>
+<section class="section" id="verifier">
+  <div class="wrap">
+    <h2>Check a Certificate</h2>
+    <p class="muted">Paste a verification URL. It runs in your browser: the signing key is looked up in this page&rsquo;s own registry, never in the payload.</p>
+    <!-- MOUNT POINT: certificate verifier (app/certificate.js, verify mode) -->
+    <section class="widget" id="widget-certificate" data-widget="certificate" data-mode="verify" aria-label="Certificate verifier">
+      <p class="widget-placeholder">Loading&hellip;</p>
+    </section>
+    <!-- END MOUNT POINT -->
+  </div>
+</section>
+
 </main>
 
 <footer class="footer">
@@ -187,6 +199,7 @@
 <script src="app/crypto.js?v=5"></script>
 <script src="app/ui.js?v=9"></script>
 <script src="app/protocol.js?v=5"></script>
+<script src="app/certificate.js?v=16"></script>
 <script>
 window.addEventListener('load', function () {
   setTimeout(function () {

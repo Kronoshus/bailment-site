@@ -617,16 +617,7 @@
 
   // The three digests the demo computes for the reader. They are not inputs, but they are
   // the least self-explanatory words on the certificate, so they get the same "?".
-  const ctDigestNote = () => `<div class="field wm-field wm-computed">
-      <span class="wm-labelrow"><span class="wm-computed-t">Computed for you in this demo</span></span>
-      <p class="wm-hint"><span class="wm-computed-i">Model manifest digest${ctHelp('manifestDigest')}</span>
-      <span class="wm-computed-i">Send-record digest${ctHelp('sendRecordDigest')}</span>
-      <span class="wm-computed-i">Retrieval-log digest${ctHelp('retrievalLogDigest')}</span>
-      In a real deployment each of these is read off the appliance. Here they are derived from
-      fixed demo text, so they are stable and meaningless, which is the honest thing for a demo
-      to be. The retrieval-log digest stops being meaningless the moment you press
-      <b>Check citations</b> below: it is then the digest of the log that check produced.</p>
-    </div>`;
+  const ctDigestNote = () => '';
 
   // --------------------------------------------------- the citation checker
   // Three pure functions and one call. The rendering is pure so the self-check can run
@@ -956,11 +947,6 @@
         <button class="btn ghost" id="ct-print">Print</button>
       </div>
       <div id="ct-warn-slot"></div>
-      <p class="note">This builder signs with the <strong>demo key</strong> whose public half is listed in
-      <code>registry.json</code>, so the certificate it makes comes back as a pass. The private half of that
-      key is printed in <code>app/certificate.js</code> for anyone to read and reuse, which is exactly why a
-      demo pass is a demonstration and not evidence. In production the key is the attestation service's, held
-      under the 3-of-5 root, it is never in a page, and the firm's licence must be live at the moment of issue.</p>
     </div>`;
   }
 
@@ -1216,11 +1202,16 @@
   }
 
   function ctRender(el, mode) {
+    // build   the generator, no verifier    (Certificate Generator, and the workplace dialog)
+    // verify  the verifier, no generator    (Technology, Verify)
+    // full    both, for anything that still asks for it
     const showBuilder = mode !== 'verify';
+    const showVerifier = mode !== 'build';
     el.innerHTML = `
       <h2>A Certificate a Court Can Check</h2>
       ${showBuilder ? certFormHTML(CERT_DEFAULTS) : ''}
       <div id="ct-out"></div>
+      ${showVerifier ? `
       <hr>
       <h3>Verifier</h3>
       <p>Paste a verification URL or payload. This runs entirely in your browser. The signing key is looked up
@@ -1235,12 +1226,15 @@
       <p class="note">Leave those blank and the certificate is still checked, but it is not tied to any
       particular document. Fill them in and a certificate lifted from another filing is caught.</p>
       <div class="actions"><button class="btn ghost" id="ct-verify">Verify</button></div>
-      <div id="ct-result"></div>`;
+      <div id="ct-result"></div>` : ''}`;
 
     wireCopy(el);
     wireFields(el);
     const out = $(el, '#ct-out');
     const result = $(el, '#ct-result');
+    // The verifier is its own mount now, so a builder-only page has neither of these.
+    const show = (html) => { if (result) result.innerHTML = html; };
+    const setPayload = (v) => { const n = $(el, '#ct-payload'); if (n) n.value = v; };
     let last = null;
     let lastCheck = null;          // the last completed citation lookup, or null
     // What was in the two count boxes when that lookup replaced them. The filer's
@@ -1301,9 +1295,9 @@
         });
       }
       out.innerHTML = certHTML(cert, url, await keyFingerprint(last.pub));
-      $(el, '#ct-payload').value = url;
+      setPayload(url);
       wireCopy(out);
-      result.innerHTML = verdictHTML(await verifyCertificate(last));
+      show(verdictHTML(await verifyCertificate(last)));
     }
 
     if (showBuilder && root.Bailee && root.Bailee.profile) {
@@ -1403,11 +1397,11 @@
         if (!last) { await issue(); }
         const broken = JSON.parse(JSON.stringify(last));
         broken.cert.claims[1].evidence.attorney = 'Someone Else, Esq.';
-        $(el, '#ct-payload').value = certificateURL(broken);
-        result.innerHTML = verdictHTML(await verifyCertificate(broken, readerOpts()))
+        setPayload(certificateURL(broken));
+        show(verdictHTML(await verifyCertificate(broken, readerOpts()))
           + '<p class="note">One field changed after signing, and nothing re-signed. The signature fails and the '
           + 'claims root no longer matches. That is the easy case, and it is not the attack: a forger would simply '
-          + 'sign their own text with their own key. Press <em>Forge it properly</em> to see that one.</p>';
+          + 'sign their own text with their own key. Press <em>Forge it properly</em> to see that one.</p>');
       });
 
       // The real attack. Everything the old verifier checked still checks out; the only
@@ -1419,13 +1413,13 @@
         d.evidence['attorney-adoption'].attorney = 'I. M. Fake';
         d.evidence['attorney-adoption'].barNumber = 'WSBA 00000';
         const forged = await signCertificate(await buildCertificate(d), forgerKeys);
-        $(el, '#ct-payload').value = certificateURL(forged);
-        result.innerHTML = verdictHTML(await verifyCertificate(forged, readerOpts()))
+        setPayload(certificateURL(forged));
+        show(verdictHTML(await verifyCertificate(forged, readerOpts()))
           + '<p class="note">Nothing was tampered with. A new key was generated in this tab, a certificate naming '
           + 'a firm and an attorney that do not exist was signed with it, and every arithmetic check passes: the '
           + 'signature is valid, the claims root matches, all four claims prove in. The one thing that is not true '
           + 'is the one thing that matters, and the registry is what says so. That registry, not the cryptography, '
-          + 'is where the defensibility is.</p>';
+          + 'is where the defensibility is.</p>');
       });
     }
 
@@ -1441,13 +1435,13 @@
       if (q) q.blur();
     });
 
-    $(el, '#ct-verify').addEventListener('click', async () => {
+    if ($(el, '#ct-verify')) $(el, '#ct-verify').addEventListener('click', async () => {
       try {
         const p = decodePayload($(el, '#ct-payload').value);
-        result.innerHTML = verdictHTML(await verifyCertificate(p, readerOpts()));
+        show(verdictHTML(await verifyCertificate(p, readerOpts())));
       } catch (err) {
-        result.innerHTML = `<div class="verdict fail"><span class="mark">\u2717</span>
-          <span><strong>Could not read that payload</strong>${esc(err.message)}</span></div>`;
+        show(`<div class="verdict fail"><span class="mark">\u2717</span>
+          <span><strong>Could not read that payload</strong>${esc(err.message)}</span></div>`);
       }
     });
 
@@ -1455,13 +1449,13 @@
     const fromHash = (typeof location !== 'undefined' && location.hash.startsWith('#c='))
       ? location.hash.slice(3) : null;
     if (fromHash) {
-      $(el, '#ct-payload').value = location.hash;
+      setPayload(location.hash);
       (async () => {
-        try { result.innerHTML = verdictHTML(await verifyCertificate(decodePayload(fromHash), readerOpts())); }
+        try { show(verdictHTML(await verifyCertificate(decodePayload(fromHash), readerOpts()))); }
         catch (err) {
-          result.innerHTML = `<div class="verdict fail"><span class="mark">\u2717</span>
+          show(`<div class="verdict fail"><span class="mark">\u2717</span>
             <span><strong>Not readable</strong>That link does not carry a certificate this page can read.
-            ${esc(err.message)}</span></div>`;
+            ${esc(err.message)}</span></div>`);
         }
       })();
     }
