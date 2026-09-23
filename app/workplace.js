@@ -953,7 +953,8 @@
       return '<li class="wp-log-' + esc(l.level) + '"><span class="mono">'
         + esc(l.at.toLocaleTimeString('en-US', { hour12: false })) + '</span> ' + esc(l.text) + '</li>';
     }).join('');
-    return '<div class="panel wp-loglist"><h3>What the API Did</h3><ul>' + rows + '</ul></div>';
+    return '<details class="panel wp-loglist wp-fold"><summary>What the API Did'
+      + ' <span class="chip">' + st.log.length + '</span></summary><ul>' + rows + '</ul></details>';
   }
 
   function barHtml(st) {
@@ -995,11 +996,12 @@
 
   function closeHtml(st) {
     if (!st.api.extras || st.party !== 'lawyer') return '';
-    return '<div class="panel wp-close"><h3>Close the Matter' + help('A stage lights on an event. This one needs an outcome, not a click.') + '</h3>'
+    return '<div class="panel wp-close"><h3>Outcome' + help('A stage lights on an event. This one needs an outcome, not a click. Notarising a document and closing the matter both happen here.') + '</h3>'
       + '<div class="inline">'
-      + wmField({ id: 'wp-outcome', label: 'Outcome',
+      + wmField({ id: 'wp-outcome', label: 'Close the matter',
           options: [{ value: '', label: '\u2014 no outcome yet \u2014' }].concat(OUTCOMES) })
-      + '<button class="btn ghost" data-act="close">Close</button></div></div>';
+      + '<button class="btn ghost" data-act="close">Close</button></div>'
+      + '</div>';
   }
 
   function paint(st, el) {

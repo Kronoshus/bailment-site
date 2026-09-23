@@ -23,7 +23,7 @@
   <meta name="twitter:description" content="A client and their lawyer in one thread, with AI on the firm's own hardware. Flip the switch and see what each side can see.">
   <meta name="twitter:image" content="https://bailment.tech/assets/og.png">
   <link rel="stylesheet" href="style.css?v=7">
-  <link rel="stylesheet" href="app/app.css?v=7">
+  <link rel="stylesheet" href="app/app.css?v=8">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -64,20 +64,20 @@
       <p class="widget-placeholder">Loading&hellip;</p>
     </section>
     <!-- END MOUNT POINT -->
+    <details class="wp-fold" id="notarize">
+      <summary>Notarize a document</summary>
+      <!-- MOUNT POINT: notarize demo (app/notarize.js) -->
+      <section class="widget" id="widget-notarize" data-widget="notarize" aria-label="Notarize demo">
+        <p class="widget-placeholder">Loading&hellip;</p>
+      </section>
+      <!-- END MOUNT POINT -->
+    </details>
     <p class="muted" style="margin-top:22px">
       Connect an appliance and it runs live. Notarising there spends one certified filing.
       <a href="plan.html#the-shared-ai-thread">The four rules are in the plan &rarr;</a>
     </p>
   </div>
 </section>
-<section class="section" id="notarize">
-  <div class="wrap">
-    <h2>Notarize a Document</h2>
-    <p class="muted">Do this first. Pick any file: the hash is computed here, in your browser, and the file never leaves this device. Take the digest to the <a href="product.html">Certificate Generator</a>.</p>
-    <!-- MOUNT POINT: notarize demo (app/notarize.js) -->
-    <section class="widget" id="widget-notarize" data-widget="notarize" aria-label="Notarize demo">
-      <p class="widget-placeholder">Loading&hellip;</p>
-    </section>
 
 </main>
 
@@ -133,7 +133,7 @@
 <script src="app/crypto.js?v=5"></script>
 <script src="app/ui.js?v=8"></script>
 <script src="app/notarize.js?v=8"></script>
-<script src="app/workplace.js?v=9"></script>
+<script src="app/workplace.js?v=10"></script>
 <script>
 window.addEventListener('load', function () {
   setTimeout(function () {

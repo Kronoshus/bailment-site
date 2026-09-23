@@ -729,3 +729,17 @@
 }
 .widget .wp-pick .wp-select:hover{border-color:var(--accent-ring)}
 .wp-thread{min-height:340px}
+
+/* Foldable sections: the notarize tool and the API log are options, not the main event. */
+.wp-fold{margin-top:14px;border:1px solid var(--border-hairline);border-radius:var(--radius-lg);
+  background:color-mix(in srgb,var(--neutral-900) 55%,transparent);padding:0 16px}
+.wp-fold > summary{
+  cursor:pointer;list-style:none;padding:14px 0;font-weight:500;color:var(--ink);
+  display:flex;align-items:center;gap:10px;
+}
+.wp-fold > summary::-webkit-details-marker{display:none}
+.wp-fold > summary::before{content:'\25B8';color:var(--fg-muted);transition:transform .15s ease}
+.wp-fold[open] > summary::before{transform:rotate(90deg)}
+.wp-fold > summary:hover{color:var(--accent)}
+.wp-fold > *:last-child{margin-bottom:14px}
+.wp-fold .widget{border:0;background:none;padding:0}
