@@ -16,8 +16,8 @@
     recipient: ['Hon. J. L. Robart', 'Opposing counsel of record', 'Clerk of the Court'],
     purpose: ['In camera authenticity review', 'Authentication of an exhibit for filing',
       'Settlement conference disclosure'],
-    signer: ['Dana L. Cranmer', 'Miriam A. Vale', 'Theo Okonkwo'],
-    bar: ['WSBA 41207', 'CA SBN 302914', 'NY 5512883'],
+    signer: ['Kevin G. Mohr, Esq.', 'Miriam A. Vale', 'Theo Okonkwo'],
+    bar: ['Bar No. 123456', 'CA SBN 302914', 'NY 5512883'],
   };
 
   function statementOptions() {
@@ -62,7 +62,7 @@
   // take — which is the point: a key anyone can use says nothing about who signed.
   // A real attorney key is generated on the firm's own appliance and never leaves it.
   const DEMO_ATTORNEY = {
-    id: 'demo-attorney-cranmer',
+    id: 'demo-attorney-mohr',
     spki: 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE2taL90NN8ctbfzJhGxVeisUPb7lyIT6VePWOA7sLAxULixRitelCWqvsGN06dO_1BUdEcEriOyG4AnvNy2N32w',
     pkcs8: 'MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgiY_rwfhca5RXLkwfnpqHZQzB1IQsrgn5MTIqx7TirzmhRANCAATa1ov3Q03xy1t_MmEbFV6KxQ9vuXIhPpV49Y4DuwsDFQuLFGK16UJaq-wY3Tp07_UFR0RwSuI7IbgCe83LY3fb',
   };

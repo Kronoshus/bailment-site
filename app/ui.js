@@ -114,13 +114,13 @@
         "validUntil": "2027-12-31T23:59:59.000Z"
       },
       {
-        "id": "demo-attorney-cranmer",
+        "id": "demo-attorney-mohr",
         "role": "attorney",
         "fingerprint": "D408 F057 F718 76C2",
         "spki": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE2taL90NN8ctbfzJhGxVeisUPb7lyIT6VePWOA7sLAxULixRitelCWqvsGN06dO_1BUdEcEriOyG4AnvNy2N32w",
-        "firm": "Cranmer & Vale LLP (demo key)",
-        "name": "Dana L. Cranmer",
-        "barNumber": "WSBA 41207",
+        "firm": "Bailment Law (demo key)",
+        "name": "Kevin G. Mohr, Esq.",
+        "barNumber": "Bar No. 123456",
         "jurisdiction": "Washington",
         "signs": [
           "attestation"

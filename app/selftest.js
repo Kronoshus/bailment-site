@@ -474,8 +474,8 @@
       ok('case number is a plain box with nothing typed in it',
         /^<input/.test(control('ct-case')) && control('ct-case').indexOf('value=') < 0
           && control('ct-case').indexOf('placeholder="2:26-cv-01184"') >= 0);
-      ok('the firm is fixed at Demo & Example LLP and is not a control at all',
-        K.DEMO_FIRM === 'Demo & Example LLP' && control('ct-firm-fixed').indexOf('<output') === 0
+      ok('the firm is fixed at Bailment Law and is not a control at all',
+        K.DEMO_FIRM === 'Bailment Law' && control('ct-firm-fixed').indexOf('<output') === 0
           && form.indexOf('data-wm="ct-firm"') < 0, K.DEMO_FIRM);
       for (const [id, label] of [['ct-atty', 'attorney'], ['ct-bar', 'bar number']]) {
         ok('claim 2: ' + label + ' is a typed box whose example is a placeholder, not a value',
@@ -969,7 +969,7 @@
         statement: A.defaultStatement('retainer agreement', 'Doe v. Acme Holdings', '2026-09-14'),
         digest, recipient: 'Hon. J. L. Robart', purpose: 'In camera authenticity review',
         expiry: new Date(Date.now() + 14 * 864e5).toISOString(),
-        signerName: 'Dana L. Cranmer', signerBar: 'WSBA 41207', signerJurisdiction: 'Washington',
+        signerName: 'Kevin G. Mohr, Esq.', signerBar: 'Bar No. 123456', signerJurisdiction: 'Washington',
       });
       const signedAtt = await A.signAttestation(att, attKeys);
       const good = await A.verifyAttestation(signedAtt, { reader: 'Hon. J. L. Robart', digest });

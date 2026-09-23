@@ -32,7 +32,7 @@
 
   // The firm is not a choice. A real deployment reads it out of the licence, so the demo
   // shows one fixed made-up firm rather than a dropdown nobody would ever use.
-  const DEMO_FIRM = 'Demo & Example LLP';
+  const DEMO_FIRM = 'Bailment Law';
 
   // "Not stated" as a value, not as a hole. An empty string fails CLAIM_SPEC's required
   // check and the certificate comes back broken; 'N/A' records, truthfully, that nothing
@@ -47,7 +47,7 @@
   // Astra 6 and Opus 5.1 do not exist. They are here on purpose: the certificate records
   // the model name it is given, and naming a model is not proof that one ran.
   const CERT_OPTIONS = {
-    court: ['U.S. District Court, W.D. Washington',
+    court: ['Second Judicial District Court, Washoe County, Nevada',
       'U.S. District Court, S.D. New York',
       'Superior Court of California, County of Orange'],
     judge: ['Hon. J. L. Robart', 'Hon. A. M. Vasquez', 'Hon. P. Okonkwo'],
@@ -86,7 +86,7 @@
   const EXAMPLES = {
     caseNumber: '2:26-cv-01184',
     attorney: 'Perry Masonry, Esq.',
-    barNumber: 'WSBA 41207',
+    barNumber: 'Bar No. 123456',
   };
 
   // ------------------------------------------------- claim 3, actually checked
@@ -169,7 +169,7 @@
   };
 
   const CERT_DEFAULTS = {
-    court: 'U.S. District Court, W.D. Washington',
+    court: 'Second Judicial District Court, Washoe County, Nevada',
     judge: 'Hon. J. L. Robart',
     caseNumber: EXAMPLES.caseNumber,
     filing: 'Motion for Summary Judgment',
@@ -181,7 +181,7 @@
       'model-manifest': { model: 'Llama 3.3 70B Instruct', version: 'q5_K_M / 2026.07',
         provider: 'Meta (self-hosted, firm appliance)', manifestDigest: '' },
       'attorney-adoption': { attorney: EXAMPLES.attorney, barNumber: EXAMPLES.barNumber,
-        jurisdiction: 'Washington', sendRecordDigest: '', adoptedAt: '' },
+        jurisdiction: 'Nevada', sendRecordDigest: '', adoptedAt: '' },
       'citations-verified': { citations: 14, verified: 14, retrievalLogDigest: '',
         pipelineStep: 'cite-check@2026.9.3' },
       'no-identifier': { redactorVersion: 'bailee-redactor 4.2.1 (signed)',
@@ -1300,12 +1300,27 @@
       const cert = await buildCertificate(await collect());
       last = await signCertificate(cert, keys);
       const url = certificateURL(last);
+      // The attorney's own record of what they signed, kept on their own device.
+      if (root.Bailee && root.Bailee.profile) {
+        root.Bailee.profile.record({
+          kind: 'certification',
+          title: (cert.filing && cert.filing.title) || 'Certificate',
+          digest: (cert.document && cert.document.digest) || '',
+          model: ((cert.claims || []).filter((c) => c.id === 'model-manifest')[0] || {}).evidence
+            ? ((cert.claims || []).filter((c) => c.id === 'model-manifest')[0].evidence.model || '') : '',
+          verifyUrl: url,
+        });
+      }
       out.innerHTML = certHTML(cert, url, await keyFingerprint(last.pub));
       $(el, '#ct-payload').value = url;
       wireCopy(out);
       result.innerHTML = verdictHTML(await verifyCertificate(last));
     }
 
+    if (showBuilder && root.Bailee && root.Bailee.profile) {
+      // One identity. The attorney block comes from the profile rather than being retyped.
+      root.Bailee.profile.load().then(() => { try { root.Bailee.profile.fillStep4(); } catch (e) { /* page has no builder */ } });
+    }
     if (showBuilder) {
       // The version is not a question the reader should have to answer: picking a model
       // fills it in. A model the list does not carry — "In House Model", the two that do

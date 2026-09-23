@@ -32,7 +32,7 @@
   const MATTER_TITLES = ['Ridgeline Ltd \u2014 supply dispute',
     'Calder Freight \u2014 contract review', 'Vantage Data Systems \u2014 employment claim'];
   const CLIENT_NAMES = ['Ridgeline Ltd', 'Calder Freight GmbH', 'Vantage Data Systems Inc.'];
-  const LAWYER_NAMES = ['Dana L. Cranmer', 'Miriam A. Vale', 'Theo Okonkwo'];
+  const LAWYER_NAMES = ['Kevin G. Mohr, Esq.', 'Miriam A. Vale', 'Theo Okonkwo'];
   const CLIENT_LINES = [
     'They stopped shipping on the 9th and stopped answering. Do we have a claim?',
     'Can you look at the signed supply agreement before Friday?',
@@ -105,7 +105,7 @@
     const nextId = (p) => p + (++db.seq);
 
     const FIRM_KEY = o.firmKey || 'firm_2a9f_cranmer_vale';
-    const LAWYER_NAME = o.lawyerName || 'Dana L. Cranmer';
+    const LAWYER_NAME = o.lawyerName || 'Kevin G. Mohr, Esq.';
 
     function matterOr404(id) {
       const m = db.matters[id];
@@ -717,7 +717,7 @@
     const fresh = (key) => ({
       party: 'client', api: createRemoteApi(o.base || 'http://127.0.0.1:8402'),
       matterId: null, clientToken: null, lawyerToken: null, maySend: true,
-      lawyerName: 'Dana L. Cranmer', firmKey: key, base: o.base, showConnect: false,
+      lawyerName: 'Kevin G. Mohr, Esq.', firmKey: key, base: o.base, showConnect: false,
       messages: [], docs: [], progress: null, log: [], banner: null,
       adoption: null, payment: null,
     });
@@ -1240,6 +1240,12 @@
           const d = await st.api.notarize(auth, st.matterId, { documentId: id });
           st.docs = st.docs.map((x) => (x.id === d.id ? d : x));
           st.payment = null;
+          if (root.Bailee && root.Bailee.profile) {
+            root.Bailee.profile.record({
+              kind: 'notarization', title: d.filename || st.matterTitle,
+              commitment: (d.notarized || {}).commitment || '', digest: d.digest,
+            });
+          }
           note(st, 'ok', 'Notarized. Commitment published, document not.'
             + (d.charged ? ' One certified filing spent; '
                 + d.charged.certified_filings_left + ' left on this licence.' : ''));
@@ -1260,6 +1266,14 @@
           st.records[id] = { commitment: (out.record || {}).commitment || '',
                              digest: (out.document || {}).digest || '',
                              identifiersRemoved: red.identifiersRemoved || 0 };
+          // The attorney's own history, on their own device.
+          if (root.Bailee && root.Bailee.profile) {
+            root.Bailee.profile.record({
+              kind: 'notarization', title: st.matterTitle || 'Matter',
+              commitment: st.records[id].commitment, digest: st.records[id].digest,
+              identifiersRemoved: red.identifiersRemoved || 0,
+            });
+          }
           note(st, 'ok', 'Notarised from the thread. The appliance redacted it first: '
             + (red.identifiersRemoved || 0) + ' identifier(s) out. What the commitment covers: "'
             + String(red.redactedBody || '').slice(0, 160) + '"');
