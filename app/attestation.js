@@ -339,7 +339,7 @@
           <input id="at-digest" class="mono" placeholder="paste from the notarize widget, or leave blank for a demo digest"></div>
         ${wmField({ id: 'at-statement', label: 'Statement', options: statementOptions(),
           multiline: true, rows: 3,
-          hint: 'The sentence is the attorney\u2019s, not this page\u2019s. Pick one to see the '
+          help: 'The sentence is the attorney\u2019s, not this page\u2019s. Pick one to see the '
             + 'shape, or write the one you would actually sign.' })}
         <div class="inline">
           ${wmField({ id: 'at-recipient', label: 'Recipient', options: ATT_OPTIONS.recipient })}

@@ -329,7 +329,7 @@
         </div>
         ${wmField({ id: 'nt-text', label: '\u2026or pick some text instead (no file needed to try this)',
           options: SAMPLE_TEXTS, multiline: true, rows: 3,
-          hint: 'Nothing here is your document. Choose a sample, or write my own and paste '
+          help: 'Nothing here is your document. Choose a sample, or write my own and paste '
             + 'whatever you like \u2014 it is hashed in this tab either way.' })}
         <div class="field">
           <label for="nt-nonce">Matter nonce (32 random bytes, generated here)</label>

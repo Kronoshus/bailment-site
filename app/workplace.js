@@ -22,6 +22,7 @@
   // Shared demo-input helpers (ui.js). Guarded because selfTest() and liveCheck() run in
   // node with no DOM and never render a field.
   const wmField = UI.wmField || function () { return ''; };
+  const help = UI.help || function () { return ''; };
   const wmValue = UI.wmValue || function () { return ''; };
   const wmReset = UI.wmReset || function () {};
   const wireFields = UI.wireFields || function () {};
@@ -849,17 +850,15 @@
     const body = list.length
       ? list.map((m) => msgHtml(m, st.party)).join('')
       : '<p class="muted">Nothing in this thread yet.</p>';
-    return '<div class="panel wp-thread"><h3>' + esc(head) + '</h3>'
-      + '<p class="wp-sub">' + esc(sub) + '</p>' + body + '</div>';
+    return '<div class="panel wp-thread"><h3>' + esc(head) + help(sub) + '</h3>' + body + '</div>';
   }
 
   function composeHtml(st) {
     if (st.party === 'client') {
-      return '<div class="panel local wp-compose"><h3>Client pane \u2014 live</h3>'
-        + '<p class="wp-sub">Their own work, their own materials. What they write is sent.</p>'
+      return '<div class="panel local wp-compose"><h3>Client Pane \u2014 Live' + help('Their own work, their own materials. What they write is sent.') + '</h3>'
         + wmField({ id: 'wp-text', label: 'Message', options: CLIENT_LINES,
             multiline: true, rows: 4,
-            hint: 'Pick a line to try the demo, or write my own and say it in your own words.' })
+            help: 'Pick a line to try the demo, or write my own and say it in your own words.' })
         + '<div class="actions">'
         + '<button class="btn" data-act="post">Send</button>'
         + '<button class="btn ghost" data-act="assist">Ask the model</button>'
@@ -872,12 +871,11 @@
       ? '<p class="bad">This view is holding the firm\u2019s licence key, not an interactive '
         + 'lawyer session. It can draft and ask the model. Every send will be refused 403.</p>'
       : '';
-    return '<div class="panel chain wp-compose"><h3>Lawyer pane \u2014 compose, then send</h3>'
-      + '<p class="wp-sub">Model output arrives here as a draft. Nothing leaves without a send.</p>'
+    return '<div class="panel chain wp-compose"><h3>Lawyer Pane \u2014 Compose, Then Send' + help('Model output arrives here as a draft. Nothing leaves without a send.') + '</h3>'
       + cannot
       + wmField({ id: 'wp-text', label: 'Message', options: LAWYER_LINES,
           multiline: true, rows: 4,
-          hint: 'Pick a line to try the demo, or write my own. Either way it is a draft '
+          help: 'Pick a line to try the demo, or write my own. Either way it is a draft '
             + 'until you send it, and sending it is adoption.' })
       + '<div class="actions">'
       + '<button class="btn ghost" data-act="post">Hold as a draft</button>'
@@ -898,9 +896,7 @@
       return '<tr><td>' + esc(d.filename) + '</td><td class="mono">'
         + esc(UI.short ? UI.short(d.digest, 8) : d.digest) + '</td><td>' + state + '</td><td>' + act + '</td></tr>';
     }).join('');
-    return '<div class="panel wp-docs"><h3>Documents</h3>'
-      + '<p class="wp-sub">Files are hashed in this browser. The bytes never move. '
-      + 'A document out of the thread carries the taint with it, and notarize refuses it.</p>'
+    return '<div class="panel wp-docs"><h3>Documents' + help('Files are hashed in this browser. The bytes never move. A document out of the thread carries the taint with it, and notarize refuses it.') + '</h3>'
       + '<div class="field"><label for="wp-file">Add a file</label><input type="file" id="wp-file"></div>'
       + (rows ? '<table><thead><tr><th>File</th><th>SHA-256</th><th>State</th><th></th></tr></thead><tbody>'
           + rows + '</tbody></table>' : '<p class="muted">No documents yet.</p>')
@@ -923,11 +919,7 @@
   function paymentHtml(st) {
     const p = st.payment;
     if (!p) return '';
-    return '<div class="panel wp-pay"><h3>Payment required \u2014 402</h3>'
-      + '<p class="wp-sub">This is the price, not a failure. One Document Record entry is '
-      + 'one certified filing, through this door or through <span class="mono">POST '
-      + '/v1/notarize</span>: the same record, the same amount. This licence has none left, '
-      + 'so nothing was written and nothing was charged.</p>'
+    return '<div class="panel wp-pay"><h3>Payment Required \u2014 402' + help('This is the price, not a failure. One Document Record entry is one certified filing, through this door or through POST /v1/notarize: the same record, the same amount. This licence has none left, so nothing was written and nothing was charged.') + '</h3>'
       + '<p><span class="chip on">' + esc(p.amount) + ' ' + esc(p.asset) + '</span> '
       + '<span class="chip">' + esc(p.network) + '</span></p>'
       + '<p class="mono wp-path">pay to ' + esc(p.payTo) + '</p>'
@@ -945,7 +937,7 @@
       return '<li class="wp-log-' + esc(l.level) + '"><span class="mono">'
         + esc(l.at.toLocaleTimeString('en-US', { hour12: false })) + '</span> ' + esc(l.text) + '</li>';
     }).join('');
-    return '<div class="panel wp-loglist"><h3>What the API did</h3><ul>' + rows + '</ul></div>';
+    return '<div class="panel wp-loglist"><h3>What the API Did</h3><ul>' + rows + '</ul></div>';
   }
 
   function barHtml(st) {
@@ -964,12 +956,7 @@
 
   function connectHtml(st) {
     if (!st.showConnect) return '';
-    return '<div class="panel wp-connect"><h3>Connect an appliance</h3>'
-      + '<p class="wp-sub">The same licence key the rest of the API takes. It opens the '
-      + 'matter and pays for the filings; it is not allowed to send. The console then '
-      + 'spends the two one-time enrolment links the appliance hands back and holds a '
-      + 'participant token for each side, so the role switch swaps a real credential. '
-      + 'Without a key, everything above runs on the stand-in in this page.</p>'
+    return '<div class="panel wp-connect"><h3>Connect an Appliance' + help('The same licence key the rest of the API takes. It opens the matter and pays for the filings; it is not allowed to send. The console then spends the two one-time enrolment links the appliance hands back and holds a participant token for each side, so the role switch swaps a real credential. Without a key, everything above runs on the stand-in in this page.') + '</h3>'
       + '<div class="inline">'
       + wmField({ id: 'wp-base', label: 'API base', options: API_BASES, value: st.base || undefined })
       + '<div class="field"><label for="wp-key">Firm key</label>'
@@ -982,9 +969,7 @@
   // lawyer are chosen from a list, or written in, and the matter is opened through the
   // same createMatter() call the rest of the screen uses.
   function matterHtml(st) {
-    return '<div class="panel wp-matter"><h3>The matter this demo opens</h3>'
-      + '<p class="wp-sub">Change any of these and open it again. The API does the work; '
-      + 'this page holds no back door.</p>'
+    return '<div class="panel wp-matter"><h3>The Matter This Demo Opens' + help('Change any of these and open it again. The API does the work; this page holds no back door.') + '</h3>'
       + '<div class="inline">'
       + wmField({ id: 'wp-title', label: 'Matter title', options: MATTER_TITLES, value: st.matterTitle })
       + wmField({ id: 'wp-client', label: 'Client name', options: CLIENT_NAMES, value: st.clientName })
@@ -995,12 +980,11 @@
 
   function closeHtml(st) {
     if (!st.api.extras || st.party !== 'lawyer') return '';
-    return '<div class="panel wp-close"><h3>Close the matter</h3>'
+    return '<div class="panel wp-close"><h3>Close the Matter' + help('A stage lights on an event. This one needs an outcome, not a click.') + '</h3>'
       + '<div class="inline">'
       + wmField({ id: 'wp-outcome', label: 'Outcome',
           options: [{ value: '', label: '\u2014 no outcome yet \u2014' }].concat(OUTCOMES) })
-      + '<button class="btn ghost" data-act="close">Close</button></div>'
-      + '<p class="wp-sub">A stage lights on an event. This one needs an outcome, not a click.</p></div>';
+      + '<button class="btn ghost" data-act="close">Close</button></div></div>';
   }
 
   function paint(st, el) {
@@ -1222,11 +1206,11 @@
       adoption: null, payment: null,
     };
 
-    el.innerHTML = '<h2>One matter, two views</h2>'
-      + '<p class="lede">A client and their lawyer in the same thread, with the model on the '
-      + 'firm\u2019s own hardware. Flip the switch. The client\u2019s view does not hold the '
-      + 'lawyer\u2019s unsent draft, because it was never sent to them.'
-      + ' <span class="chip on">demo</span> The rules are real. The model is a stub.</p>'
+    el.innerHTML = '<h2>One Matter, Two Views'
+      + help('A client and their lawyer in the same thread, with the model on the firm\u2019s own '
+        + 'hardware. Flip the switch. The client\u2019s view does not hold the lawyer\u2019s unsent '
+        + 'draft, because it was never sent to them. Demo: the rules are real, the model is a stub.')
+      + '</h2>'
       + '<div id="wp-body"></div>';
 
     // One delegated set of handlers for the dropdown/free-text fields. paint() only

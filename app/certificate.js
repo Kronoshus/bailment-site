@@ -4,7 +4,7 @@
   const { sha256, hex, unhex, canonical, digestJSON, merkleRoot, merkleProof, verifyProof, generateSigningKey, signJSON, verifyJSON, exportPublicKey, importPublicKey, importPrivateKey, b64url, unb64url, keyFingerprint, utf8Decode } = root.Bailee.crypto;
   const { mount, $, esc, wireCopy, monoBlock, row, nowISO, fmtDate, short,
     loadRegistry, registrySigner, registryPipeline, wmValue, wireFields,
-    WM_OWN, WM_OWN_LABEL } = root.Bailee.ui;
+    WM_OWN, WM_OWN_LABEL, help } = root.Bailee.ui;
 
   // The certificate a court can check: four claims, signed, verifiable by anyone
   // holding the public key. The document itself is never revealed.
@@ -575,12 +575,7 @@
   // the explanation is a sibling the CSS reveals on :hover and on :focus-visible, and
   // aria-describedby points the screen reader at the same words the mouse gets.
   function ctHelp(key) {
-    const text = HELP[key];
-    if (!text) return '';
-    const tid = 'ct-help-' + key;
-    return `<span class="wm-help"><button type="button" class="wm-q" aria-describedby="${tid}"`
-      + ` aria-label="What this field means">?</button>`
-      + `<span class="wm-tip" role="tooltip" id="${tid}">${esc(text)}</span></span>`;
+    return help(HELP[key], 'ct-help-' + key);
   }
 
   const ctLabel = (forId, text, help) => `<span class="wm-labelrow">`

@@ -218,6 +218,17 @@
   // spec: { id, label, options, value, hint, placeholder, multiline, rows, cls, wrap }
   // An option with value '' is a neutral prompt: the field starts empty on purpose.
   // A `value` the list does not carry opens in the free-text box instead.
+  // A "?" that explains itself: a real button so a keyboard reaches it, with the words in a
+  // sibling the CSS reveals on :hover and on :focus-visible. Shared by every widget.
+  let helpSeq = 0;
+  function help(text, id) {
+    if (!text) return '';
+    const tid = id || ('wm-help-' + (++helpSeq));
+    return `<span class="wm-help"><button type="button" class="wm-q" aria-describedby="${tid}"`
+      + ` aria-label="What this means">?</button>`
+      + `<span class="wm-tip" role="tooltip" id="${tid}">${esc(text)}</span></span>`;
+  }
+
   function wmField(spec) {
     const s = spec || {};
     const id = String(s.id);
@@ -237,11 +248,12 @@
       ? `<textarea ${attrs} rows="${Number(s.rows) || 3}">${own ? esc(value) : ''}</textarea>`
       : `<input type="text" ${attrs} value="${own ? esc(value) : ''}">`;
     return `<div class="field wm-field" data-wm="${esc(id)}">`
-      + (s.label ? `<label for="${esc(pick)}">${esc(s.label)}</label>` : '')
+      + (s.label ? `<span class="wm-labelrow"><label for="${esc(pick)}">${esc(s.label)}</label>`
+          + help(s.help) + '</span>' : '')
       + `<select class="wm-select" id="${esc(pick)}" data-wm-select="${esc(id)}">${optionsHTML}</select>`
       + `<div class="wm-own"><button type="button" class="btn ghost" data-wm-own="${esc(id)}"`
       + (own ? ' style="display:none"' : '') + `>${WM_OWN_LABEL}</button>${box}</div>`
-      + (s.hint ? `<p class="wm-hint">${esc(s.hint)}</p>` : '')
+
       + '</div>';
   }
 
@@ -337,5 +349,5 @@
 
   root.Bailee.ui = { esc, $, $$, short, money, nowISO, fmtDate, mount, wireCopy, hashPayload, row, monoBlock,
     REGISTRY_EMBEDDED, loadRegistry, resetRegistry, registrySigner, registryPipeline, normFP,
-    WM_OWN, WM_OWN_LABEL, wmField, wmValue, wmSet, wmReset, wireFields };
+    WM_OWN, WM_OWN_LABEL, wmField, wmValue, wmSet, wmReset, wireFields, help };
 })(typeof globalThis !== 'undefined' ? globalThis : this);
