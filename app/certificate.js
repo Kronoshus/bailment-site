@@ -1440,7 +1440,9 @@
     if ($(el, '#ct-verify')) $(el, '#ct-verify').addEventListener('click', async () => {
       try {
         const p = decodePayload($(el, '#ct-payload').value);
-        show(verdictHTML(await verifyCertificate(p, readerOpts())));
+        const r = await verifyCertificate(p, readerOpts());
+        show(verdictHTML(r));
+        if (root.Bailee.ui.emit) root.Bailee.ui.emit('bailee:verified', { ok: !!r.ok });
       } catch (err) {
         show(`<div class="verdict fail"><span class="mark">\u2717</span>
           <span><strong>Could not read that payload</strong>${esc(err.message)}</span></div>`);
