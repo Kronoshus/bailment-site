@@ -736,7 +736,7 @@
 .widget .wp-pick .wp-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-ring)}
 .widget .wp-select option{background:var(--neutral-950);color:var(--ink)}
 /* a "?" outside a .wm-field anchors its tip to the line it sits on */
-.widget .panel h3,.widget .wp-bar,.widget .wp-lic{position:relative}
+.widget .panel h3,.widget .wp-bar,.widget .wp-lic,.widget .wp-composebar{position:relative}
 .wp-thread{min-height:340px}
 
 /* Foldable sections: the notarize tool and the API log are options, not the main event. */

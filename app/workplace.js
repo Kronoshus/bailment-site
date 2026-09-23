@@ -377,6 +377,41 @@
                redaction: red };
     }
 
+    // Notarize Chat: every SENT message, redacted here, in one record. Sent only, so both
+    // sides commit to the conversation they both saw, never to an unsent draft.
+    async function notarizeThread(auth, id) {
+      const m = matterOr404(id);
+      partyOf(m, auth);
+      const sent = m.messages.filter((x) => x.sent);
+      if (!sent.length) throw fail(400, 'Nothing has been sent in this chat yet, so there is nothing to notarise.');
+      let removed = 0;
+      const entries = sent.map(function (msg) {
+        const red = redactRecord(m, msg);
+        removed += red.identifiersRemoved;
+        return { messageId: msg.id, side: msg.side, origin: msg.origin, kind: msg.kind,
+          modelId: msg.modelId || null, createdAt: msg.at, sentAt: msg.sentAt || null,
+          redactedBody: red.redactedBody };
+      });
+      const record = { type: 'bailment.ai/chat-record/v1', matterId: m.id, messages: entries,
+        messageCount: entries.length, redactor: REDACTOR, identifiersRemoved: removed };
+      const ids = entries.map((e) => e.messageId);
+      const n = m.documents.filter((d) => /^chat-record-/.test(d.filename)).length + 1;
+      const doc = {
+        id: nextId('doc_'), filename: 'chat-record-' + m.id + '-' + n + '.json',
+        digest: CR.hex(await CR.sha256(JSON.stringify(record))), taint: false,
+        taintPath: [entries.length + ' sent message(s) redacted in the appliance by ' + REDACTOR
+          + ', ' + removed + ' identifier(s) removed. The thread text did not move.'],
+        derivedFrom: ids, at: nowISO(), addedBy: auth.role, notarized: null,
+      };
+      m.documents.push(doc);
+      const out = await notarize(auth, id, { documentId: doc.id });
+      return { record: { commitment: (out.notarized || {}).commitment || '',
+                         at: (out.notarized || {}).at || nowISO(), derivedFrom: ids },
+               document: { documentId: out.id, filename: out.filename, digest: out.digest },
+               redaction: { identifiersRemoved: removed, messageCount: entries.length,
+                            redactedBody: entries.map((e) => e.redactedBody).join('\n') } };
+    }
+
     async function progress(auth, id) {
       const m = matterOr404(id);
       partyOf(m, auth);
@@ -411,7 +446,7 @@
     return {
       mode: 'offline', label: 'offline stand-in', firmKey: FIRM_KEY, extras: true,
       createMatter, listMatters, getMatter, enrol, thread, postMessage, send, assist,
-      addDocument, notarize, notarizeMessage, progress, issueCertificate, close,
+      addDocument, notarize, notarizeMessage, notarizeThread, progress, issueCertificate, close,
     };
   }
 
@@ -604,6 +639,11 @@
         return { record: r.record, document: r.document || null,
                  redaction: r.redaction || null, charged: r.charged || null };
       },
+      notarizeThread: async (auth, id) => {
+        const r = await call(auth, 'POST', '/matters/' + id + '/thread/notarize', {});
+        return { record: r.record, document: r.document || null,
+                 redaction: r.redaction || null, charged: r.charged || null };
+      },
       progress: async (auth, id) => liveProgress(await call(auth, 'GET', '/matters/' + id + '/progress')),
       issueCertificate: issueCertificate,
       close: (auth, id, b) => call(auth, 'POST', '/matters/' + id + '/close', b),
@@ -675,6 +715,13 @@
     const note = await api.notarize(client, id, { documentId: clean.id });
     ok('R5 a clean document notarizes', !!note.notarized && !!note.notarized.commitment);
     ok('either party may notarize', note.notarized.by === 'client');
+
+    const held = await api.postMessage(lawyer, id, { body: 'Unsent thinking out loud.', origin: 'human' });
+    const chat = await api.notarizeThread(client, id);
+    ok('Notarize Chat commits once over the sent messages and leaves the unsent draft out',
+      !!chat.record.commitment && chat.record.derivedFrom.indexOf(held.id) < 0
+      && chat.record.derivedFrom.indexOf(draft.id) >= 0,
+      chat.redaction.messageCount + ' message(s)');
 
     const prog = await api.progress(lawyer, id);
     const done = prog.stages.filter((s) => s.done).map((s) => s.id).join(' ');
@@ -797,6 +844,15 @@
     ok('the documents panel shows the taint and the commitment',
       docsHtml(st).indexOf('tainted') > 0 && docsHtml(st).indexOf('notarized') > 0);
 
+    // Notarize Chat: one record over the sent messages, never an unsent draft.
+    const held = await st.api.postMessage(session(st, 'lawyer'), st.matterId,
+      { body: 'Unsent thinking out loud.', origin: 'human', kind: 'draft' });
+    const chat = await st.api.notarizeThread(session(st, 'client'), st.matterId);
+    ok('Notarize Chat commits once over every sent message and leaves the unsent draft out',
+      !!(chat.record && chat.record.commitment) && chat.record.derivedFrom.indexOf(held.id) < 0
+      && chat.record.derivedFrom.indexOf(draft.id) >= 0 && chat.redaction.messageCount >= 2,
+      chat.redaction.messageCount + ' message(s)');
+
     const cert = await st.api.issueCertificate({ role: 'firm', key: st.firmKey }, st.matterId,
       { document: st.docs.filter((d) => d.notarized)[0], adoption: st.adoption,
         lawyerName: st.lawyerName });
@@ -823,7 +879,7 @@
         poor.payment = paymentTerms(e, doc.id);
         const panel = paymentHtml(poor);
         ok('the console shows the 402 as terms, not as an error',
-          panel.indexOf('Payment required') > 0 && panel.indexOf('not a failure') > 0);
+          /payment required/i.test(panel) && panel.indexOf('not an error') > 0);
         ok('naming a real address on the right network: ' + poor.payment.network + ' '
           + trim(poor.payment.payTo, 16),
           /^addr/.test(poor.payment.payTo) && poor.payment.payTo.indexOf('PLACEHOLDER') < 0
@@ -942,15 +998,15 @@
     return '<div class="panel wp-thread"><h3>' + esc(head) + help(sub) + '</h3>' + body + '</div>';
   }
 
+  const sentIds = (st) => (st.messages || []).filter((m) => m.sent || m.sentAt).map((m) => m.id).join(',');
+  const chatRecord = (st) => (st.chatRecord && st.chatRecord.ids === sentIds(st) ? st.chatRecord : null);
+
   function composeHtml(st) {
     const client = st.party === 'client';
     // The lawyer's unsent draft is not a card with buttons in the thread: it is open in
     // this box. What you read here is what gets adopted.
     const pending = client ? null : (st.messages || [])
       .filter((m) => m.side === 'lawyer' && !m.sent).slice(-1)[0];
-    const mine = (st.messages || []).filter((m) => (client ? m.side === 'client' : m.side === 'lawyer'));
-    const target = pending || mine.slice(-1)[0];
-    const rec = target ? (st.records || {})[target.id] : null;
     const cannot = !client && st.maySend === false
       ? '<p class="bad">This view is holding the firm\u2019s licence key, not an interactive '
         + 'lawyer session. It can draft and ask the model. Every send will be refused 403.</p>'
@@ -969,11 +1025,14 @@
             + '</option>').join('')
         + '</select></label>'
       : '';
-    // Everything you can do to a message, before you reply to it.
-    // Notarising and certifying sit on the message they are about, in the thread.
-    const onTarget = target ? '<button class="btn ghost" data-act="doc-from-msg" data-id="'
-        + esc(target.id) + '">Save as a document</button>' : '';
-    void rec;
+    // The whole chat, one record. A record made before the last send is stale, so the
+    // button goes back to Notarize Chat rather than certify something that is no longer all of it.
+    const chat = chatRecord(st);
+    const chatBtn = chat
+      ? '<button class="btn ghost" data-act="certify-chat">Certify this chat</button>'
+      : '<button class="btn ghost" data-act="notarize-chat">Notarize Chat</button>'
+        + help('Records a tamper-proof fingerprint of every sent message in this chat, with names '
+          + 'and contact details removed first. Costs one certified filing ($25).');
     const sendRow = pending
       ? '<button class="btn" data-act="send" data-id="' + esc(pending.id) + '">Send (this is adoption)</button>'
         + '<button class="btn ghost" data-act="send-auto" data-id="' + esc(pending.id)
@@ -997,9 +1056,8 @@
       + pick('wp-harness', 'Harness', HARNESSES, st.harness)
       + '</div>'
       + '<div class="actions">'
-      + onTarget
+      + chatBtn
       + '<button class="btn ghost" data-act="assist">Ask the model</button>'
-      + '<button class="btn ghost" data-act="post-bare">No attribution</button>'
       + sendRow
       + '</div></div></div>';
   }
@@ -1228,9 +1286,6 @@
         note(st, 'ok', st.party === 'client'
           ? 'Client message stored and visible. Their side is live.'
           : 'Held as an unsent draft. ' + m.id + ' is not in the client\u2019s view.');
-      } else if (name === 'post-bare') {
-        // The demonstration of R1: ask for a message with no origin and be refused.
-        await st.api.postMessage(auth, st.matterId, { body: text() || 'No attribution on this one.' });
       } else if (name === 'assist') {
         const m = await st.api.assist(auth, st.matterId,
           { prompt: text(), model: st.model, harness: st.harness });
@@ -1265,19 +1320,30 @@
         // than an invented one, and it must be impossible rather than discouraged.
         await st.api.send({ role: 'service', key: st.firmKey, interactive: false },
           st.matterId, { messageId: id });
-      } else if (name === 'doc-from-msg') {
-        const msg = (st.messages || []).filter((x) => x.id === id)[0];
-        if (!msg) return;
-        const digest = CR.hex(await CR.sha256(msg.body));
-        const d = await st.api.addDocument(auth, st.matterId, {
-          filename: 'draft-' + id + '.txt', digest: digest, taint: true,
-          taintPath: 'derived from ' + id + ', a message in a privileged thread',
-          // The appliance does not take the page's word for the taint: it recomputes it
-          // from the provenance. Naming the message is what makes that possible.
-          derivedFrom: [id],
-        });
-        st.docs.push(d);
-        note(st, 'ok', 'Saved. It carries the taint of the thread it came out of.');
+      } else if (name === 'notarize-chat') {
+        try {
+          const out = await st.api.notarizeThread(auth, st.matterId);
+          const red = out.redaction || { identifiersRemoved: 0, messageCount: 0 };
+          st.chatRecord = { ids: sentIds(st), commitment: (out.record || {}).commitment || '',
+                            digest: (out.document || {}).digest || '' };
+          if (root.Bailee && root.Bailee.profile) {
+            root.Bailee.profile.record({
+              kind: 'notarization', title: (st.matterTitle || 'Matter') + ' — whole chat',
+              commitment: st.chatRecord.commitment, digest: st.chatRecord.digest,
+              identifiersRemoved: red.identifiersRemoved || 0,
+            });
+          }
+          note(st, 'ok', 'Chat notarised: ' + (red.messageCount || 0) + ' sent message(s) in one record. '
+            + 'The appliance redacted them first: ' + (red.identifiersRemoved || 0) + ' identifier(s) out.');
+        } catch (e) {
+          if (e.status !== 402) throw e;
+          st.payment = paymentTerms(e, null);
+          note(st, 'ok', '402 Payment required. Nothing was recorded and nothing was '
+            + 'charged — the terms are below.');
+        }
+      } else if (name === 'certify-chat') {
+        const rec = chatRecord(st);
+        if (rec && rec.digest) openCertify(st, rec.digest);
       } else if (name === 'notarize') {
         try {
           const d = await st.api.notarize(auth, st.matterId, { documentId: id });
