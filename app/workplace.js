@@ -315,6 +315,65 @@
       return Object.assign({}, doc);
     }
 
+
+    // The chain of custody, in the stand-in. Same shape as the appliance: the message is
+    // redacted HERE, the digest covers the record rather than the sentence, and the
+    // document that comes out is clean because this code did the redacting.
+    const REDACTOR = 'bailee-redactor@2026.9.3';
+    function redactRecord(m, msg) {
+      const out = [];
+      let text = String(msg.body || '');
+      const lit = [['[CLIENT]', m.clientName], ['[MATTER]', m.title]];
+      (m.participants || []).forEach(function (p) { lit.push(['[PERSON]', p]); });
+      lit.forEach(function (pair) {
+        const v = String(pair[1] || '').trim();
+        if (!v) return;
+        const rx = new RegExp(v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'ig');
+        const hits = text.match(rx);
+        if (hits) { out.push({ what: pair[0], count: hits.length }); text = text.replace(rx, pair[0]); }
+      });
+      [['[CASE-NO]', /\b\d{1,2}:\d{2}-[a-z]{2}-\d{3,6}\b/ig],
+       ['[EMAIL]', /[\w.+-]+@[\w-]+\.[\w.]{2,}/ig],
+       ['[PHONE]', /\+?\d[\d ().-]{8,}\d/ig]].forEach(function (pair) {
+        const hits = text.match(pair[1]);
+        if (hits) { out.push({ what: pair[0], count: hits.length }); text = text.replace(pair[1], pair[0]); }
+      });
+      return { redactedBody: text, removed: out,
+        identifiersRemoved: out.reduce(function (a, r) { return a + r.count; }, 0) };
+    }
+
+    async function notarizeMessage(auth, id, messageId) {
+      const m = matterOr404(id);
+      const who = partyOf(m, auth);
+      const msg = m.messages.filter((x) => x.id === messageId)[0];
+      if (!msg) throw fail(404, 'No such message.');
+      if (who === 'client' && msg.side === 'lawyer' && !msg.sent) {
+        throw fail(403, 'That message was never sent to you, so it is not yours to notarise.');
+      }
+      const red = redactRecord(m, msg);
+      const record = {
+        type: 'bailment.ai/thread-record/v1', messageId: msg.id, matterId: m.id,
+        side: msg.side, origin: msg.origin, kind: msg.kind, modelId: msg.modelId || null,
+        createdAt: msg.at, sentAt: msg.sentAt || null,
+        redactedBody: red.redactedBody, redactor: REDACTOR,
+        identifiersRemoved: red.identifiersRemoved,
+      };
+      const digest = CR.hex(await CR.sha256(JSON.stringify(record)));
+      const doc = {
+        id: nextId('doc_'), filename: 'thread-record-' + msg.id + '.json', digest: digest,
+        taint: false,
+        taintPath: [msg.id + ': redacted in the appliance by ' + REDACTOR + ', '
+          + red.identifiersRemoved + ' identifier(s) removed. The thread text did not move.'],
+        derivedFrom: [msg.id], at: nowISO(), addedBy: auth.role, notarized: null,
+      };
+      m.documents.push(doc);
+      const out = await notarize(auth, id, { documentId: doc.id });
+      // Same shape the appliance answers with, so the page has one code path.
+      return { record: { commitment: (out.notarized || {}).commitment || '',
+                         at: (out.notarized || {}).at || nowISO(), derivedFrom: [msg.id] },
+               document: out, redaction: red };
+    }
+
     async function progress(auth, id) {
       const m = matterOr404(id);
       partyOf(m, auth);
@@ -349,7 +408,7 @@
     return {
       mode: 'offline', label: 'offline stand-in', firmKey: FIRM_KEY, extras: true,
       createMatter, listMatters, getMatter, enrol, thread, postMessage, send, assist,
-      addDocument, notarize, progress, issueCertificate, close,
+      addDocument, notarize, notarizeMessage, progress, issueCertificate, close,
     };
   }
 
@@ -537,6 +596,10 @@
         ((await call(auth, 'GET', '/matters/' + id + '/documents')).documents || [])
           .map(liveDocument),
       notarize: notarize,
+      notarizeMessage: async (auth, id, mid) => {
+        const r = await call(auth, 'POST', '/matters/' + id + '/messages/' + mid + '/notarize', {});
+        return { record: r.record, redaction: r.redaction || null, charged: r.charged || null };
+      },
       progress: async (auth, id) => liveProgress(await call(auth, 'GET', '/matters/' + id + '/progress')),
       issueCertificate: issueCertificate,
       close: (auth, id, b) => call(auth, 'POST', '/matters/' + id + '/close', b),
@@ -815,7 +878,7 @@
 
   // Nothing renders without attribution. This is the render-side half of R1: even if a
   // row somehow existed, the screen would refuse to show it as a message.
-  function msgHtml(m, party) {
+  function msgHtml(m, party, record) {
     if (!m || !m.author || ORIGINS.indexOf(m.origin) < 0 || KINDS.indexOf(m.kind) < 0) {
       return '<article class="wp-msg wp-void"><p>Withheld. This message cannot say where it '
         + 'came from, so it is not rendered.</p></article>';
@@ -847,9 +910,16 @@
         + ' <span class="mono">' + esc(String(m.sentAt || m.at).slice(11, 19)) + '</span></div>';
     }
     void party;
+    // One click from the thread to the Document Record. Not "export, then hash what you
+    // exported" \u2014 that leaves a gap where the words can change.
+    const notarised = record
+      ? '<div class="wp-foot">Notarised. <span class="mono">' + esc(String(record.commitment).slice(0, 16))
+        + '\u2026</span> ' + esc(String(record.identifiersRemoved)) + ' identifier(s) redacted here first.</div>'
+      : '<div class="wp-sendrow"><button class="btn ghost" data-act="notarize-msg" data-id="'
+        + esc(m.id) + '">Notarize this message</button></div>';
     return '<article class="' + cls + '"><header class="wp-attrib"><b>' + who + '</b>'
       + '<span class="wp-chips">' + chips + '</span></header>'
-      + '<p>' + esc(m.body) + '</p>' + foot + '</article>';
+      + '<p>' + esc(m.body) + '</p>' + foot + notarised + '</article>';
   }
 
   function threadHtml(st) {
@@ -861,7 +931,7 @@
       ? 'Sent messages and their own work. No drafts, because none were sent to them.'
       : 'Everything, including drafts that are not out of the building yet.';
     const body = list.length
-      ? list.map((m) => msgHtml(m, st.party)).join('')
+      ? list.map((m) => msgHtml(m, st.party, (st.records || {})[m.id])).join('')
       : '<p class="muted">Nothing in this thread yet.</p>';
     return '<div class="panel wp-thread"><h3>' + esc(head) + help(sub) + '</h3>' + body + '</div>';
   }
@@ -1152,6 +1222,22 @@
           // 402 is not a failure. It is the price, quoted. One Document Record entry is
           // one certified filing whichever door it came through, so this endpoint bills
           // exactly like POST /v1/notarize and says so in x402 terms a wallet can act on.
+          if (e.status !== 402) throw e;
+          st.payment = paymentTerms(e, id);
+          note(st, 'ok', '402 Payment required. Nothing was recorded and nothing was '
+            + 'charged \u2014 the terms are below.');
+        }
+      } else if (name === 'notarize-msg') {
+        try {
+          const out = await st.api.notarizeMessage(auth, st.matterId, id);
+          const red = out.redaction || { identifiersRemoved: 0, redactedBody: '' };
+          st.records = st.records || {};
+          st.records[id] = { commitment: (out.record || {}).commitment || '',
+                             identifiersRemoved: red.identifiersRemoved || 0 };
+          note(st, 'ok', 'Notarised from the thread. The appliance redacted it first: '
+            + (red.identifiersRemoved || 0) + ' identifier(s) out. What the commitment covers: "'
+            + String(red.redactedBody || '').slice(0, 160) + '"');
+        } catch (e) {
           if (e.status !== 402) throw e;
           st.payment = paymentTerms(e, id);
           note(st, 'ok', '402 Payment required. Nothing was recorded and nothing was '
