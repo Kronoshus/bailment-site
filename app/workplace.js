@@ -1335,7 +1335,7 @@
             });
           }
           if (UI.emit) UI.emit('bailee:notarized', { scope: 'chat', digest: st.chatRecord.digest,
-            commitment: st.chatRecord.commitment });
+            commitment: st.chatRecord.commitment, title: st.matterTitle });
           note(st, 'ok', 'Chat notarised: ' + (red.messageCount || 0) + ' sent message(s) in one record. '
             + 'The appliance redacted them first: ' + (red.identifiersRemoved || 0) + ' identifier(s) out.');
         } catch (e) {
@@ -1378,6 +1378,8 @@
           st.records[id] = { commitment: (out.record || {}).commitment || '',
                              digest: (out.document || {}).digest || '',
                              identifiersRemoved: red.identifiersRemoved || 0 };
+          if (UI.emit) UI.emit('bailee:notarized', { scope: 'message', digest: st.records[id].digest,
+            commitment: st.records[id].commitment, title: st.matterTitle });
           // The attorney's own history, on their own device.
           if (root.Bailee && root.Bailee.profile) {
             root.Bailee.profile.record({

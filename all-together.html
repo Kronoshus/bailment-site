@@ -23,7 +23,7 @@
   <meta name="twitter:description" content="One filing from start to finish: work the matter, certify it, publish the root, and check it the way a court would.">
   <meta name="twitter:image" content="https://bailment.tech/assets/og.png">
   <link rel="stylesheet" href="style.css?v=8">
-  <link rel="stylesheet" href="app/app.css?v=14">
+  <link rel="stylesheet" href="app/app.css?v=15">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -61,12 +61,15 @@
 <section class="section tight together-part" id="part-1">
   <div class="wrap">
     <h2>Part 1: The Workplace</h2>
-    <p class="lead together-status" role="status">Talk it through, then press Notarize Chat.</p>
-    <div class="together-body">
+    <p class="lead together-status" role="status">Talk it through, then notarize the chat or a message.</p>
+    <!-- every notarized document, by name and hash; filled by app/together.js -->
+    <ul class="together-docs" id="together-docs" hidden></ul>
+    <details class="wp-fold together-fold" id="part-1-fold" open>
+      <summary>The Workplace</summary>
       <section class="widget" id="widget-workplace" data-widget="workplace" aria-label="Workplace console">
         <p class="widget-placeholder">Loading&hellip;</p>
       </section>
-    </div>
+    </details>
   </div>
 </section>
 
@@ -163,8 +166,8 @@
 <script src="app/ui.js?v=10"></script>
 <script src="app/protocol.js?v=6"></script>
 <script src="app/certificate.js?v=18"></script>
-<script src="app/workplace.js?v=24"></script>
-<script src="app/together.js?v=1"></script>
+<script src="app/workplace.js?v=25"></script>
+<script src="app/together.js?v=2"></script>
 <script>
 window.addEventListener('load', function () {
   setTimeout(function () {
