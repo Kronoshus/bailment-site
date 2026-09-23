@@ -757,12 +757,12 @@
 }
 .wp-dialog .widget{border:0;background:none;padding:0}
 
-/* One box per answer: a text field with a datalist behind it. Styled like the old select
-   so the form still reads as a set of choices rather than a wall of empty boxes. */
-.widget .wm-combo{
+/* One plain box per answer. No arrow, no suggestion window. */
+.widget .wm-box,.widget .wm-combo{
   width:100%;background:var(--chip-bg);color:var(--ink);
   border:1px solid var(--border-hairline);border-radius:10px;
   padding:10px 13px;font-family:var(--font-body);font-size:1rem;
 }
-.widget .wm-combo:focus{outline:none;border-color:var(--accent)}
-.widget .wm-combo::-webkit-calendar-picker-indicator{opacity:.55;cursor:pointer}
+.widget .wm-box:focus,.widget .wm-combo:focus{outline:none;border-color:var(--accent)}
+.widget .wm-box::-webkit-calendar-picker-indicator,
+.widget .wm-combo::-webkit-calendar-picker-indicator{display:none!important}

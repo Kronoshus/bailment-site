@@ -20,7 +20,7 @@
   // "Write my own", and clicking the box is the same thing.
   const SAMPLE_TEXTS = [
     'RETAINER AGREEMENT \u2014 Doe v. Acme Holdings, executed 14 September 2026.',
-    'SETTLEMENT AGREEMENT \u2014 Ridgeline Ltd v. Calder Freight, executed 2 August 2026.',
+    'SETTLEMENT AGREEMENT \u2014 John Client v. Calder Freight, executed 2 August 2026.',
     'EXPERT REPORT \u2014 In re Vantage Data Systems, served 21 July 2026.',
   ];
 

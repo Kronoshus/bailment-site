@@ -29,10 +29,9 @@
 
   // Demo choices. Nothing arrives pre-typed: every list below is a dropdown ending in
   // "Write my own", and clicking the box is the same thing.
-  const MATTER_TITLES = ['Ridgeline Ltd \u2014 supply dispute',
-    'Calder Freight \u2014 contract review', 'Vantage Data Systems \u2014 employment claim'];
-  const CLIENT_NAMES = ['Ridgeline Ltd', 'Calder Freight GmbH', 'Vantage Data Systems Inc.'];
-  const LAWYER_NAMES = ['Kevin G. Mohr, Esq.', 'Miriam A. Vale', 'Theo Okonkwo'];
+  const MATTER_TITLES = ['Supply Co. Lawsuit'];
+  const CLIENT_NAMES = ['John Client'];
+  const LAWYER_NAMES = ['Kevin G. Mohr, Esq.'];
   const CLIENT_LINES = [
     'They stopped shipping on the 9th and stopped answering. Do we have a claim?',
     'Can you look at the signed supply agreement before Friday?',

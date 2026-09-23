@@ -583,22 +583,19 @@
   //
   // spec: { id, label, options, value, help, hint, na, placeholder }
   function ctField(spec) {
-    // One box. The list is a <datalist>, so the reader picks a listed answer or types
-    // their own in the SAME control \u2014 no second box appears, nothing is hidden and
-    // revealed. N/A is in the list like any other answer.
+    // A plain box with a sensible default in it. No dropdown, no arrow, no suggestion
+    // window repeating what is already there: the reader reads the value and types over
+    // it if it is wrong. CERT_OPTIONS still names the answers we consider sensible \u2014 the
+    // first one is what the box starts with.
     const s = spec || {};
     const id = String(s.id);
-    const listId = id + '-list';
     const opts = (s.options || []).map((o) => (typeof o === 'string' ? { value: o, label: o } : o));
-    if (s.na !== false) opts.push({ value: NA, label: NA + ' \u2014 not stated' });
     const value = s.value == null ? (opts[0] ? opts[0].value : '') : String(s.value);
-    const optionsHTML = opts.map((o) => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('');
     return `<div class="field wm-field" data-wm="${esc(id)}">`
       + (s.label ? ctLabel(id, esc(s.label), s.help) : '')
-      + `<input class="wm-input wm-combo" id="${esc(id)}" type="text" list="${esc(listId)}"`
-      + ` placeholder="${esc(s.placeholder || 'Pick one, or type your own\u2026')}"`
+      + `<input class="wm-input wm-box" id="${esc(id)}" type="text"`
+      + ` placeholder="${esc(s.placeholder || 'Type your own\u2026')}"`
       + ` aria-label="${esc(s.label || id)}" value="${esc(value)}">`
-      + `<datalist id="${esc(listId)}">${optionsHTML}</datalist>`
       + (s.hint ? `<p class="wm-hint">${s.hint}</p>` : '')
       + '</div>';
   }
@@ -611,7 +608,7 @@
     return `<div class="field wm-field">`
       + ctLabel(id, esc(s.label), s.help)
       + `<input class="wm-text${s.cls ? ' ' + esc(s.cls) : ''}" id="${esc(id)}" type="text"`
-      + ` placeholder="${esc(s.placeholder || '')}"`
+      + ` placeholder="${esc(s.placeholder || 'Type your own\u2026')}"`
       + (s.inputmode ? ` inputmode="${esc(s.inputmode)}"` : '') + '>'
       + (s.hint ? `<p class="wm-hint">${s.hint}</p>` : '')
       + '</div>';
@@ -892,7 +889,7 @@
         <div class="field wm-field">
           ${ctLabel('ct-modelver', 'Version', 'version')}
           <input class="wm-text" id="ct-modelver" type="text" value="${esc(e['model-manifest'].version)}"
-            placeholder="">
+            placeholder="Type your own\u2026">
         </div>
         ${ctField({ id: 'ct-provider', label: 'Provider (optional)', options: O.provider,
           value: e['model-manifest'].provider, help: 'provider' })}

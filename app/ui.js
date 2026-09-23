@@ -230,29 +230,22 @@
   }
 
   function wmField(spec) {
+    // One plain box per answer, carrying the sensible default. The old pattern was a
+    // dropdown plus a hidden free-text twin; two controls for one answer is two chances
+    // to sign something the reader was not looking at.
     const s = spec || {};
     const id = String(s.id);
-    const pick = id + '-pick';
     const opts = wmOpts(s.options);
     const value = s.value == null ? (opts[0] ? opts[0].value : '') : String(s.value);
-    const known = opts.some((o) => String(o.value) === value);
-    const own = !known && value !== '';
-    const optionsHTML = opts.map((o) => `<option value="${esc(o.value)}"${
-      !own && String(o.value) === value ? ' selected' : ''}>${esc(o.label)}</option>`).join('')
-      + `<option value="${WM_OWN}"${own ? ' selected' : ''}>${WM_OWN_LABEL}</option>`;
-    const aria = (s.label ? s.label + ' \u2014 ' : '') + 'write my own';
-    const attrs = `class="wm-input${s.cls ? ' ' + esc(s.cls) : ''}" id="${esc(id)}" `
-      + `placeholder="${esc(s.placeholder || 'Type your own\u2026')}" aria-label="${esc(aria)}"`
-      + (own ? '' : ' style="display:none"');
+    const attrs = `class="wm-input wm-box${s.cls ? ' ' + esc(s.cls) : ''}" id="${esc(id)}" `
+      + `placeholder="${esc(s.placeholder || 'Type your own\u2026')}" aria-label="${esc(s.label || id)}"`;
     const box = s.multiline
-      ? `<textarea ${attrs} rows="${Number(s.rows) || 3}">${own ? esc(value) : ''}</textarea>`
-      : `<input type="text" ${attrs} value="${own ? esc(value) : ''}">`;
+      ? `<textarea ${attrs} rows="${Number(s.rows) || 3}">${esc(value)}</textarea>`
+      : `<input type="text" ${attrs} value="${esc(value)}">`;
     return `<div class="field wm-field" data-wm="${esc(id)}">`
-      + (s.label ? `<span class="wm-labelrow"><label for="${esc(pick)}">${esc(s.label)}</label>`
+      + (s.label ? `<span class="wm-labelrow"><label for="${esc(id)}">${esc(s.label)}</label>`
           + help(s.help) + '</span>' : '')
-      + `<select class="wm-select" id="${esc(pick)}" data-wm-select="${esc(id)}">${optionsHTML}</select>`
       + box
-
       + '</div>';
   }
 

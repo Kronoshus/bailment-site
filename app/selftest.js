@@ -370,10 +370,12 @@
       const U = B.ui;
       const models = (B.certificate && B.certificate.CERT_OPTIONS.model) || [];
       const html = U.wmField({ id: 'demo-model', label: 'Model', options: models });
-      ok('a demo field renders a dropdown, and its free-text box starts empty',
-        /<select class="wm-select"/.test(html) && /class="wm-input"[^>]*value=""/.test(html));
-      ok('every demo dropdown ends with "Write my own"',
-        new RegExp('<option value="' + U.WM_OWN + '">Write my own</option></select>').test(html));
+    ok('a demo field renders one plain box carrying the default answer',
+      /<input[^>]*class="wm-input wm-box"/.test(html) && !/<select/.test(html)
+      && html.indexOf('value="' + (models[0] || '') + '"') >= 0);
+    ok('no dropdown and no "Write my own" control survives in a field',
+      html.indexOf('data-wm-select') < 0 && html.indexOf('data-wm-own') < 0
+      && html.indexOf('<datalist') < 0);
       ok('the model list offers Astra 6 and Opus 5.1, neither of which exists',
         models.indexOf('Astra 6') >= 0 && models.indexOf('Opus 5.1') >= 0, models.join(' \u00b7 '));
 
@@ -462,15 +464,14 @@
       // One control per answer: a text box with a <datalist> behind it. Picking a listed
       // answer and typing your own happen in the SAME box, so there is no second box to
       // get out of step with what gets signed.
-      const combos = form.match(/<input[^>]*\blist="[^"]*"[^>]*>/g) || [];
-      const lists = form.match(/<datalist\b[\s\S]*?<\/datalist>/g) || [];
-      ok('every listed answer lives in one box the reader can also type into',
-        combos.length > 0 && combos.length === lists.length
-          && combos.every((c) => /class="[^"]*wm-combo/.test(c)), combos.length + ' comboboxes');
+      const boxes = form.match(/<input[^>]*class="wm-input wm-box"[^>]*>/g) || [];
+      ok('every answer in the certificate form is one plain box the reader types in',
+        boxes.length > 0 && !/<select\b/.test(form) && form.indexOf('<datalist') < 0,
+        boxes.length + ' boxes');
       ok('no free-standing "Write my own" button survives anywhere in the form',
         form.indexOf('data-wm-own') < 0 && !/>\s*Write my own\s*<\/button>/.test(form));
-      ok('every list offers N/A',
-        lists.every((s) => s.indexOf('<option value="' + K.NA + '"') >= 0));
+      ok('N/A is not a menu entry any more: a blank box is recorded as N/A at signing',
+        K.BLANKABLE.length > 0 && (await K.certFieldsFrom(() => '')).caseNumber === K.NA);
       ok('no second box is created for typing: there is no hidden free-text twin',
         form.indexOf('data-wm-select') < 0 && form.indexOf('data-wm-own') < 0
           && !/<select\b/.test(form));
@@ -482,7 +483,7 @@
       };
       ok('case number is a plain box with nothing typed and no example to copy',
         /^<input/.test(control('ct-case')) && control('ct-case').indexOf('value=') < 0
-          && control('ct-case').indexOf('placeholder=""') >= 0);
+          && control('ct-case').indexOf('placeholder="Type your own\u2026"') >= 0);
       ok('the firm is fixed at Bailment Law and is not a control at all',
         K.DEMO_FIRM === 'Bailment Law' && control('ct-firm-fixed').indexOf('<output') === 0
           && form.indexOf('data-wm="ct-firm"') < 0, K.DEMO_FIRM);

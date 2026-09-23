@@ -23,7 +23,7 @@
   function statementOptions() {
     return [
       defaultStatement('retainer agreement', 'Doe v. Acme Holdings', '2026-09-14'),
-      defaultStatement('executed settlement agreement', 'Ridgeline Ltd v. Calder Freight', '2026-08-02'),
+      defaultStatement('executed settlement agreement', 'John Client v. Calder Freight', '2026-08-02'),
       defaultStatement('expert report', 'In re Vantage Data Systems', '2026-07-21'),
     ];
   }
