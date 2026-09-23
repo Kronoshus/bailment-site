@@ -81,9 +81,11 @@
     + 'One thing it does carry: the firm root is the same in every proof you hand out this period, '
     + 'so two recipients can tell their proofs came from the same firm in the same period.';
 
-  async function pkBuild(nDocs, nFirms, ourFirm = 0) {
-    const docs = [];
-    for (let i = 0; i < nDocs; i++) {
+  // `seed` is a real Document Record commitment (hex) handed over by the page, so the batch
+  // carries the reader's own notarised record as communication #1 instead of a made-up one.
+  async function pkBuild(nDocs, nFirms, ourFirm = 0, seed = '') {
+    const docs = seed ? [{ label: 'your notarised record', commitment: unhex(seed) }] : [];
+    for (let i = docs.length; i < nDocs; i++) {
       const label = `communication ${i + 1} \u2014 ${['advice', 'draft', 'strategy note', 'status update'][i % 4]}`;
       docs.push({ label, nonce: randomNonce(32), commitment: await commit(label, randomNonce(32)) });
     }
@@ -122,9 +124,11 @@
 
     async function build() {
       // 0 is allowed for documents: an empty period still publishes a root (A-5).
-      const n = Math.max(0, Math.min(TREE_SLOTS, Number($(el, '#pk-n').value) || 0));
+      const seed = el.dataset.seed || '';
+      const n = Math.max(seed ? 1 : 0, Math.min(TREE_SLOTS, Number($(el, '#pk-n').value) || 0));
       const f = Math.max(1, Math.min(TREE_SLOTS, Number($(el, '#pk-f').value) || 1));
-      S = await pkBuild(n, f, Math.floor(Math.random() * f));
+      S = await pkBuild(n, f, Math.floor(Math.random() * f), seed);
+      if (root.Bailee.ui.emit) root.Bailee.ui.emit('bailee:published', { root: hex(S.net), seeded: !!seed });
       const period = wmValue(el, 'pk-p');
       out.innerHTML = `
         <div class="cols">

@@ -1296,6 +1296,8 @@
       }
       out.innerHTML = certHTML(cert, url, await keyFingerprint(last.pub));
       setPayload(url);
+      if (root.Bailee.ui.emit) root.Bailee.ui.emit('bailee:certified',
+        { url: url, digest: (cert.document && cert.document.digest) || '' });
       wireCopy(out);
       show(verdictHTML(await verifyCertificate(last)));
     }

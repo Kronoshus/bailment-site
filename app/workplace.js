@@ -1066,7 +1066,7 @@
   // The Certificate Generator, opened over the matter instead of in another tab. Same
   // widget, same code: only the fields it cannot know are filled in from here, and never
   // an identifier \u2014 a certificate carries none.
-  function openCertify(st, digest) {
+  function openCertify(st, digest, commitment) {
     const dlg = typeof document !== 'undefined' ? document.getElementById('wp-certify') : null;
     if (!dlg || !digest) return;
     const put = function (sel, value) {
@@ -1077,6 +1077,7 @@
     put('#ct-atty', st.lawyerName);
     const model = (st.messages || []).filter((x) => x.modelId)[0];
     if (model) put('#ct-modelver', model.modelId);
+    if (UI.emit) UI.emit('bailee:certify', { digest: digest, commitment: commitment || '' });
     if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', 'open');
     note(st, 'ok', 'Certificate generator opened over this matter with that digest already '
       + 'in it. Nothing identifying the client is carried across.');
@@ -1333,6 +1334,8 @@
               identifiersRemoved: red.identifiersRemoved || 0,
             });
           }
+          if (UI.emit) UI.emit('bailee:notarized', { scope: 'chat', digest: st.chatRecord.digest,
+            commitment: st.chatRecord.commitment });
           note(st, 'ok', 'Chat notarised: ' + (red.messageCount || 0) + ' sent message(s) in one record. '
             + 'The appliance redacted them first: ' + (red.identifiersRemoved || 0) + ' identifier(s) out.');
         } catch (e) {
@@ -1343,7 +1346,7 @@
         }
       } else if (name === 'certify-chat') {
         const rec = chatRecord(st);
-        if (rec && rec.digest) openCertify(st, rec.digest);
+        if (rec && rec.digest) openCertify(st, rec.digest, rec.commitment);
       } else if (name === 'notarize') {
         try {
           const d = await st.api.notarize(auth, st.matterId, { documentId: id });
@@ -1394,13 +1397,13 @@
         }
       } else if (name === 'certify-msg') {
         const rec = (st.records || {})[id];
-        if (rec && rec.digest) openCertify(st, rec.digest);
+        if (rec && rec.digest) openCertify(st, rec.digest, rec.commitment);
       } else if (name === 'certify') {
         // The Certificate Generator, opened over the matter instead of in another tab.
         // Same widget, same code: only the fields it cannot know are filled in from here,
         // and never an identifier \u2014 a certificate carries none.
         const doc = (st.docs || []).filter((x) => x.id === id)[0];
-        if (doc) openCertify(st, doc.digest);
+        if (doc) openCertify(st, doc.digest, (doc.notarized || {}).commitment);
       } else if (name === 'cert') {
         const doc = (st.docs || []).filter((x) => x.id === id)[0];
         const model = (st.messages || []).filter((x) => x.origin === 'model')[0] || {};

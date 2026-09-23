@@ -339,7 +339,15 @@
     });
   }
 
+  // A widget says "I finished a step" and a page that cares (all-together.html) listens.
+  // Pages that do not listen lose nothing.
+  const emit = (name, detail) => {
+    if (typeof document !== 'undefined' && typeof CustomEvent !== 'undefined') {
+      document.dispatchEvent(new CustomEvent(name, { detail: detail }));
+    }
+  };
+
   root.Bailee.ui = { esc, $, $$, short, money, nowISO, fmtDate, mount, wireCopy, hashPayload, row, monoBlock,
     REGISTRY_EMBEDDED, loadRegistry, resetRegistry, registrySigner, registryPipeline, normFP,
-    WM_OWN, WM_OWN_LABEL, wmField, wmValue, wmSet, wmReset, wireFields, help };
+    WM_OWN, WM_OWN_LABEL, wmField, wmValue, wmSet, wmReset, wireFields, help, emit };
 })(typeof globalThis !== 'undefined' ? globalThis : this);
