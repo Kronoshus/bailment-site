@@ -866,7 +866,17 @@
     const O = CERT_OPTIONS;
     return `
     <div class="panel builder">
-      <h3>Filing</h3>
+      <h3>Step 1 &mdash; Your Notarized Document</h3>
+      <div class="field wm-field">
+        ${ctLabel('ct-digest', 'Document digest (SHA-256, from the notarize step)', 'documentDigest')}
+        <input id="ct-digest" class="wm-text mono" placeholder="64 hex characters">
+        <p class="wm-hint">Put your notarized client document in here: paste the digest the notarize step gave you.
+        No digest yet? Go to <a href="workplace.html#notarize">Workplace Product</a> and notarize a document first.
+        Left empty, this demo computes a stand-in digest from fixed demo text: a certificate whose digest is not
+        64 hex characters is bound to no document at all.</p>
+      </div>
+
+      <h3>Step 2 &mdash; Filing</h3>
       <div class="inline">
         ${ctField({ id: 'ct-court', label: 'Court', options: O.court, value: d.court })}
         ${ctField({ id: 'ct-judge', label: 'Judge', options: O.judge, value: d.judge })}
@@ -881,13 +891,7 @@
           so a firm cannot certify under a name it does not hold.</p>
         </div>
       </div>
-      <div class="field wm-field">
-        ${ctLabel('ct-digest', 'Document digest (SHA-256, from the notarize step)', 'documentDigest')}
-        <input id="ct-digest" class="wm-text mono" placeholder="64 hex characters">
-        <p class="wm-hint">Left empty, this demo computes a stand-in digest from fixed demo text:
-        a certificate whose digest is not 64 hex characters is bound to no document at all.</p>
-      </div>
-      <h3 style="margin-top:18px">Claim 1 &mdash; model manifest</h3>
+      <h3 style="margin-top:18px">Step 3 &mdash; Claim 1 &mdash; model manifest</h3>
       <div class="inline">
         ${ctField({ id: 'ct-model', label: 'Model', options: O.model,
           value: e['model-manifest'].model, hint: esc(MODEL_HINT) })}

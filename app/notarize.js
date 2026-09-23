@@ -314,7 +314,7 @@
       <p class="lede">Pick any file. It is hashed <strong>in this browser</strong> with WebCrypto,
       salted with the matter nonce, and turned into a commitment. The file is never uploaded &mdash;
       there is no upload path in this page at all. Check the network tab if you do not believe it:
-      the only request any page here makes is the webfont.
+      every file this page loads comes from bailment.tech.
     <span class="chip on">demo</span> The hashing and the commitment are real; nothing is written
     to a chain yet.</p>
 

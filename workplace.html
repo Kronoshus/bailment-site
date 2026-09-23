@@ -37,8 +37,8 @@
     <nav aria-label="Main">
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="product.html">Certificate Generator</a></li>
         <li><a href="workplace.html" aria-current="page">Workplace Product</a></li>
+        <li><a href="product.html">Certificate Generator</a></li>
         <li><a href="technology.html">Technology</a></li>
         <li><a href="pricing.html">Pricing</a></li>
         <li><a href="verify.html">Verify</a></li>
@@ -72,6 +72,15 @@
     </p>
   </div>
 </section>
+<section class="section" id="notarize">
+  <div class="wrap">
+    <h2>Notarize a Document</h2>
+    <p class="muted">Do this first. Pick any file: the hash is computed here, in your browser, and the file never leaves this device. Take the digest to the <a href="product.html">Certificate Generator</a>.</p>
+    <!-- MOUNT POINT: notarize demo (app/notarize.js) -->
+    <section class="widget" id="widget-notarize" data-widget="notarize" aria-label="Notarize demo">
+      <p class="widget-placeholder">Loading&hellip;</p>
+    </section>
+
 </main>
 
 <footer class="footer">
@@ -89,8 +98,8 @@
       <div>
         <h4>Site</h4>
         <ul>
-          <li><a href="product.html">Certificate Generator</a></li>
           <li><a href="workplace.html">Workplace Product</a></li>
+          <li><a href="product.html">Certificate Generator</a></li>
           <li><a href="technology.html">Technology</a></li>
           <li><a href="pricing.html">Pricing</a></li>
           <li><a href="verify.html">Verify</a></li>
@@ -125,6 +134,7 @@
 </footer>
 <script src="app/crypto.js?v=5"></script>
 <script src="app/ui.js?v=5"></script>
+<script src="app/notarize.js?v=7"></script>
 <script src="app/workplace.js?v=5"></script>
 <script>
 window.addEventListener('load', function () {
