@@ -371,7 +371,8 @@
       // Same shape the appliance answers with, so the page has one code path.
       return { record: { commitment: (out.notarized || {}).commitment || '',
                          at: (out.notarized || {}).at || nowISO(), derivedFrom: [msg.id] },
-               document: out, redaction: red };
+               document: { documentId: out.id, filename: out.filename, digest: out.digest },
+               redaction: red };
     }
 
     async function progress(auth, id) {
@@ -598,7 +599,8 @@
       notarize: notarize,
       notarizeMessage: async (auth, id, mid) => {
         const r = await call(auth, 'POST', '/matters/' + id + '/messages/' + mid + '/notarize', {});
-        return { record: r.record, redaction: r.redaction || null, charged: r.charged || null };
+        return { record: r.record, document: r.document || null,
+                 redaction: r.redaction || null, charged: r.charged || null };
       },
       progress: async (auth, id) => liveProgress(await call(auth, 'GET', '/matters/' + id + '/progress')),
       issueCertificate: issueCertificate,
@@ -915,6 +917,8 @@
     const notarised = record
       ? '<div class="wp-foot">Notarised. <span class="mono">' + esc(String(record.commitment).slice(0, 16))
         + '\u2026</span> ' + esc(String(record.identifiersRemoved)) + ' identifier(s) redacted here first.</div>'
+        + '<div class="wp-sendrow"><button class="btn" data-act="certify-msg" data-id="'
+        + esc(m.id) + '">Certify this message</button></div>'
       : '<div class="wp-sendrow"><button class="btn ghost" data-act="notarize-msg" data-id="'
         + esc(m.id) + '">Notarize this message</button></div>';
     return '<article class="' + cls + '"><header class="wp-attrib"><b>' + who + '</b>'
@@ -969,6 +973,26 @@
       + '<button class="btn ghost" data-act="post-bare">No attribution</button>'
       + '<button class="btn" data-act="post">' + (client ? 'Send' : 'Hold as a draft') + '</button>'
       + '</div></div></div>';
+  }
+
+
+  // The Certificate Generator, opened over the matter instead of in another tab. Same
+  // widget, same code: only the fields it cannot know are filled in from here, and never
+  // an identifier \u2014 a certificate carries none.
+  function openCertify(st, digest) {
+    const dlg = typeof document !== 'undefined' ? document.getElementById('wp-certify') : null;
+    if (!dlg || !digest) return;
+    const put = function (sel, value) {
+      const box = dlg.querySelector(sel);
+      if (box && value) { box.value = value; }
+    };
+    put('#ct-digest', digest);
+    put('#ct-atty', st.lawyerName);
+    const model = (st.messages || []).filter((x) => x.modelId)[0];
+    if (model) put('#ct-modelver', model.modelId);
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', 'open');
+    note(st, 'ok', 'Certificate generator opened over this matter with that digest already '
+      + 'in it. Nothing identifying the client is carried across.');
   }
 
   function docsHtml(st) {
@@ -1234,6 +1258,7 @@
           const red = out.redaction || { identifiersRemoved: 0, redactedBody: '' };
           st.records = st.records || {};
           st.records[id] = { commitment: (out.record || {}).commitment || '',
+                             digest: (out.document || {}).digest || '',
                              identifiersRemoved: red.identifiersRemoved || 0 };
           note(st, 'ok', 'Notarised from the thread. The appliance redacted it first: '
             + (red.identifiersRemoved || 0) + ' identifier(s) out. What the commitment covers: "'
@@ -1244,24 +1269,15 @@
           note(st, 'ok', '402 Payment required. Nothing was recorded and nothing was '
             + 'charged \u2014 the terms are below.');
         }
+      } else if (name === 'certify-msg') {
+        const rec = (st.records || {})[id];
+        if (rec && rec.digest) openCertify(st, rec.digest);
       } else if (name === 'certify') {
         // The Certificate Generator, opened over the matter instead of in another tab.
         // Same widget, same code: only the fields it cannot know are filled in from here,
         // and never an identifier \u2014 a certificate carries none.
         const doc = (st.docs || []).filter((x) => x.id === id)[0];
-        const dlg = typeof document !== 'undefined' ? document.getElementById('wp-certify') : null;
-        if (!doc || !dlg) return;
-        const put = function (sel, value) {
-          const box = dlg.querySelector(sel);
-          if (box && value) { box.value = value; }
-        };
-        put('#ct-digest', doc.digest);
-        put('#ct-atty', st.lawyerName);
-        const model = (st.messages || []).filter((x) => x.modelId)[0];
-        if (model) put('#ct-modelver', model.modelId);
-        if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', 'open');
-        note(st, 'ok', 'Certificate generator opened over this matter, with the notarised '
-          + 'digest already in it. Nothing identifying the client is carried across.');
+        if (doc) openCertify(st, doc.digest);
       } else if (name === 'cert') {
         const doc = (st.docs || []).filter((x) => x.id === id)[0];
         const model = (st.messages || []).filter((x) => x.origin === 'model')[0] || {};
