@@ -399,7 +399,11 @@
       const K = B.certificate;
       const fields = JSON.parse(JSON.stringify(K.CERT_DEFAULTS));
       fields.documentDigest = C.hex(await C.sha256('the filing'));
+      // The case number is the reader's to type now, so the fixture types one.
+      fields.caseNumber = '3:26-cv-99999';
       fields.licenseExpires = new Date(Date.now() + 45 * 864e5).toISOString();
+      // The version is the reader's to type now, so the fixture types one.
+      fields.evidence['model-manifest'].version = 'q5_K_M / 2026.07';
       fields.evidence['model-manifest'].manifestDigest = C.hex(await C.sha256('manifest'));
       fields.evidence['attorney-adoption'].sendRecordDigest = C.hex(await C.sha256('send'));
       fields.evidence['attorney-adoption'].adoptedAt = new Date().toISOString();
@@ -455,25 +459,30 @@
       const form = K.certFormHTML(K.CERT_DEFAULTS);
 
       // --- one control per answer -----------------------------------------
-      const selects = form.match(/<select\b[\s\S]*?<\/select>/g) || [];
-      ok('every dropdown in the certificate form carries "Write my own" as an option',
-        selects.length > 0 && selects.every((s) =>
-          s.indexOf('<option value="' + U.WM_OWN + '"') >= 0), selects.length + ' dropdowns');
+      // One control per answer: a text box with a <datalist> behind it. Picking a listed
+      // answer and typing your own happen in the SAME box, so there is no second box to
+      // get out of step with what gets signed.
+      const combos = form.match(/<input[^>]*\blist="[^"]*"[^>]*>/g) || [];
+      const lists = form.match(/<datalist\b[\s\S]*?<\/datalist>/g) || [];
+      ok('every listed answer lives in one box the reader can also type into',
+        combos.length > 0 && combos.length === lists.length
+          && combos.every((c) => /class="[^"]*wm-combo/.test(c)), combos.length + ' comboboxes');
       ok('no free-standing "Write my own" button survives anywhere in the form',
         form.indexOf('data-wm-own') < 0 && !/>\s*Write my own\s*<\/button>/.test(form));
-      ok('every dropdown offers N/A',
-        selects.every((s) => s.indexOf('<option value="' + K.NA + '"') >= 0));
-      ok('choosing "Write my own" opens a box that starts empty',
-        (form.match(/class="wm-input"[^>]*value=""/g) || []).length === selects.length);
+      ok('every list offers N/A',
+        lists.every((s) => s.indexOf('<option value="' + K.NA + '"') >= 0));
+      ok('no second box is created for typing: there is no hidden free-text twin',
+        form.indexOf('data-wm-select') < 0 && form.indexOf('data-wm-own') < 0
+          && !/<select\b/.test(form));
 
       // --- the fields that are no longer dropdowns ------------------------
       const control = (id) => {
         const m = new RegExp('<(input|select|output)\\b[^>]*\\bid="' + id + '"[^>]*>').exec(form);
         return m ? m[0] : '';
       };
-      ok('case number is a plain box with nothing typed in it',
+      ok('case number is a plain box with nothing typed and no example to copy',
         /^<input/.test(control('ct-case')) && control('ct-case').indexOf('value=') < 0
-          && control('ct-case').indexOf('placeholder="2:26-cv-01184"') >= 0);
+          && control('ct-case').indexOf('placeholder=""') >= 0);
       ok('the firm is fixed at Bailment Law and is not a control at all',
         K.DEMO_FIRM === 'Bailment Law' && control('ct-firm-fixed').indexOf('<output') === 0
           && form.indexOf('data-wm="ct-firm"') < 0, K.DEMO_FIRM);
@@ -489,24 +498,20 @@
         form.indexOf('data-wm="ct-juris"') >= 0 && K.CERT_OPTIONS.jurisdiction.length >= 50
           && /^<input/.test(control('ct-court-specific'))
           && control('ct-court-specific').indexOf('style="display:none"') < 0);
-      ok('the redactor version defaults to bailee-redactor 4.2.1 and still offers "Write my own"',
+      ok('the redactor version defaults to bailee-redactor 4.2.1 in a box you can retype',
         K.CERT_DEFAULTS.evidence['no-identifier'].redactorVersion === 'bailee-redactor 4.2.1 (signed)'
-          && /<option value="bailee-redactor 4\.2\.1 \(signed\)" selected>/.test(form));
+          && form.indexOf('value="bailee-redactor 4.2.1 (signed)"') >= 0);
 
       // --- claim 1: version is filled in FROM the model, and still shipped --
       ok('the model list offers In House Model as well as Astra 6 and Opus 5.1',
         ['In House Model', 'Astra 6', 'Opus 5.1'].every((m) => K.CERT_OPTIONS.model.indexOf(m) >= 0),
         K.CERT_OPTIONS.model.join(' \u00b7 '));
-      ok('picking a listed model fills the version in for the reader',
-        K.modelVersion('Llama 3.3 70B Instruct') === 'q5_K_M / 2026.07'
-          && K.modelVersion('Qwen 2.5 72B') === 'bf16 / 2026.09');
-      ok('a model with no honest version leaves the box empty rather than inventing one',
-        K.modelVersion('Astra 6') === '' && K.modelVersion('In House Model') === ''
-          && K.modelVersion('Something Nobody Listed') === '');
-      ok('the version box is editable, visible, and pre-filled from the default model',
-        /^<input/.test(control('ct-modelver'))
-          && control('ct-modelver').indexOf('value="q5_K_M / 2026.07"') >= 0
-          && control('ct-modelver').indexOf('readonly') < 0);
+    ok('the version is never filled in for the reader: every model leaves it empty',
+      ['Llama 3.3 70B Instruct', 'Qwen 2.5 72B', 'Astra 6', 'In House Model', 'Nobody Listed']
+        .every((m) => K.modelVersion(m) === ''));
+    ok('the version box is editable, visible, and starts empty \u2014 the reader types the build',
+      /^<input/.test(control('ct-modelver')) && control('ct-modelver').indexOf('value=""') >= 0
+      && control('ct-modelver').indexOf('readonly') < 0);
       ok('provider is optional and can be N/A',
         (await K.certFieldsFrom(() => '')).evidence['model-manifest'].provider === K.NA);
 
@@ -595,8 +600,9 @@
       ok('not one of the greyed-out examples appears anywhere in the SIGNED payload',
         Object.values(K.EXAMPLES).every((ex) => onTheWire.indexOf(ex) < 0),
         Object.values(K.EXAMPLES).join(' \u00b7 ') + ' \u2014 none present');
-      ok('the examples are still shown as placeholders, so the reader still gets the hint',
-        Object.values(K.EXAMPLES).every((ex) => form.indexOf('placeholder="' + ex + '"') >= 0));
+      ok('the examples that remain are shown only as placeholders, never as values',
+        Object.values(K.EXAMPLES).filter((ex) => form.indexOf(ex) >= 0)
+          .every((ex) => form.indexOf('placeholder="' + ex + '"') >= 0));
       ok('issuing anyway, with blanks, still produces a certificate the verifier accepts',
         (await K.verifyCertificate(blankSigned)).status === 'verified');
       ok('every CLAIM_SPEC field of an untouched form is on the wire as a value, not a hole',
@@ -967,12 +973,12 @@
       const attKeys = A.demoSigningKeys ? await A.demoSigningKeys() : await C.generateSigningKey();
       const att = await A.buildAttestation({
         statement: A.defaultStatement('retainer agreement', 'Doe v. Acme Holdings', '2026-09-14'),
-        digest, recipient: 'Hon. J. L. Robart', purpose: 'In camera authenticity review',
+        digest, recipient: 'Judge Washoe', purpose: 'In camera authenticity review',
         expiry: new Date(Date.now() + 14 * 864e5).toISOString(),
         signerName: 'Kevin G. Mohr, Esq.', signerBar: 'Bar No. 123456', signerJurisdiction: 'Washington',
       });
       const signedAtt = await A.signAttestation(att, attKeys);
-      const good = await A.verifyAttestation(signedAtt, { reader: 'Hon. J. L. Robart', digest });
+      const good = await A.verifyAttestation(signedAtt, { reader: 'Judge Washoe', digest });
       ok('the named reader, in time, with the right copy: holds', good.ok);
       const wrongReader = await A.verifyAttestation(signedAtt, { reader: 'Opposing Counsel' });
       ok('a different reader is told "issued to X, not to you", not "invalid"',
@@ -980,13 +986,13 @@
           && wrongReader.findings.some((f) => /not to you/.test(f.label)),
         wrongReader.findings.find((f) => /not to you/.test(f.label)).label);
       const late = await A.verifyAttestation(signedAtt, {
-        reader: 'Hon. J. L. Robart', now: new Date(Date.now() + 30 * 864e5) });
+        reader: 'Judge Washoe', now: new Date(Date.now() + 30 * 864e5) });
       ok('past expiry it reports "expired on <date>", and says the signature still checks',
         late.expired === true && late.signature === true
           && late.findings.some((f) => /^Expired on /.test(f.label)),
         late.findings.find((f) => /^Expired on /.test(f.label)).label);
       const wrongCopy = await A.verifyAttestation(signedAtt, {
-        reader: 'Hon. J. L. Robart', digest: C.hex(await C.sha256('a different document')) });
+        reader: 'Judge Washoe', digest: C.hex(await C.sha256('a different document')) });
       ok('a different copy of the document is caught', wrongCopy.digestMatch === false);
       const swapped = JSON.parse(JSON.stringify(signedAtt));
       swapped.att.recipient = 'Opposing Counsel';

@@ -47,14 +47,11 @@
   // Astra 6 and Opus 5.1 do not exist. They are here on purpose: the certificate records
   // the model name it is given, and naming a model is not proof that one ran.
   const CERT_OPTIONS = {
-    court: ['Second Judicial District Court, Washoe County, Nevada',
-      'U.S. District Court, S.D. New York',
-      'Superior Court of California, County of Orange'],
-    judge: ['Hon. J. L. Robart', 'Hon. A. M. Vasquez', 'Hon. P. Okonkwo'],
+    court: ['Second Judicial District Court, Washoe County, Nevada'],
+    judge: ['Judge Washoe'],
     filing: ['Motion for Summary Judgment', 'Opposition to Motion to Dismiss', 'Trial Brief'],
     model: ['Llama 3.3 70B Instruct', 'Qwen 2.5 72B', 'In House Model', 'Astra 6', 'Opus 5.1'],
-    provider: ['Meta (self-hosted, firm appliance)', 'Alibaba (self-hosted, firm appliance)',
-      'Named by the firm, not listed here'],
+    provider: ['Meta (self-hosted, firm appliance)', 'Alibaba (self-hosted, firm appliance)'],
     jurisdiction: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado',
       'Connecticut', 'Delaware', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii',
       'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
@@ -71,13 +68,10 @@
   // The build that goes with each listed model, so the reader never types a version.
   // A model the list does not carry has no version we could honestly supply: the box is
   // left empty and the reader fills it, or it is recorded as N/A.
-  const MODEL_VERSIONS = {
-    'Llama 3.3 70B Instruct': 'q5_K_M / 2026.07',
-    'Qwen 2.5 72B': 'bf16 / 2026.09',
-    'In House Model': '',
-    'Astra 6': '',
-    'Opus 5.1': '',
-  };
+  // Nothing fills the version in any more: the build that ran is the reader's to state,
+  // and a version we guessed for them would be the certificate asserting something nobody
+  // checked. Kept as a function so the shape of the API does not move.
+  const MODEL_VERSIONS = {};
   const modelVersion = (name) => MODEL_VERSIONS[String(name || '').trim()] || '';
 
   // Shown in the box as a hint, never as a value, and never signed. A placeholder is a
@@ -170,15 +164,15 @@
 
   const CERT_DEFAULTS = {
     court: 'Second Judicial District Court, Washoe County, Nevada',
-    judge: 'Hon. J. L. Robart',
-    caseNumber: EXAMPLES.caseNumber,
+    judge: 'Judge Washoe',
+    caseNumber: '',
     filing: 'Motion for Summary Judgment',
     firm: DEMO_FIRM,
     documentDigest: '',
     registryEntry: 'bailee-pipeline/2026.9.3',
     licenseExpires: '',
     evidence: {
-      'model-manifest': { model: 'Llama 3.3 70B Instruct', version: 'q5_K_M / 2026.07',
+      'model-manifest': { model: 'Llama 3.3 70B Instruct', version: '',
         provider: 'Meta (self-hosted, firm appliance)', manifestDigest: '' },
       'attorney-adoption': { attorney: EXAMPLES.attorney, barNumber: EXAMPLES.barNumber,
         jurisdiction: 'Nevada', sendRecordDigest: '', adoptedAt: '' },
@@ -589,25 +583,22 @@
   //
   // spec: { id, label, options, value, help, hint, na, placeholder }
   function ctField(spec) {
+    // One box. The list is a <datalist>, so the reader picks a listed answer or types
+    // their own in the SAME control \u2014 no second box appears, nothing is hidden and
+    // revealed. N/A is in the list like any other answer.
     const s = spec || {};
     const id = String(s.id);
-    const pick = id + '-pick';
+    const listId = id + '-list';
     const opts = (s.options || []).map((o) => (typeof o === 'string' ? { value: o, label: o } : o));
     if (s.na !== false) opts.push({ value: NA, label: NA + ' \u2014 not stated' });
     const value = s.value == null ? (opts[0] ? opts[0].value : '') : String(s.value);
-    const known = opts.some((o) => String(o.value) === value);
-    const own = !known && value !== '';
-    const optionsHTML = opts.map((o) => `<option value="${esc(o.value)}"${
-      !own && String(o.value) === value ? ' selected' : ''}>${esc(o.label)}</option>`).join('')
-      + `<option value="${WM_OWN}"${own ? ' selected' : ''}>${esc(WM_OWN_LABEL)}</option>`;
-    const boxAttrs = `class="wm-input" id="${esc(id)}" type="text"`
-      + ` placeholder="${esc(s.placeholder || 'Type your own\u2026')}"`
-      + ` aria-label="${esc((s.label ? s.label + ' \u2014 ' : '') + 'write my own')}"`
-      + ` value="${own ? esc(value) : ''}"` + (own ? '' : ' style="display:none"');
+    const optionsHTML = opts.map((o) => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('');
     return `<div class="field wm-field" data-wm="${esc(id)}">`
-      + (s.label ? ctLabel(pick, esc(s.label), s.help) : '')
-      + `<select class="wm-select" id="${esc(pick)}" data-wm-select="${esc(id)}">${optionsHTML}</select>`
-      + `<input ${boxAttrs}>`
+      + (s.label ? ctLabel(id, esc(s.label), s.help) : '')
+      + `<input class="wm-input wm-combo" id="${esc(id)}" type="text" list="${esc(listId)}"`
+      + ` placeholder="${esc(s.placeholder || 'Pick one, or type your own\u2026')}"`
+      + ` aria-label="${esc(s.label || id)}" value="${esc(value)}">`
+      + `<datalist id="${esc(listId)}">${optionsHTML}</datalist>`
       + (s.hint ? `<p class="wm-hint">${s.hint}</p>` : '')
       + '</div>';
   }
@@ -887,7 +878,7 @@
         ${ctField({ id: 'ct-judge', label: 'Judge', options: O.judge, value: d.judge })}
       </div>
       <div class="inline">
-        ${ctText({ id: 'ct-case', label: 'Case number', placeholder: EXAMPLES.caseNumber })}
+        ${ctText({ id: 'ct-case', label: 'Case number' })}
         ${ctField({ id: 'ct-filing', label: 'Filing', options: O.filing, value: d.filing })}
         <div class="field wm-field">
           <span class="wm-labelrow"><label for="ct-firm-fixed">Firm (licensee)</label></span>
@@ -901,7 +892,7 @@
         <div class="field wm-field">
           ${ctLabel('ct-modelver', 'Version', 'version')}
           <input class="wm-text" id="ct-modelver" type="text" value="${esc(e['model-manifest'].version)}"
-            placeholder="Fills in from the model \u2014 or type the build you ran">
+            placeholder="">
         </div>
         ${ctField({ id: 'ct-provider', label: 'Provider (optional)', options: O.provider,
           value: e['model-manifest'].provider, help: 'provider' })}
@@ -1326,11 +1317,6 @@
       // fills it in. A model the list does not carry — "In House Model", the two that do
       // not exist, or anything typed through "Write my own" — leaves the box empty,
       // because there is no build number we could honestly put there on their behalf.
-      const verBox = $(el, '#ct-modelver');
-      const modelPick = $(el, '#ct-model-pick');
-      const syncVersion = () => { if (verBox) verBox.value = modelVersion(modelPick.value); };
-      modelPick.addEventListener('change', syncVersion);
-      $(el, '#ct-model').addEventListener('focusin', syncVersion);
 
       // Issue is gated on the warning, never blocked by it. Blanks are read off the live
       // form on every press, from the same CONTROLS the signer reads, so the list can
