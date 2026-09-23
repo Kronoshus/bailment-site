@@ -917,8 +917,8 @@
           <div class="field wm-field"><span class="wm-labelrow"><label for="ct-citebase">Appliance API</label></span>
             <input id="ct-citebase" class="wm-text mono" type="text" value="${esc(CITE_BASE)}"></div>
           <div class="field wm-field"><span class="wm-labelrow"><label for="ct-citekey">Licence key</label></span>
-            <input id="ct-citekey" class="wm-text mono" type="password" autocomplete="off"
-              placeholder="blf_lk_\u2026 \u2014 checking is a licensed call"></div>
+            <input id="ct-citekey" class="wm-text mono" type="text" autocomplete="off"
+              value="blf_lk_demo_bailment_law_free" placeholder="blf_lk_\u2026 \u2014 checking is a licensed call"></div>
         </div>
         <div class="actions">
           <button type="button" class="btn ghost" id="ct-citecheck">Check citations</button>

@@ -725,9 +725,18 @@
 .widget .wp-pick .wp-select{
   background:var(--chip-bg);color:var(--ink);border:1px solid var(--border-hairline);
   border-radius:999px;padding:8px 12px;font-family:var(--font-body);font-size:.9rem;
-  appearance:none;-webkit-appearance:none;
+  appearance:none;-webkit-appearance:none;color-scheme:dark;cursor:pointer;
+  padding-right:30px;
+  background-image:linear-gradient(45deg,transparent 50%,var(--fg-muted) 50%),
+    linear-gradient(135deg,var(--fg-muted) 50%,transparent 50%);
+  background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;
 }
 .widget .wp-pick .wp-select:hover{border-color:var(--accent-ring)}
+.widget .wp-pick .wp-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-ring)}
+.widget .wp-select option{background:var(--neutral-950);color:var(--ink)}
+/* a "?" outside a .wm-field anchors its tip to the line it sits on */
+.widget .panel h3,.widget .wp-bar,.widget .wp-lic{position:relative}
 .wp-thread{min-height:340px}
 
 /* Foldable sections: the notarize tool and the API log are options, not the main event. */

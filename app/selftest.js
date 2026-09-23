@@ -928,8 +928,8 @@
           && cform.indexOf('id="ct-citemanual"') >= 0 && cform.indexOf('id="ct-citeout"') >= 0);
       ok('the example in the box is the one that carries the fabricated citation',
         cform.indexOf('925 F.3d 1339') >= 0 && cform.indexOf('Mata v. Avianca') >= 0);
-      ok('the licence key box does not show the key and does not remember it',
-        /id="ct-citekey"[^>]*type="password"/.test(cform)
+      ok('the licence key box carries the public demo key and does not remember it',
+        /id="ct-citekey"[^>]*value="blf_lk_demo_bailment_law_free"/.test(cform)
           && /id="ct-citekey"[^>]*autocomplete="off"/.test(cform));
       ok('the form says the passage goes to CourtListener and to no model',
         cform.indexOf('to CourtListener and to nowhere else') >= 0

@@ -932,9 +932,10 @@
       ? 'What the client sees'
       : 'What the lawyer sees';
     const sub = st.party === 'client'
-      ? 'Sent messages and their own work. No drafts, because none were sent to them.'
-      : 'The conversation. Everything, including drafts that are not out of the building '
-        + 'yet \u2014 except the draft you are working on, which is open in the box below.';
+      ? 'Everything sent to you, plus your own messages. You never see your lawyer\u2019s unsent '
+        + 'drafts, because nothing reaches you until the lawyer presses Send.'
+      : 'The full conversation, including drafts the client cannot see yet. The draft you are '
+        + 'working on sits in the box below until you press Send.';
     const body = list.length
       ? list.map((m) => msgHtml(m, st.party, (st.records || {})[m.id])).join('')
       : '<p class="muted">Nothing in this thread yet.</p>';
@@ -983,9 +984,10 @@
       + wmField({ id: 'wp-text', label: client ? 'Write to your lawyer' : 'Write to your client',
           options: [pending ? pending.body : ''], multiline: true, rows: 3,
           help: client
-            ? 'Say whatever you like. It goes to the firm as your own work, attributed to you.'
-            : 'The model\u2019s draft arrives here. Edit it, then send it \u2014 sending is adoption, '
-              + 'and the send record names the key that did it.' })
+            ? 'Type a message to your lawyer. It is labelled as written by you, stays inside this '
+              + 'private thread, and only you and your law firm can see it.'
+            : 'The AI\u2019s draft appears here. Edit it if you need to, then press Send. Sending means '
+              + 'you adopt it as your own, and the record names you.' })
       + '<div class="wp-composebar">'
       + '<div class="wp-composeleft">'
       + '<label class="btn ghost wp-attach" for="wp-file">Attach a document</label>'
@@ -1035,7 +1037,7 @@
       return '<tr><td>' + esc(d.filename) + '</td><td class="mono">'
         + esc(UI.short ? UI.short(d.digest, 8) : d.digest) + '</td><td>' + state + '</td><td>' + act + '</td></tr>';
     }).join('');
-    return '<div class="panel wp-docs"><h3>Documents' + help('Files are hashed in this browser. The bytes never move. A document out of the thread carries the taint with it, and notarize refuses it.') + '</h3>'
+    return '<div class="panel wp-docs"><h3>Documents' + help('Attached files are fingerprinted in your browser. The file itself never leaves. A document copied out of the private thread is flagged, and cannot be notarized.') + '</h3>'
       + (rows ? '<table><thead><tr><th>File</th><th>SHA-256</th><th>State</th><th></th></tr></thead><tbody>'
           + rows + '</tbody></table>' : '<p class="muted">No documents yet.</p>')
       + '</div>';
@@ -1057,7 +1059,7 @@
   function paymentHtml(st) {
     const p = st.payment;
     if (!p) return '';
-    return '<div class="panel wp-pay"><h3>Payment Required \u2014 402' + help('This is the price, not a failure. One Document Record entry is one certified filing, through this door or through POST /v1/notarize: the same record, the same amount. This licence has none left, so nothing was written and nothing was charged.') + '</h3>'
+    return '<div class="panel wp-pay"><h3>Payment Required \u2014 402' + help('This is the price, not an error. Each certified filing costs $25 from the licence. This licence has none left, so nothing was saved or charged.') + '</h3>'
       + '<p><span class="chip on">' + esc(p.amount) + ' ' + esc(p.asset) + '</span> '
       + '<span class="chip">' + esc(p.network) + '</span></p>'
       + '<p class="mono wp-path">pay to ' + esc(p.payTo) + '</p>'
@@ -1089,20 +1091,20 @@
       + (st.party === 'lawyer') + '" data-act="role" data-role="lawyer">View as lawyer</button>'
       + '</div>'
       + '<button class="btn ghost" data-act="connect-toggle">' + (live ? 'Go offline' : 'Connect an appliance')
-      + '</button>' + help('The Appliance API is the firm\'s own server \u2014 the box in the firm\'s building, or its own cloud account, that runs the model and holds the matter. This page talks to it over HTTP: open a matter, write a draft, ask the model, notarise, issue a certificate. Bailment does not host it and cannot read it. Leave it unconnected and everything above runs on a stand-in inside this page, which is why the demo works with no server at all. Point it at http://127.0.0.1:8402 to drive the real API on your own machine.')
+      + '</button>' + help('The appliance is the firm\u2019s own server. It runs the AI and stores the case. Without one, this page uses a built-in stand-in, so the demo still works.')
       + '</div>'
       // The free key, in plain sight. Nobody should have to open a panel to find it.
       + '<p class="wp-lic">Free demo licence key <code data-copy="' + esc(DEMO_LICENCE) + '">'
-      + esc(DEMO_LICENCE) + '</code>' + help('A licence key is the firm\'s credential with the appliance API. It is one string, it is issued once by the Bailment admin console, and only its SHA-256 hash is kept \u2014 lose it and the fix is to revoke it and issue another. It identifies the FIRM, not a person: it opens matters and pays for certified filings at 25 USD each, and it is deliberately not allowed to send a message, because sending is adoption and only a named human does that. The key below is the free public demo key, printed on purpose: a key everyone holds proves nothing about who used it, which is exactly why a demo is a demo.') + '</p>';
+      + esc(DEMO_LICENCE) + '</code>' + help('The firm\u2019s password for the appliance. It opens cases and pays for filings at $25 each. It can never send a message; only a named lawyer can.') + '</p>';
   }
 
   function connectHtml(st) {
     if (!st.showConnect) return '';
-    return '<div class="panel wp-connect"><h3>Connect an Appliance' + help('The Appliance API is the firm\'s own server \u2014 the box in the firm\'s building, or its own cloud account, that runs the model and holds the matter. This page talks to it over HTTP: open a matter, write a draft, ask the model, notarise, issue a certificate. Bailment does not host it and cannot read it. Leave it unconnected and everything above runs on a stand-in inside this page, which is why the demo works with no server at all. Point it at http://127.0.0.1:8402 to drive the real API on your own machine.') + '</h3>'
+    return '<div class="panel wp-connect"><h3>Connect an Appliance' + help('The appliance is the firm\u2019s own server. It runs the AI and stores the case. Without one, this page uses a built-in stand-in, so the demo still works.') + '</h3>'
       + '<div class="inline">'
       + wmField({ id: 'wp-base', label: 'API base', options: API_BASES, value: st.base || undefined })
       + '<div class="field"><span class="wm-labelrow"><label for="wp-key">Firm licence key</label>'
-      + help('A licence key is the firm\'s credential with the appliance API. It is one string, it is issued once by the Bailment admin console, and only its SHA-256 hash is kept \u2014 lose it and the fix is to revoke it and issue another. It identifies the FIRM, not a person: it opens matters and pays for certified filings at 25 USD each, and it is deliberately not allowed to send a message, because sending is adoption and only a named human does that. The key below is the free public demo key, printed on purpose: a key everyone holds proves nothing about who used it, which is exactly why a demo is a demo.') + '</span>'
+      + help('The firm\u2019s password for the appliance. It opens cases and pays for filings at $25 each. It can never send a message; only a named lawyer can.') + '</span>'
       + '<input id="wp-key" class="wm-box" value="' + esc(DEMO_LICENCE) + '" placeholder="bearer key"></div>'
       + '<button class="btn" data-act="connect">Connect</button>'
       + '</div>'
@@ -1115,7 +1117,7 @@
   // lawyer are chosen from a list, or written in, and the matter is opened through the
   // same createMatter() call the rest of the screen uses.
   function matterHtml(st) {
-    return '<div class="panel wp-matter"><h3>The Matter This Demo Opens' + help('Change any of these and press Reset: the demo opens a fresh matter with those names. The API does the work; this page holds no back door.') + '</h3>'
+    return '<div class="panel wp-matter"><h3>The Matter This Demo Opens' + help('The case this demo opens. Change the names and press Reset to start a fresh case. Everything runs through the same API a real firm would use.') + '</h3>'
       + '<div class="inline">'
       + wmField({ id: 'wp-title', label: 'Matter title', options: MATTER_TITLES, value: st.matterTitle })
       + wmField({ id: 'wp-client', label: 'Client name', options: CLIENT_NAMES, value: st.clientName })
@@ -1126,7 +1128,7 @@
 
   function closeHtml(st) {
     if (!st.api.extras || st.party !== 'lawyer') return '';
-    return '<div class="panel wp-close"><h3>Outcome' + help('A stage lights on an event. This one needs an outcome, not a click. Notarising a document and closing the matter both happen here.') + '</h3>'
+    return '<div class="panel wp-close"><h3>Outcome' + help('Where the case ends. Notarize a finished document or close the matter here. The progress bar above lights up only when these things actually happen.') + '</h3>'
       + '<div class="inline">'
       + wmField({ id: 'wp-outcome', label: 'Close the matter',
           options: [{ value: '', label: '\u2014 no outcome yet \u2014' }].concat(OUTCOMES) })
@@ -1215,13 +1217,7 @@
     const auth = session(st);
 
     try {
-      if (name === 'wp-model') {
-        st.model = target.value;
-        note(st, 'ok', 'Model for the next request: ' + st.model + '. The appliance stub answers either way.');
-      } else if (name === 'wp-harness') {
-        st.harness = target.value;
-        note(st, 'ok', 'Harness for the next request: ' + st.harness + '.');
-      } else if (name === 'role') {
+      if (name === 'role') {
         st.party = target.dataset.role === 'lawyer' ? 'lawyer' : 'client';
         note(st, 'ok', 'Viewing as the ' + st.party + '. The thread is re-fetched for that party.');
       } else if (name === 'post') {
@@ -1414,9 +1410,7 @@
     };
 
     el.innerHTML = '<h2>One Matter, Two Views'
-      + help('A client and their lawyer in the same thread, with the model on the firm\u2019s own '
-        + 'hardware. Flip the switch. The client\u2019s view does not hold the lawyer\u2019s unsent '
-        + 'draft, because it was never sent to them. Demo: the rules are real, the model is a stub.')
+      + help('One case, seen from both sides. Flip the switch to compare what the client sees with what the lawyer sees. The rules are real; the AI answers are placeholders.')
       + '</h2>'
       + '<div id="wp-body"></div>';
 
@@ -1426,12 +1420,24 @@
 
     el.addEventListener('click', function (e) {
       const t = e.target.closest('[data-act]');
-      if (!t) return;
+      // A select acts on change, not click: repainting on click tore down the open list.
+      if (!t || t.tagName === 'SELECT') return;
       e.preventDefault();
       act(st, el, t.dataset.act, t);
     });
 
     el.addEventListener('change', async function (e) {
+      // No repaint here: it would wipe whatever is typed in the compose box.
+      if (e.target && e.target.id === 'wp-model') {
+        st.model = e.target.value;
+        note(st, 'ok', 'Model for the next request: ' + st.model + '. The appliance stub answers either way.');
+        return;
+      }
+      if (e.target && e.target.id === 'wp-harness') {
+        st.harness = e.target.value;
+        note(st, 'ok', 'Harness for the next request: ' + st.harness + '.');
+        return;
+      }
       if (!e.target || e.target.id !== 'wp-file') return;
       const f = e.target.files && e.target.files[0];
       if (!f) return;
