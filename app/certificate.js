@@ -89,10 +89,6 @@
     barNumber: 'WSBA 41207',
   };
 
-  const MODEL_HINT = 'The certificate records the model name it is given. Naming a model is '
-    + 'not proof that one ran \u2014 Astra 6 and Opus 5.1 do not exist, and this demo will sign '
-    + 'either of them just as readily.';
-
   // ------------------------------------------------- claim 3, actually checked
   // The two numbers under claim 3 used to be whatever somebody typed. The appliance can
   // check them: POST /v1/citations/check extracts every citation in a passage and looks
@@ -125,12 +121,25 @@
   // sentences: what the thing is, and why a court would care. Hover or keyboard focus
   // both reveal them (app.css), and each one is wired to its control by aria-describedby.
   const HELP = {
+    model: 'The certificate records the model name it is given. Naming a model is not proof that '
+      + 'one ran \u2014 Astra 6 and Opus 5.1 do not exist, and this demo will sign either of them '
+      + 'just as readily.',
+    provider: 'Optional. Pick N/A if nobody outside the firm supplied the model.',
+    specificCourt: 'Optional. Recorded alongside the state when you want to be exact.',
+    attorneyFields: 'Nothing here is pre-filled. The greyed-out names are placeholders, not '
+      + 'answers \u2014 type over them. Left empty, they are recorded as N/A, never as the example '
+      + 'shown, and you are told which ones before anything is signed.',
     documentDigest: 'A SHA-256 fingerprint of the finished filing. It is what ties this '
       + 'certificate to one exact document: change a comma and the fingerprint changes, so a '
-      + 'court can tell whether the filing in front of it is the one that was certified.',
+      + 'court can tell whether the filing in front of it is the one that was certified. '
+      + 'Paste the digest the notarize step gave you. Left empty, this demo computes a stand-in '
+      + 'digest from fixed demo text: a certificate whose digest is not 64 hex characters is '
+      + 'bound to no document at all.',
     version: 'The exact build of the model that ran \u2014 quantisation and release date, not just '
       + 'the family name. Two builds of the same model can answer differently, so a court asking '
-      + 'whether this output could have come from that model needs the build, not the brand.',
+      + 'whether this output could have come from that model needs the build, not the brand. '
+      + 'It fills in from the model you pick; overwrite it if your build differs, and left empty '
+      + 'it is recorded as N/A.',
     manifestDigest: 'A fingerprint of the signed model manifest the appliance was running. It '
       + 'lets anyone confirm later that the configuration described here is the one that was '
       + 'actually pinned, and that it was not swapped after the fact.',
@@ -149,7 +158,11 @@
     identifiersReachedModel: 'How many client identifiers \u2014 names, matter numbers, account '
       + 'numbers \u2014 were present in the text the model saw. The claim is that this is zero: the '
       + 'model worked on a template while the identifiers stayed in the firm\u2019s vault.',
-    citationCheck: 'The appliance reads the passage, pulls every citation out of it and looks '
+    citationCheck: 'The appliance pulls every citation out of this passage and looks each one up '
+      + 'in CourtListener. The example carries three: one real, one that does not exist, and '
+      + 'Varghese v. China Southern Airlines \u2014 the citation a model invented, a lawyer filed in '
+      + 'Mata v. Avianca, and a judge sanctioned him for. '
+      + 'The appliance reads the passage, pulls every citation out of it and looks '
       + 'each one up in CourtListener\u2019s opinion database. The passage goes to CourtListener '
       + 'and nowhere else: no model sees it, here or on the server. A citation that resolves to '
       + 'no case is reported as not found rather than quietly counted.',
@@ -870,10 +883,7 @@
       <div class="field wm-field">
         ${ctLabel('ct-digest', 'Document digest (SHA-256, from the notarize step)', 'documentDigest')}
         <input id="ct-digest" class="wm-text mono" placeholder="64 hex characters">
-        <p class="wm-hint">Put your notarized client document in here: paste the digest the notarize step gave you.
-        No digest yet? Go to <a href="workplace.html#notarize">Workplace Product</a> and notarize a document first.
-        Left empty, this demo computes a stand-in digest from fixed demo text: a certificate whose digest is not
-        64 hex characters is bound to no document at all.</p>
+        <p class="wm-hint">No digest yet? Notarize a document in <a href="workplace.html#notarize">Workplace Product</a> first.</p>
       </div>
 
       <h3>Step 2 &mdash; Filing</h3>
@@ -887,26 +897,21 @@
         <div class="field wm-field">
           <span class="wm-labelrow"><label for="ct-firm-fixed">Firm (licensee)</label></span>
           <output class="wm-fixed" id="ct-firm-fixed">${esc(DEMO_FIRM)}</output>
-          <p class="wm-hint">Fixed for the demo. A real deployment fills this from the licence,
-          so a firm cannot certify under a name it does not hold.</p>
         </div>
       </div>
-      <h3 style="margin-top:18px">Step 3 &mdash; Claim 1 &mdash; model manifest</h3>
+      <h3 style="margin-top:18px">Step 3 &mdash; Model Manifest</h3>
       <div class="inline">
         ${ctField({ id: 'ct-model', label: 'Model', options: O.model,
-          value: e['model-manifest'].model, hint: esc(MODEL_HINT) })}
+          value: e['model-manifest'].model, help: 'model' })}
         <div class="field wm-field">
           ${ctLabel('ct-modelver', 'Version', 'version')}
           <input class="wm-text" id="ct-modelver" type="text" value="${esc(e['model-manifest'].version)}"
             placeholder="Fills in from the model \u2014 or type the build you ran">
-          <p class="wm-hint">Filled in from the model you pick. Overwrite it if your build differs;
-          left empty it is recorded as <b>N/A</b>.</p>
         </div>
         ${ctField({ id: 'ct-provider', label: 'Provider (optional)', options: O.provider,
-          value: e['model-manifest'].provider,
-          hint: 'Optional. Pick <b>N/A</b> if nobody outside the firm supplied the model.' })}
+          value: e['model-manifest'].provider, help: 'provider' })}
       </div>
-      <h3 style="margin-top:18px">Claim 2 &mdash; attorney adoption</h3>
+      <h3 style="margin-top:18px">Step 4 &mdash; Attorney Adoption${ctHelp('attorneyFields')}</h3>
       <div class="inline">
         ${ctText({ id: 'ct-atty', label: 'Attorney', placeholder: EXAMPLES.attorney })}
         ${ctText({ id: 'ct-bar', label: 'Bar number', placeholder: EXAMPLES.barNumber })}
@@ -915,13 +920,9 @@
         ${ctField({ id: 'ct-juris', label: 'Jurisdiction (state)', options: O.jurisdiction,
           value: e['attorney-adoption'].jurisdiction })}
         ${ctText({ id: 'ct-court-specific', label: 'Specific court (optional)',
-          placeholder: 'e.g. King County Superior Court',
-          hint: 'Optional. Recorded alongside the state when you want to be exact.' })}
+          placeholder: 'e.g. King County Superior Court', help: 'specificCourt' })}
       </div>
-      <p class="wm-hint">Nothing here is pre-filled. The greyed-out names are placeholders, not
-      answers &mdash; type over them. Left empty, they are recorded as <b>N/A</b>, never as the
-      example shown, and you are told which ones before anything is signed.</p>
-      <h3 style="margin-top:18px">Claims 3 and 4 &mdash; citations and redaction</h3>
+      <h3 style="margin-top:18px">Step 5 &mdash; Citations and Redaction</h3>
       <div class="inline">
         <div class="field wm-field"><span class="wm-labelrow"><label for="ct-cites">Citations in the filing</label></span>
           <input id="ct-cites" type="number" min="0" value="${e['citations-verified'].citations}"></div>
@@ -935,10 +936,6 @@
       same claim, checked.</p>
       <div class="ct-cite" id="ct-cite">
         <span class="wm-labelrow"><label for="ct-citetext">Check the citations for real</label>${ctHelp('citationCheck')}</span>
-        <p class="wm-hint">The appliance pulls every citation out of this passage and looks each
-        one up in CourtListener. The example below carries three: one real, one that does not
-        exist, and <em>Varghese v. China Southern Airlines</em> &mdash; the citation a model
-        invented, a lawyer filed in <em>Mata v. Avianca</em>, and a judge sanctioned him for.</p>
         <textarea id="ct-citetext" class="ct-cite-text" rows="4"
           aria-describedby="ct-cite-privacy">${esc(CITE_EXAMPLE)}</textarea>
         <div class="inline">
