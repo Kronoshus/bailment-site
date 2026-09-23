@@ -1088,17 +1088,21 @@
       + '<button class="' + (st.party === 'lawyer' ? 'on' : '') + '" aria-pressed="'
       + (st.party === 'lawyer') + '" data-act="role" data-role="lawyer">View as lawyer</button>'
       + '</div>'
-      + '<button class="btn ghost" data-act="connect-toggle">' + (live ? 'Go offline' : 'Connect an appliance') + '</button>'
-      + '</div>';
+      + '<button class="btn ghost" data-act="connect-toggle">' + (live ? 'Go offline' : 'Connect an appliance')
+      + '</button>' + help('The Appliance API is the firm\'s own server \u2014 the box in the firm\'s building, or its own cloud account, that runs the model and holds the matter. This page talks to it over HTTP: open a matter, write a draft, ask the model, notarise, issue a certificate. Bailment does not host it and cannot read it. Leave it unconnected and everything above runs on a stand-in inside this page, which is why the demo works with no server at all. Point it at http://127.0.0.1:8402 to drive the real API on your own machine.')
+      + '</div>'
+      // The free key, in plain sight. Nobody should have to open a panel to find it.
+      + '<p class="wp-lic">Free demo licence key <code data-copy="' + esc(DEMO_LICENCE) + '">'
+      + esc(DEMO_LICENCE) + '</code>' + help('A licence key is the firm\'s credential with the appliance API. It is one string, it is issued once by the Bailment admin console, and only its SHA-256 hash is kept \u2014 lose it and the fix is to revoke it and issue another. It identifies the FIRM, not a person: it opens matters and pays for certified filings at 25 USD each, and it is deliberately not allowed to send a message, because sending is adoption and only a named human does that. The key below is the free public demo key, printed on purpose: a key everyone holds proves nothing about who used it, which is exactly why a demo is a demo.') + '</p>';
   }
 
   function connectHtml(st) {
     if (!st.showConnect) return '';
-    return '<div class="panel wp-connect"><h3>Connect an Appliance' + help('The Appliance API is the firm's own server \u2014 the box in the firm's building, or its own cloud account, that runs the model and holds the matter. This page talks to it over HTTP: open a matter, write a draft, ask the model, notarise, issue a certificate. Bailment does not host it and cannot read it. Leave it unconnected and everything above runs on a stand-in inside this page, which is why the demo works with no server at all. Point it at http://127.0.0.1:8402 to drive the real API on your own machine.') + '</h3>'
+    return '<div class="panel wp-connect"><h3>Connect an Appliance' + help('The Appliance API is the firm\'s own server \u2014 the box in the firm\'s building, or its own cloud account, that runs the model and holds the matter. This page talks to it over HTTP: open a matter, write a draft, ask the model, notarise, issue a certificate. Bailment does not host it and cannot read it. Leave it unconnected and everything above runs on a stand-in inside this page, which is why the demo works with no server at all. Point it at http://127.0.0.1:8402 to drive the real API on your own machine.') + '</h3>'
       + '<div class="inline">'
       + wmField({ id: 'wp-base', label: 'API base', options: API_BASES, value: st.base || undefined })
       + '<div class="field"><span class="wm-labelrow"><label for="wp-key">Firm licence key</label>'
-      + help('A licence key is the firm's credential with the appliance API. It is one string, it is issued once by the Bailment admin console, and only its SHA-256 hash is kept \u2014 lose it and the fix is to revoke it and issue another. It identifies the FIRM, not a person: it opens matters and pays for certified filings at 25 USD each, and it is deliberately not allowed to send a message, because sending is adoption and only a named human does that. The key below is the free public demo key, printed on purpose: a key everyone holds proves nothing about who used it, which is exactly why a demo is a demo.') + '</span>'
+      + help('A licence key is the firm\'s credential with the appliance API. It is one string, it is issued once by the Bailment admin console, and only its SHA-256 hash is kept \u2014 lose it and the fix is to revoke it and issue another. It identifies the FIRM, not a person: it opens matters and pays for certified filings at 25 USD each, and it is deliberately not allowed to send a message, because sending is adoption and only a named human does that. The key below is the free public demo key, printed on purpose: a key everyone holds proves nothing about who used it, which is exactly why a demo is a demo.') + '</span>'
       + '<input id="wp-key" class="wm-box" value="' + esc(DEMO_LICENCE) + '" placeholder="bearer key"></div>'
       + '<button class="btn" data-act="connect">Connect</button>'
       + '</div>'

@@ -766,3 +766,10 @@
 .widget .wm-box:focus,.widget .wm-combo:focus{outline:none;border-color:var(--accent)}
 .widget .wm-box::-webkit-calendar-picker-indicator,
 .widget .wm-combo::-webkit-calendar-picker-indicator{display:none!important}
+
+/* The free demo licence key, visible without opening anything. */
+.widget .wp-lic{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 0;color:var(--fg-muted);font-size:.92rem}
+.widget .wp-lic code{
+  background:var(--chip-bg);border:1px solid var(--border-hairline);border-radius:8px;
+  padding:5px 10px;font-family:var(--font-mono);font-size:.86rem;color:var(--ink);cursor:copy;
+}
