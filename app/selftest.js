@@ -481,8 +481,9 @@
         const m = new RegExp('<(input|select|output)\\b[^>]*\\bid="' + id + '"[^>]*>').exec(form);
         return m ? m[0] : '';
       };
-      ok('case number is a plain box with nothing typed and no example to copy',
-        /^<input/.test(control('ct-case')) && control('ct-case').indexOf('value=') < 0
+      ok('case number is a plain box carrying the demo default, typed over in one box',
+        /^<input/.test(control('ct-case'))
+          && control('ct-case').indexOf('value="Case - 123456"') >= 0
           && control('ct-case').indexOf('placeholder="Type your own\u2026"') >= 0);
       ok('the firm is fixed at Bailment Law and is not a control at all',
         K.DEMO_FIRM === 'Bailment Law' && control('ct-firm-fixed').indexOf('<output') === 0
@@ -510,9 +511,10 @@
     ok('the version is never filled in for the reader: every model leaves it empty',
       ['Llama 3.3 70B Instruct', 'Qwen 2.5 72B', 'Astra 6', 'In House Model', 'Nobody Listed']
         .every((m) => K.modelVersion(m) === ''));
-    ok('the version box is editable, visible, and starts empty \u2014 the reader types the build',
-      /^<input/.test(control('ct-modelver')) && control('ct-modelver').indexOf('value=""') >= 0
-      && control('ct-modelver').indexOf('readonly') < 0);
+      ok('the version box is editable, visible, and carries the demo default',
+        /^<input/.test(control('ct-modelver'))
+          && control('ct-modelver').indexOf('value="Version 1234"') >= 0
+          && control('ct-modelver').indexOf('readonly') < 0);
       ok('provider is optional and can be N/A',
         (await K.certFieldsFrom(() => '')).evidence['model-manifest'].provider === K.NA);
 

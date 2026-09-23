@@ -165,14 +165,14 @@
   const CERT_DEFAULTS = {
     court: 'Second Judicial District Court, Washoe County, Nevada',
     judge: 'Judge Washoe',
-    caseNumber: '',
+    caseNumber: 'Case - 123456',
     filing: 'Motion for Summary Judgment',
     firm: DEMO_FIRM,
     documentDigest: '',
     registryEntry: 'bailee-pipeline/2026.9.3',
     licenseExpires: '',
     evidence: {
-      'model-manifest': { model: 'Llama 3.3 70B Instruct', version: '',
+      'model-manifest': { model: 'Llama 3.3 70B Instruct', version: 'Version 1234',
         provider: 'Meta (self-hosted, firm appliance)', manifestDigest: '' },
       'attorney-adoption': { attorney: EXAMPLES.attorney, barNumber: EXAMPLES.barNumber,
         jurisdiction: 'Nevada', sendRecordDigest: '', adoptedAt: '' },
@@ -609,6 +609,7 @@
       + ctLabel(id, esc(s.label), s.help)
       + `<input class="wm-text${s.cls ? ' ' + esc(s.cls) : ''}" id="${esc(id)}" type="text"`
       + ` placeholder="${esc(s.placeholder || 'Type your own\u2026')}"`
+      + (s.value ? ` value="${esc(s.value)}"` : '')
       + (s.inputmode ? ` inputmode="${esc(s.inputmode)}"` : '') + '>'
       + (s.hint ? `<p class="wm-hint">${s.hint}</p>` : '')
       + '</div>';
@@ -875,7 +876,7 @@
         ${ctField({ id: 'ct-judge', label: 'Judge', options: O.judge, value: d.judge })}
       </div>
       <div class="inline">
-        ${ctText({ id: 'ct-case', label: 'Case number' })}
+        ${ctText({ id: 'ct-case', label: 'Case number', value: d.caseNumber })}
         ${ctField({ id: 'ct-filing', label: 'Filing', options: O.filing, value: d.filing })}
         <div class="field wm-field">
           <span class="wm-labelrow"><label for="ct-firm-fixed">Firm (licensee)</label></span>

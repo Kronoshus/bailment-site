@@ -32,11 +32,10 @@
   const MATTER_TITLES = ['Supply Co. Lawsuit'];
   const CLIENT_NAMES = ['John Client'];
   const LAWYER_NAMES = ['Kevin G. Mohr, Esq.'];
-  const CLIENT_LINES = [
-    'They stopped shipping on the 9th and stopped answering. Do we have a claim?',
-    'Can you look at the signed supply agreement before Friday?',
-    'What happens to the deposit if we terminate now?',
-  ];
+  // The client's box starts empty: whatever they want to say, in their own words. The
+  // opening line below is the thread the demo starts from, not a suggestion in the box.
+  const CLIENT_LINES = [''];
+  const OPENING_MESSAGE = 'They stopped shipping on the 9th and stopped answering. Do we have a claim?';
   const LAWYER_LINES = [
     'On the facts as you have given them there is a claim in contract. Here is what I need next.',
     'Hold off on contacting them directly until we have the whole file.',
@@ -893,17 +892,10 @@
       + '<span class="chip">' + esc(KIND_LABEL[m.kind] || m.kind) + '</span>';
     let foot = '';
     if (unsent) {
+      // The thread is the conversation. Everything you can DO with a draft lives in the
+      // compose bar below, where the words you are looking at are the words that go.
       foot = '<div class="wp-hold"><b>The client cannot see this yet.</b> '
-        + 'It is a draft in your pane. Sending it is adopting it.</div>'
-        + '<div class="wp-sendrow">'
-        + '<select class="wp-kind" data-id="' + esc(m.id) + '" aria-label="Kind">'
-        + KINDS.map((k) => '<option value="' + k + '"' + (k === m.kind ? ' selected' : '') + '>'
-            + esc(KIND_LABEL[k]) + '</option>').join('')
-        + '</select>'
-        + '<button class="btn" data-act="send" data-id="' + esc(m.id) + '">Send (this is adoption)</button>'
-        + '<button class="btn ghost" data-act="send-auto" data-id="' + esc(m.id) + '">Try an automated send</button>'
-        + '<button class="btn ghost" data-act="doc-from-msg" data-id="' + esc(m.id) + '">Save as a document</button>'
-        + '</div>';
+        + 'It is a draft in your pane, open in the box below. Sending it is adopting it.</div>';
     } else if (m.sentBy) {
       foot = '<div class="wp-foot">' + (m.side === 'lawyer'
         ? 'Sent by ' + esc(UI.short ? UI.short(m.sentBy, 8) : m.sentBy) + '. That record is the adoption record.'
@@ -916,10 +908,7 @@
     const notarised = record
       ? '<div class="wp-foot">Notarised. <span class="mono">' + esc(String(record.commitment).slice(0, 16))
         + '\u2026</span> ' + esc(String(record.identifiersRemoved)) + ' identifier(s) redacted here first.</div>'
-        + '<div class="wp-sendrow"><button class="btn" data-act="certify-msg" data-id="'
-        + esc(m.id) + '">Certify this message</button></div>'
-      : '<div class="wp-sendrow"><button class="btn ghost" data-act="notarize-msg" data-id="'
-        + esc(m.id) + '">Notarize this message</button></div>';
+      : '';
     return '<article class="' + cls + '"><header class="wp-attrib"><b>' + who + '</b>'
       + '<span class="wp-chips">' + chips + '</span></header>'
       + '<p>' + esc(m.body) + '</p>' + foot + notarised + '</article>';
@@ -941,7 +930,13 @@
 
   function composeHtml(st) {
     const client = st.party === 'client';
-    const lines = client ? CLIENT_LINES : LAWYER_LINES;
+    // The lawyer's unsent draft is not a card with buttons in the thread: it is open in
+    // this box. What you read here is what gets adopted.
+    const pending = client ? null : (st.messages || [])
+      .filter((m) => m.side === 'lawyer' && !m.sent).slice(-1)[0];
+    const mine = (st.messages || []).filter((m) => (client ? m.side === 'client' : m.side === 'lawyer'));
+    const target = pending || mine.slice(-1)[0];
+    const rec = target ? (st.records || {})[target.id] : null;
     const cannot = !client && st.maySend === false
       ? '<p class="bad">This view is holding the firm\u2019s licence key, not an interactive '
         + 'lawyer session. It can draft and ask the model. Every send will be refused 403.</p>'
@@ -952,25 +947,47 @@
         return '<option value="' + esc(o[0]) + '"' + (o[0] === chosen ? ' selected' : '') + '>'
           + esc(o[1]) + '</option>';
       }).join('') + '</select></label>';
+    const kindPick = !client
+      ? '<label class="wp-pick"><span>Kind</span><select class="wp-kind wp-select" id="wp-kind"'
+        + (pending ? ' data-id="' + esc(pending.id) + '"' : '') + ' aria-label="Kind">'
+        + KINDS.map((k) => '<option value="' + k + '"'
+            + (pending && k === pending.kind ? ' selected' : '') + '>' + esc(KIND_LABEL[k])
+            + '</option>').join('')
+        + '</select></label>'
+      : '';
+    // Everything you can do to a message, before you reply to it.
+    const onTarget = target ? '<button class="btn ghost" data-act="doc-from-msg" data-id="'
+        + esc(target.id) + '">Save as a document</button>'
+      + (rec ? '<button class="btn ghost" data-act="certify-msg" data-id="' + esc(target.id)
+          + '">Certify this message</button>'
+        : '<button class="btn ghost" data-act="notarize-msg" data-id="' + esc(target.id)
+          + '">Notarize this message</button>') : '';
+    const sendRow = pending
+      ? '<button class="btn" data-act="send" data-id="' + esc(pending.id) + '">Send (this is adoption)</button>'
+        + '<button class="btn ghost" data-act="send-auto" data-id="' + esc(pending.id)
+        + '">Try an automated send</button>'
+      : '<button class="btn" data-act="post">' + (client ? 'Send' : 'Hold as a draft') + '</button>';
     return '<div class="panel wp-compose' + (client ? ' local' : ' chain') + '">'
       + cannot
       + wmField({ id: 'wp-text', label: client ? 'Write to your lawyer' : 'Write to your client',
-          options: lines, multiline: true, rows: 3,
+          options: [pending ? pending.body : ''], multiline: true, rows: 3,
           help: client
-            ? 'Pick a line to try the demo, or write my own and say it in your own words.'
-            : 'Pick a line to try the demo, or write my own. Either way it is a draft until you '
-              + 'send it, and sending it is adoption.' })
+            ? 'Say whatever you like. It goes to the firm as your own work, attributed to you.'
+            : 'The model\u2019s draft arrives here. Edit it, then send it \u2014 sending is adoption, '
+              + 'and the send record names the key that did it.' })
       + '<div class="wp-composebar">'
       + '<div class="wp-composeleft">'
       + '<label class="btn ghost wp-attach" for="wp-file">Attach a document</label>'
       + '<input type="file" id="wp-file" class="wp-file">'
+      + kindPick
       + pick('wp-model', 'Model', MODELS, st.model)
       + pick('wp-harness', 'Harness', HARNESSES, st.harness)
       + '</div>'
       + '<div class="actions">'
+      + onTarget
       + '<button class="btn ghost" data-act="assist">Ask the model</button>'
       + '<button class="btn ghost" data-act="post-bare">No attribution</button>'
-      + '<button class="btn" data-act="post">' + (client ? 'Send' : 'Hold as a draft') + '</button>'
+      + sendRow
       + '</div></div></div>';
   }
 
@@ -1161,7 +1178,7 @@
     st.clientToken = enrolled.participantToken;
 
     await st.api.postMessage({ role: 'client', key: st.clientToken }, st.matterId, {
-      body: CLIENT_LINES[0], origin: 'human', kind: 'draft',
+      body: OPENING_MESSAGE, origin: 'human', kind: 'draft',
     });
     await st.api.assist(session(st, 'lawyer'), st.matterId, { prompt: 'do we have a claim' });
     note(st, 'ok', 'Matter opened. ' + (st.lawyerToken
@@ -1208,8 +1225,20 @@
           : 'Model output in the client\u2019s own pane, attributed to ' + m.modelId + '.');
       } else if (name === 'send') {
         const sel = el.querySelector('.wp-kind[data-id="' + id + '"]');
+        // What is in the box is what gets adopted. If the lawyer edited the draft, the
+        // edit is stored as a new draft first: sending the old text while showing the new
+        // text would be the page lying about what was adopted.
+        let sendId = id;
+        const draft = (st.messages || []).filter((x) => x.id === id)[0];
+        const typed = text();
+        if (draft && typed && typed.trim() !== String(draft.body || '').trim()) {
+          const edited = await st.api.postMessage(auth, st.matterId,
+            { body: typed, origin: 'human', kind: sel ? sel.value : 'draft' });
+          sendId = edited.id;
+          note(st, 'ok', 'Your edit was stored as the draft that is about to be sent.');
+        }
         const m = await st.api.send(session(st, 'lawyer'), st.matterId,
-          { messageId: id, kind: sel ? sel.value : 'draft' });
+          { messageId: sendId, kind: sel ? sel.value : 'draft' });
         // Keep the adoption record: it is the evidence for one of the four claims on a
         // certificate, and the appliance only hands it over once, here.
         if (m.adoption) st.adoption = m.adoption;
