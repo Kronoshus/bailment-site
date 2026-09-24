@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 300" role="img" aria-labelledby="fcoT fcoD">
+  <title id="fcoT">Where the computing happens, split by what kind of data it is</title>
+  <desc id="fcoD">Inside the firm, on the appliance, sit everything that touches a client: redaction, templates and the vault, the private matter index, and the local model. At Bailment, on shared GPUs, sits the public-law library of statutes, case law and court forms, built once for every firm. A question joins the two at answer time. Every piece of the answer carries a tag saying whether it came from the client's file or from public law. Nothing from the firm's side is ever sent to build the public side.</desc>
+  <defs><marker id="m-co" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <rect x="10" y="20" width="400" height="220" rx="14" class="dg-box-a"/>
+  <text class="dg-s" x="30" y="44">INSIDE THE FIRM · THE APPLIANCE</text>
+  <rect x="30" y="58" width="175" height="44" rx="8" class="dg-box"/><text class="dg-t" x="117" y="85" text-anchor="middle">Redaction</text>
+  <rect x="215" y="58" width="175" height="44" rx="8" class="dg-box"/><text class="dg-t" x="302" y="85" text-anchor="middle">Template + vault</text>
+  <rect x="30" y="112" width="175" height="44" rx="8" class="dg-box"/><text class="dg-t" x="117" y="139" text-anchor="middle">Matter index</text>
+  <rect x="215" y="112" width="175" height="44" rx="8" class="dg-box"/><text class="dg-t" x="302" y="139" text-anchor="middle">Local model</text>
+  <text class="dg-s" x="30" y="184">CLIENT DATA · PSEUDONYMOUS, SO CONFIDENTIAL</text>
+  <text class="dg-s" x="30" y="202">HOSTING IT ELSEWHERE WOULD BE CUSTODY</text>
+  <text class="dg-s" x="30" y="220">LLAMA, QWEN OR ANY OPENAI-COMPATIBLE MODEL</text>
+  <rect x="560" y="20" width="310" height="140" rx="14" class="dg-box"/>
+  <text class="dg-s" x="580" y="44">AT BAILMENT · SHARED GPUs</text>
+  <text class="dg-t" x="580" y="74">Public-law library</text>
+  <text class="dg-t" x="580" y="98">Statutes, case law, court forms</text>
+  <text class="dg-s" x="580" y="124">BUILT ONCE, SERVED TO EVERY FIRM</text>
+  <text class="dg-s" x="580" y="142">OPEN DATA · NO LICENCE FEE</text>
+  <rect x="560" y="186" width="310" height="54" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="715" y="210" text-anchor="middle">One answer, every source tagged</text>
+  <text class="dg-s" x="715" y="228" text-anchor="middle">CLIENT FILE · OR · PUBLIC LAW</text>
+  <path class="dg-line-a" d="M560 90 H416" marker-end="url(#m-co)" style="color:#3A86FF"/>
+  <text class="dg-l" x="488" y="82" text-anchor="middle">PUBLIC LAW IN</text>
+  <path class="dg-line-a" d="M410 213 H554" marker-end="url(#m-co)" style="color:#3A86FF"/>
+  <text class="dg-l" x="482" y="205" text-anchor="middle">JOINED HERE</text>
+  <path class="dg-line" d="M416 140 H554" style="stroke-dasharray:4 4"/>
+  <text class="dg-s" x="486" y="132" text-anchor="middle">CLIENT DATA OUT</text>
+  <text class="dg-l" x="486" y="158" text-anchor="middle">NEVER</text>
+  <text class="dg-l" x="10" y="286">THE SPLIT IS BY KIND OF DATA, NOT BY WHO HOSTS IT · THAT IS WHAT MAKES "NO CUSTODY" TRUE</text>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 310" role="img" aria-labelledby="frT frD">
+  <title id="frT">Revenue and operating result, 2027 to 2030, base case</title>
+  <desc id="frD">Revenue grows from $56,000 in 2027 to $380,000 in 2028, $1,458,000 in 2029 and $3,807,000 in 2030. The operating result is a loss of $957,000 in 2027 and $435,000 in 2028, then a profit of $520,000 in 2029 and $2,587,000 in 2030. The company turns profitable in 2029. Figures are from docs/financial_model.py, before any founder salary.</desc>
+  <g class="dg-grid" style="stroke-width:1">
+    <path d="M90 30 H870"/><path d="M90 74 H870"/><path d="M90 118 H870"/><path d="M90 162 H870"/><path d="M90 250 H870"/>
+  </g>
+  <path d="M90 206 H870" class="dg-line" style="stroke-width:1.4"/>
+  <text class="dg-s" x="80" y="34" text-anchor="end">$4M</text>
+  <text class="dg-s" x="80" y="78" text-anchor="end">$3M</text>
+  <text class="dg-s" x="80" y="122" text-anchor="end">$2M</text>
+  <text class="dg-s" x="80" y="166" text-anchor="end">$1M</text>
+  <text class="dg-s" x="80" y="210" text-anchor="end">$0</text>
+  <text class="dg-s" x="80" y="254" text-anchor="end">−$1M</text>
+  <rect class="dg-bar" x="127" y="203.5" width="56" height="2.5"/>
+  <rect class="dg-bar-n" x="189" y="206" width="56" height="42.1"/>
+  <rect class="dg-bar" x="317" y="189.3" width="56" height="16.7"/>
+  <rect class="dg-bar-n" x="379" y="206" width="56" height="19.1"/>
+  <rect class="dg-bar" x="507" y="141.8" width="56" height="64.2"/>
+  <rect class="dg-bar" x="569" y="183.1" width="56" height="22.9" style="opacity:.55"/>
+  <rect class="dg-bar" x="697" y="38.5" width="56" height="167.5"/>
+  <rect class="dg-bar" x="759" y="92.2" width="56" height="113.8" style="opacity:.55"/>
+  <text class="dg-t" x="155" y="196" text-anchor="middle">$56K</text>
+  <text class="dg-t" x="217" y="243" text-anchor="middle" style="font-size:12px">−$957K</text>
+  <text class="dg-t" x="345" y="182" text-anchor="middle">$380K</text>
+  <text class="dg-t" x="407" y="242" text-anchor="middle" style="font-size:12px">−$435K</text>
+  <text class="dg-t" x="535" y="134" text-anchor="middle">$1.46M</text>
+  <text class="dg-t" x="597" y="176" text-anchor="middle">$520K</text>
+  <text class="dg-t" x="725" y="31" text-anchor="middle">$3.81M</text>
+  <text class="dg-t" x="787" y="85" text-anchor="middle">$2.59M</text>
+  <text class="dg-s" x="186" y="276" text-anchor="middle">2027</text>
+  <text class="dg-s" x="376" y="276" text-anchor="middle">2028</text>
+  <text class="dg-s" x="566" y="276" text-anchor="middle">2029 · PROFITABLE</text>
+  <text class="dg-s" x="756" y="276" text-anchor="middle">2030</text>
+  <rect class="dg-bar" x="100" y="292" width="12" height="10"/><text class="dg-s" x="118" y="301">REVENUE</text>
+  <rect class="dg-bar" x="210" y="292" width="12" height="10" style="opacity:.55"/><text class="dg-s" x="228" y="301">OPERATING PROFIT</text>
+  <rect class="dg-bar-n" x="370" y="292" width="12" height="10"/><text class="dg-s" x="388" y="301">OPERATING LOSS</text>
+  <text class="dg-s" x="870" y="301" text-anchor="end">BASE CASE · BEFORE FOUNDER PAY</text>
+</svg>

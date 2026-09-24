@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 330" role="img" aria-labelledby="fsT fsD">
+  <title id="fsT">One motion: the four steps a lawyer takes, and what happens by itself behind each one</title>
+  <desc id="fsD">Four steps across the top, the same as the site's Technology Demo: Workplace, Certify, Publish, Verify. Under each step, the work the system does without being asked. The lawyer clicks four times; the document never leaves the firm.</desc>
+  <defs><marker id="m-steps" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <rect x="10" y="30" width="182" height="72" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="101" y="52" text-anchor="middle">1 · WORKPLACE</text>
+  <text class="dg-t" x="101" y="74" text-anchor="middle">Talk, then notarize</text>
+  <text class="dg-s" x="101" y="91" text-anchor="middle">CLIENT + LAWYER</text>
+  <rect x="236" y="30" width="182" height="72" rx="10" class="dg-box"/>
+  <text class="dg-s" x="327" y="52" text-anchor="middle">2 · CERTIFY</text>
+  <text class="dg-t" x="327" y="74" text-anchor="middle">Check cites, sign</text>
+  <text class="dg-s" x="327" y="91" text-anchor="middle">FOUR CLAIMS</text>
+  <rect x="462" y="30" width="182" height="72" rx="10" class="dg-box"/>
+  <text class="dg-s" x="553" y="52" text-anchor="middle">3 · PUBLISH</text>
+  <text class="dg-t" x="553" y="74" text-anchor="middle">Batch into one root</text>
+  <text class="dg-s" x="553" y="91" text-anchor="middle">NO NAMES, NO COUNT</text>
+  <rect x="688" y="30" width="182" height="72" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="779" y="52" text-anchor="middle">4 · VERIFY</text>
+  <text class="dg-t" x="779" y="74" text-anchor="middle">A court checks it</text>
+  <text class="dg-s" x="779" y="91" text-anchor="middle">IN ITS OWN BROWSER</text>
+  <path class="dg-line-a" d="M192 66 H230" marker-end="url(#m-steps)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M418 66 H456" marker-end="url(#m-steps)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M644 66 H682" marker-end="url(#m-steps)" style="color:#3A86FF"/>
+  <text class="dg-l" x="10" y="136">WHAT HAPPENS BY ITSELF</text>
+  <rect x="10" y="146" width="182" height="132" rx="10" class="dg-box"/>
+  <text class="dg-t" x="24" y="172">Names become tokens</text>
+  <text class="dg-t" x="24" y="200">AI runs in the firm</text>
+  <text class="dg-t" x="24" y="228">Every message signed</text>
+  <text class="dg-t" x="24" y="256">Hash: SHA-256</text>
+  <rect x="236" y="146" width="182" height="132" rx="10" class="dg-box"/>
+  <text class="dg-t" x="250" y="172">Model + version read</text>
+  <text class="dg-t" x="250" y="200">Each cite looked up</text>
+  <text class="dg-t" x="250" y="228">Redactor version kept</text>
+  <text class="dg-t" x="250" y="256">Bailment signs it</text>
+  <rect x="462" y="146" width="182" height="132" rx="10" class="dg-box"/>
+  <text class="dg-t" x="476" y="172">Joins this period</text>
+  <text class="dg-t" x="476" y="200">Many firms, one tree</text>
+  <text class="dg-t" x="476" y="228">One root, no names</text>
+  <text class="dg-t" x="476" y="256">Root to chain*</text>
+  <rect x="688" y="146" width="182" height="132" rx="10" class="dg-box"/>
+  <text class="dg-t" x="702" y="172">Open the short link</text>
+  <text class="dg-t" x="702" y="200">Signature checked</text>
+  <text class="dg-t" x="702" y="228">Registry checked</text>
+  <text class="dg-t" x="702" y="256">Root checked*</text>
+  <path class="dg-line" d="M101 102 V140" style="color:#2A2F33"/>
+  <path class="dg-line" d="M327 102 V140"/>
+  <path class="dg-line" d="M553 102 V140"/>
+  <path class="dg-line" d="M779 102 V140"/>
+  <text class="dg-l" x="10" y="306">THE LAWYER CLICKS FOUR TIMES · THE DOCUMENT NEVER LEAVES THE FIRM</text>
+  <text class="dg-s" x="870" y="306" text-anchor="end">* PLANNED, NOT IN THE DEMO YET</text>
+</svg>

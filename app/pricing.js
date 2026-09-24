@@ -1,7 +1,7 @@
 // Pricing calculator. Every number comes from docs/financial_model.py, nothing is invented.
 //   $0.10 per certification, $0.01 per notarization, whoever pays and however.
 //   A lawyer certifies every document made with AI (about 100 a month), with about five
-//   notarizations behind each: $0.15 a document, about $15 a lawyer a month. A Team or Enterprise
+//   notarizations behind each: $0.15 a document, about $15 a lawyer a month. An Enterprise
 //   seat is that usage at list: $15 for 100 certifications and 500 notarizations, pooled across the
 //   firm, usage beyond the pool at list. Enterprise has a 50-seat minimum.
 //   USDM is debited as it happens; Stripe (USD) is metered and invoiced at month end.
@@ -14,7 +14,6 @@
     cert: 0.10,
     notary: 0.01,
     notariesPerCert: 5,           // timestamps taken while drafting, per certified document
-    team: { seat: 15, certs: 100, notaries: 500 },
     enterprise: { seat: 15, certs: 100, notaries: 500, minSeats: 50 },
     infraMonthly: [1500, 4000],   // flat, whatever the customer count
   };
@@ -32,7 +31,7 @@
     const seatPlan = (p, seats) => seats * p.seat * 12 + beyond(p, seats);
     const seats = Math.max(lawyers, e.minSeats);
     const tiers = [
-      { id: 'payg', label: 'Pay as you go', fits: 'Solo and small firms', annual: usage },
+      { id: 'payg', label: 'Pay as you go', fits: 'Any firm under ' + e.minSeats + ' lawyers', annual: usage },
       { id: 'enterprise', label: 'Enterprise', fits: 'Large firms, ' + e.minSeats + '-seat minimum',
         annual: seatPlan(e, seats) },
     ];
@@ -45,7 +44,7 @@
   function prRender(el) {
     el.innerHTML = `
       <h2>What a firm pays</h2>
-      <p class="lede">Usage for anyone, seats for teams, a contract for the enterprise.</p>
+      <p class="lede">Usage for anyone, a seat contract for the enterprise.</p>
       <div class="panel builder">
         <div class="inline">
           <div class="field"><label>Lawyers in the firm</label>
@@ -89,7 +88,7 @@
           </div>
           <div class="panel">
             <h3>What a seat includes</h3>
-            ${row('Team or Enterprise', '$' + PLAN.team.seat + '/lawyer a month, the same at every firm size')}
+            ${row('Enterprise', '$' + PLAN.enterprise.seat + '/lawyer a month, the same as usage at list')}
             ${row('Pooled', 'across the whole firm')}
             ${row('Enterprise adds', PLAN.enterprise.minSeats + '-seat minimum, annual prepay, single sign-on, audit export')}
           </div>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 280" role="img" aria-labelledby="fpT fpD">
+  <title id="fpT">Two ways to pay, one price</title>
+  <desc id="fpD">Only two acts are ever priced: a certification at ten cents and a notarization at one cent. A firm paying in USDM on Cardano tops up a prepaid balance with an x402 payment, and each act is taken from that balance the moment it happens. A firm paying in dollars never touches crypto: Stripe meters each act and sends one invoice at the end of the month. Chain fees are paid in DUST made from Bailment's own NIGHT and are never passed on. Everyday messages are never metered.</desc>
+  <defs><marker id="m-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <rect x="10" y="60" width="190" height="110" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="26" y="84">THE ONLY PRICED ACTS</text>
+  <text class="dg-t" x="26" y="112">Certify: $0.10</text>
+  <text class="dg-t" x="26" y="136">Notarize: $0.01</text>
+  <text class="dg-s" x="26" y="158">MESSAGES: NEVER METERED</text>
+  <text class="dg-l" x="256" y="28">PAY IN USDM ON CARDANO</text>
+  <rect x="256" y="38" width="190" height="64" rx="10" class="dg-box"/>
+  <text class="dg-t" x="351" y="66" text-anchor="middle">x402 top-up</text>
+  <text class="dg-s" x="351" y="86" text-anchor="middle">ONE PAYMENT, IN ADVANCE</text>
+  <rect x="490" y="38" width="190" height="64" rx="10" class="dg-box"/>
+  <text class="dg-t" x="585" y="66" text-anchor="middle">Prepaid balance</text>
+  <text class="dg-s" x="585" y="86" text-anchor="middle">DEBITED INSTANTLY</text>
+  <text class="dg-l" x="256" y="140">PAY IN DOLLARS</text>
+  <rect x="256" y="150" width="190" height="64" rx="10" class="dg-box"/>
+  <text class="dg-t" x="351" y="178" text-anchor="middle">Stripe meter</text>
+  <text class="dg-s" x="351" y="198" text-anchor="middle">NO CRYPTO NEEDED</text>
+  <rect x="490" y="150" width="190" height="64" rx="10" class="dg-box"/>
+  <text class="dg-t" x="585" y="178" text-anchor="middle">Monthly invoice</text>
+  <text class="dg-s" x="585" y="198" text-anchor="middle">BILLED AT MONTH END</text>
+  <rect x="724" y="84" width="146" height="64" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="797" y="112" text-anchor="middle">Same price</text>
+  <text class="dg-s" x="797" y="132" text-anchor="middle">EITHER WAY</text>
+  <path class="dg-line-a" d="M200 100 H228 V70 H250" marker-end="url(#m-p)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M200 130 H228 V182 H250" marker-end="url(#m-p)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M446 70 H484" marker-end="url(#m-p)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M446 182 H484" marker-end="url(#m-p)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M680 70 H700 V108 H718" marker-end="url(#m-p)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M680 182 H700 V124 H718" marker-end="url(#m-p)" style="color:#3A86FF"/>
+  <text class="dg-s" x="10" y="250">WHY NOT PAY ON-CHAIN FOR EACH ACT? THE CARDANO FEE, ABOUT 0.17 ADA, IS AS BIG AS THE CHARGE.</text>
+  <text class="dg-l" x="10" y="272">CHAIN FEES ARE PAID IN DUST FROM BAILMENT'S OWN NIGHT · NEVER PASSED ON TO THE FIRM</text>
+</svg>

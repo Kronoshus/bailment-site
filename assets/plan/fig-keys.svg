@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 290" role="img" aria-labelledby="fkT fkD">
+  <title id="fkT">Who holds which key, and what each key can and cannot do</title>
+  <desc id="fkD">Three tiers. The root key is held by Bailment, offline, split so any three of five holders must agree. It signs firm licences and approves contract templates, and it cannot read, decrypt or act as a firm. The firm key is made on the firm's own hardware; only its public half is sent. It onboards clients and deploys licensed templates, and it cannot approve templates, pass its cap or outlive its 45-day licence. The client key is made in the client's own browser from a one-time enrollment link. It works on the client's own matters and nothing else.</desc>
+  <defs><marker id="m-k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <text class="dg-l" x="10" y="20">KEY</text>
+  <text class="dg-l" x="300" y="20">CAN</text>
+  <text class="dg-l" x="600" y="20">CANNOT</text>
+  <rect x="10" y="30" width="250" height="68" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="26" y="56">Root · Bailment</text>
+  <text class="dg-s" x="26" y="76">OFFLINE · ANY 3 OF 5 HOLDERS</text>
+  <rect x="300" y="30" width="270" height="68" rx="10" class="dg-box"/>
+  <text class="dg-t" x="316" y="56">Sign firm licences</text>
+  <text class="dg-t" x="316" y="78">Approve contract templates</text>
+  <rect x="600" y="30" width="270" height="68" rx="10" class="dg-box"/>
+  <text class="dg-t" x="616" y="56">Read or decrypt anything</text>
+  <text class="dg-t" x="616" y="78">Act as a firm</text>
+  <rect x="10" y="122" width="250" height="68" rx="10" class="dg-box"/>
+  <text class="dg-t" x="26" y="148">Firm · made on its hardware</text>
+  <text class="dg-s" x="26" y="168">ONLY THE PUBLIC HALF IS SENT</text>
+  <rect x="300" y="122" width="270" height="68" rx="10" class="dg-box"/>
+  <text class="dg-t" x="316" y="148">Invite clients</text>
+  <text class="dg-t" x="316" y="170">Deploy licensed templates</text>
+  <rect x="600" y="122" width="270" height="68" rx="10" class="dg-box"/>
+  <text class="dg-t" x="616" y="148">Approve templates, pass its cap</text>
+  <text class="dg-t" x="616" y="170">Outlive its 45-day licence</text>
+  <rect x="10" y="214" width="250" height="68" rx="10" class="dg-box"/>
+  <text class="dg-t" x="26" y="240">Client · made in the browser</text>
+  <text class="dg-s" x="26" y="260">ONE-TIME LINK · 72 HOURS</text>
+  <rect x="300" y="214" width="270" height="68" rx="10" class="dg-box"/>
+  <text class="dg-t" x="316" y="240">Submit and review versions</text>
+  <text class="dg-t" x="316" y="262">on its own matters</text>
+  <rect x="600" y="214" width="270" height="68" rx="10" class="dg-box"/>
+  <text class="dg-t" x="616" y="240">Touch anything outside</text>
+  <text class="dg-t" x="616" y="262">its own matters</text>
+  <path class="dg-line-a" d="M135 98 V116" marker-end="url(#m-k)" style="color:#3A86FF"/>
+  <text class="dg-l" x="145" y="112">LICENCE</text>
+  <path class="dg-line-a" d="M135 190 V208" marker-end="url(#m-k)" style="color:#3A86FF"/>
+  <text class="dg-l" x="145" y="204">ENROLLMENT LINK</text>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 360" role="img" aria-labelledby="faT faD">
+  <title id="faT">The whole system on one page</title>
+  <desc id="faD">The client uses a browser portal and the lawyer uses a firm portal over a secure tunnel. Both reach the appliance, a computer the firm owns. The appliance runs the shared AI thread and keeps the templates, the sealed vault and the matter index. It asks Bailment's shared public-law library for case law. From the appliance, two channels lead to the Midnight blockchain: the automatic Client Communication Protocol, which publishes one blinded root per period, and the opt-in Document Record, which records one commitment per chosen document. Money settles on Cardano, which also keeps a long-term checkpoint.</desc>
+  <defs><marker id="m-arch" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <rect x="10" y="30" width="170" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="95" y="55" text-anchor="middle">Client portal</text>
+  <text class="dg-s" x="95" y="73" text-anchor="middle">ANY BROWSER</text>
+  <rect x="10" y="118" width="170" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="95" y="143" text-anchor="middle">Firm portal</text>
+  <text class="dg-s" x="95" y="161" text-anchor="middle">WIREGUARD + mTLS</text>
+  <rect x="236" y="20" width="250" height="236" rx="14" class="dg-box-a"/>
+  <text class="dg-s" x="361" y="42" text-anchor="middle">THE APPLIANCE · FIRM-OWNED GPU</text>
+  <rect x="252" y="54" width="218" height="44" rx="8" class="dg-box"/>
+  <text class="dg-t" x="361" y="81" text-anchor="middle">Redactor: template + vault</text>
+  <rect x="252" y="106" width="218" height="44" rx="8" class="dg-box"/>
+  <text class="dg-t" x="361" y="133" text-anchor="middle">Local AI model</text>
+  <rect x="252" y="158" width="218" height="44" rx="8" class="dg-box"/>
+  <text class="dg-t" x="361" y="185" text-anchor="middle">Shared AI thread</text>
+  <rect x="252" y="210" width="218" height="36" rx="8" class="dg-box"/>
+  <text class="dg-t" x="361" y="233" text-anchor="middle">Matter index (private)</text>
+  <rect x="236" y="286" width="250" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="361" y="311" text-anchor="middle">Public-law library</text>
+  <text class="dg-s" x="361" y="329" text-anchor="middle">BAILMENT GPUs · NO CLIENT DATA</text>
+  <rect x="560" y="30" width="310" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="715" y="55" text-anchor="middle">Client Communication Protocol</text>
+  <text class="dg-s" x="715" y="73" text-anchor="middle">AUTOMATIC · ONE ROOT PER PERIOD</text>
+  <rect x="560" y="118" width="310" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="715" y="143" text-anchor="middle">Document Record</text>
+  <text class="dg-s" x="715" y="161" text-anchor="middle">OPT-IN · ONE COMMITMENT PER DOCUMENT</text>
+  <rect x="560" y="206" width="310" height="50" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="715" y="229" text-anchor="middle">Midnight blockchain</text>
+  <text class="dg-s" x="715" y="246" text-anchor="middle">PRIVATE CONTRACTS (COMPACT)</text>
+  <rect x="560" y="286" width="310" height="58" rx="10" class="dg-box"/>
+  <text class="dg-t" x="715" y="311" text-anchor="middle">Cardano</text>
+  <text class="dg-s" x="715" y="329" text-anchor="middle">PAYMENTS + LONG-TERM CHECKPOINT</text>
+  <path class="dg-line-a" d="M180 59 H230" marker-end="url(#m-arch)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M180 147 H230" marker-end="url(#m-arch)" style="color:#3A86FF"/>
+  <path class="dg-line" d="M361 286 V262" marker-end="url(#m-arch)" style="color:#9BA7B4"/>
+  <text class="dg-l" x="372" y="276">LAW, NOT CLIENT FILES</text>
+  <path class="dg-line-a" d="M486 59 H554" marker-end="url(#m-arch)" style="color:#3A86FF"/>
+  <text class="dg-l" x="520" y="52" text-anchor="middle">ROOT</text>
+  <path class="dg-line-a" d="M486 147 H554" marker-end="url(#m-arch)" style="color:#3A86FF"/>
+  <text class="dg-l" x="520" y="140" text-anchor="middle">HASH</text>
+  <path class="dg-line" d="M534 59 V231 H554" marker-end="url(#m-arch)" style="color:#9BA7B4"/>
+  <path class="dg-line" d="M715 256 V280" marker-end="url(#m-arch)" style="color:#9BA7B4"/>
+  <text class="dg-s" x="10" y="220">NO TEXT, NAMES OR VECTORS</text>
+  <text class="dg-s" x="10" y="236">EVER LEAVE THE APPLIANCE</text>
+</svg>

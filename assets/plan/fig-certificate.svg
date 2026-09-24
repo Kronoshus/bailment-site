@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 330" role="img" aria-labelledby="fcT fcD">
+  <title id="fcT">The four claims on a certificate, what backs each one, and where each one stops</title>
+  <desc id="fcD">Claim one, which model ran, is backed by the signed model manifest and names the model but says nothing about its quality. Claim two, a lawyer sent it, is backed by the send record and the lawyer's key, but does not prove anyone read it. Claim three, the citations are real, is backed by a lookup against the case-law log, and shows the case exists, not that it says what the filing claims. Claim four, names were removed first, is backed by the recorded redactor version, but some clues that identify a person are not names.</desc>
+  <defs><marker id="m-cert" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <text class="dg-l" x="10" y="22">THE CLAIM</text>
+  <text class="dg-l" x="316" y="22">WHAT BACKS IT</text>
+  <text class="dg-l" x="610" y="22">WHERE IT STOPS</text>
+  <rect x="10" y="34" width="250" height="60" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="26" y="56">1 · MODEL</text>
+  <text class="dg-t" x="26" y="78">Which model ran</text>
+  <rect x="316" y="34" width="250" height="60" rx="10" class="dg-box"/>
+  <text class="dg-t" x="332" y="60">Signed model manifest</text>
+  <text class="dg-s" x="332" y="78">PINNED IN THE LICENCE</text>
+  <rect x="610" y="34" width="260" height="60" rx="10" class="dg-box"/>
+  <text class="dg-t" x="626" y="60">Names the model and</text>
+  <text class="dg-t" x="626" y="80">version, not its quality</text>
+  <rect x="10" y="106" width="250" height="60" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="26" y="128">2 · LAWYER</text>
+  <text class="dg-t" x="26" y="150">A lawyer's key sent it</text>
+  <rect x="316" y="106" width="250" height="60" rx="10" class="dg-box"/>
+  <text class="dg-t" x="332" y="132">Send record</text>
+  <text class="dg-s" x="332" y="150">NO SEND, NO FILING</text>
+  <rect x="610" y="106" width="260" height="60" rx="10" class="dg-box"/>
+  <text class="dg-t" x="626" y="132">Not proof anyone read it.</text>
+  <text class="dg-t" x="626" y="152">The lawyer swears to that.</text>
+  <rect x="10" y="178" width="250" height="60" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="26" y="200">3 · CITATIONS</text>
+  <text class="dg-t" x="26" y="222">Every cite is a real case</text>
+  <rect x="316" y="178" width="250" height="60" rx="10" class="dg-box"/>
+  <text class="dg-t" x="332" y="204">Lookup, logged</text>
+  <text class="dg-s" x="332" y="222">MEASURED IN THE DEMO TODAY</text>
+  <rect x="610" y="178" width="260" height="60" rx="10" class="dg-box"/>
+  <text class="dg-t" x="626" y="204">The case exists. Not that</text>
+  <text class="dg-t" x="626" y="224">it says what the brief says.</text>
+  <rect x="10" y="250" width="250" height="60" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="26" y="272">4 · PRIVACY</text>
+  <text class="dg-t" x="26" y="294">Names removed first</text>
+  <rect x="316" y="250" width="250" height="60" rx="10" class="dg-box"/>
+  <text class="dg-t" x="332" y="276">Redactor version</text>
+  <text class="dg-s" x="332" y="294">ON THE APPROVED LIST</text>
+  <rect x="610" y="250" width="260" height="60" rx="10" class="dg-box"/>
+  <text class="dg-t" x="626" y="276">Some clues are not names,</text>
+  <text class="dg-t" x="626" y="296">like a rare job in a small town.</text>
+  <path class="dg-line-a" d="M260 64 H310" marker-end="url(#m-cert)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M260 136 H310" marker-end="url(#m-cert)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M260 208 H310" marker-end="url(#m-cert)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M260 280 H310" marker-end="url(#m-cert)" style="color:#3A86FF"/>
+  <path class="dg-line" d="M566 64 H604" marker-end="url(#m-cert)" style="color:#9BA7B4"/>
+  <path class="dg-line" d="M566 136 H604" marker-end="url(#m-cert)" style="color:#9BA7B4"/>
+  <path class="dg-line" d="M566 208 H604" marker-end="url(#m-cert)" style="color:#9BA7B4"/>
+  <path class="dg-line" d="M566 280 H604" marker-end="url(#m-cert)" style="color:#9BA7B4"/>
+</svg>

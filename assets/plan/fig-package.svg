@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 304" role="img" aria-labelledby="fpkT fpkD">
+  <title id="fpkT">The record package, and how a judge checks it against the blockchain</title>
+  <desc id="fpkD">On the left, the record package the firm keeps on its appliance for every notarization and certification: the vault key sealed in hardware, from which every token and salt is derived, the commitment salt, the path to the batch root and its period, the redactor and format versions, and the template. In the middle, each vault entry is hashed with its token and salt, the entry hashes combine into one vault root, and the template is hashed. Both feed the commitment, a hash of the template hash, the vault root and a salt. The commitment joins this period's batch, whose root is published on the blockchain as a date stamp. A judge checks the same path upward. The firm holds the words; the chain holds the date.</desc>
+  <defs><marker id="m-pk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <rect x="10" y="20" width="300" height="236" rx="14" class="dg-box-a"/>
+  <text class="dg-s" x="26" y="44">RECORD PACKAGE · ON THE FIRM'S APPLIANCE</text>
+  <text class="dg-t" x="26" y="76">Vault key, sealed in hardware</text>
+  <text class="dg-t" x="26" y="106">Commitment salt</text>
+  <text class="dg-t" x="26" y="136">Path to the batch root, period</text>
+  <text class="dg-t" x="26" y="166">Redactor and format version</text>
+  <text class="dg-t" x="26" y="214">Template: [PARTY_1] v. [ORG_1]</text>
+  <text class="dg-s" x="26" y="244">WRITTEN ONCE · BACKED UP · SELF-CHECKED</text>
+  <rect x="356" y="20" width="236" height="40" rx="8" class="dg-box"/>
+  <text class="dg-t" x="474" y="45" text-anchor="middle">hash(PARTY_1, Jane Roe, salt)</text>
+  <rect x="356" y="68" width="236" height="40" rx="8" class="dg-box"/>
+  <text class="dg-t" x="474" y="93" text-anchor="middle">hash(ORG_1, Acme Corp., salt)</text>
+  <rect x="356" y="130" width="236" height="40" rx="8" class="dg-box-a"/>
+  <text class="dg-t" x="474" y="155" text-anchor="middle">Vault root</text>
+  <rect x="356" y="194" width="236" height="40" rx="8" class="dg-box"/>
+  <text class="dg-t" x="474" y="219" text-anchor="middle">Template hash</text>
+  <rect x="640" y="20" width="230" height="56" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="755" y="43" text-anchor="middle">Commitment</text>
+  <text class="dg-s" x="755" y="62" text-anchor="middle">TEMPLATE + VAULT ROOT + SALT</text>
+  <rect x="640" y="104" width="230" height="56" rx="10" class="dg-box"/>
+  <text class="dg-t" x="755" y="127" text-anchor="middle">This period's batch</text>
+  <text class="dg-s" x="755" y="146" text-anchor="middle">MANY FIRMS, ONE TREE</text>
+  <rect x="640" y="188" width="230" height="68" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="755" y="214" text-anchor="middle">Root on the blockchain</text>
+  <text class="dg-s" x="755" y="234" text-anchor="middle">A DATE STAMP, NOTHING ELSE</text>
+  <path class="dg-line-a" d="M310 70 H330 V40 H350" marker-end="url(#m-pk)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M330 70 V88 H350" marker-end="url(#m-pk)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M310 210 H350" marker-end="url(#m-pk)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M474 108 V124" marker-end="url(#m-pk)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M592 150 H614 V48 H634" marker-end="url(#m-pk)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M592 214 H614 V150" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M755 76 V98" marker-end="url(#m-pk)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M755 160 V182" marker-end="url(#m-pk)" style="color:#3A86FF"/>
+  <text class="dg-l" x="10" y="282">A JUDGE CHECKS THE SAME PATH UPWARD: ENTRY → VAULT ROOT → COMMITMENT → ROOT ON CHAIN</text>
+  <text class="dg-s" x="10" y="300">THE FIRM HOLDS THE WORDS · THE CHAIN HOLDS THE DATE · ONE CHANGED LETTER BREAKS THE MATCH</text>
+</svg>

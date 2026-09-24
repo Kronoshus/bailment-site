@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 250" role="img" aria-labelledby="fvT fvD">
+  <title id="fvT">What a court's browser checks when it opens the verification link</title>
+  <desc id="fvD">The court opens a short link. Its own browser runs four checks: the signature is Bailment's, the pipeline version is on the public registry, the claims match the signed certificate, and, in the planned design, the published root is on the blockchain. If all pass, the certificate is valid. The document itself is never shown and never sent.</desc>
+  <defs><marker id="m-ver" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <rect x="10" y="80" width="150" height="72" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="85" y="104" text-anchor="middle">THE COURT</text>
+  <text class="dg-t" x="85" y="126" text-anchor="middle">Opens the link</text>
+  <text class="dg-s" x="85" y="142" text-anchor="middle">NO ACCOUNT NEEDED</text>
+  <rect x="206" y="14" width="440" height="206" rx="14" class="dg-box"/>
+  <text class="dg-s" x="426" y="36" text-anchor="middle">CHECKS RUN IN THE COURT'S OWN BROWSER</text>
+  <rect x="222" y="48" width="408" height="36" rx="8" class="dg-box"/>
+  <text class="dg-t" x="238" y="71">1  Signature is Bailment's, licence was live</text>
+  <rect x="222" y="90" width="408" height="36" rx="8" class="dg-box"/>
+  <text class="dg-t" x="238" y="113">2  Pipeline version is on the public registry</text>
+  <rect x="222" y="132" width="408" height="36" rx="8" class="dg-box"/>
+  <text class="dg-t" x="238" y="155">3  The four claims match what was signed</text>
+  <rect x="222" y="174" width="408" height="36" rx="8" class="dg-box"/>
+  <text class="dg-t" x="238" y="197">4  Root is on the blockchain  (planned)</text>
+  <rect x="692" y="80" width="178" height="72" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="781" y="104" text-anchor="middle">RESULT</text>
+  <text class="dg-t" x="781" y="126" text-anchor="middle">Valid, or why not</text>
+  <text class="dg-s" x="781" y="142" text-anchor="middle">IN PLAIN WORDS</text>
+  <path class="dg-line-a" d="M160 116 H200" marker-end="url(#m-ver)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M646 116 H686" marker-end="url(#m-ver)" style="color:#3A86FF"/>
+  <text class="dg-l" x="10" y="244">THE DOCUMENT IS NEVER SHOWN OR SENT · ANYONE, EVEN OPPOSING COUNSEL, CAN RUN THE SAME CHECK</text>
+</svg>

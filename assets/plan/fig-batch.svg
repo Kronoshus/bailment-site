@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 308" role="img" aria-labelledby="fbT fbD">
+  <title id="fbT">How many records become one root, and how one record is proven later</title>
+  <desc id="fbD">Eight records from several firms sit along the bottom, each already a hash. Pairs are hashed together, then pairs of those, until one root is left at the top. Only the root is published. To prove one record later, the firm shows that record plus the three hashes beside its path, not the other records. Nobody else can tell which records exist or whose they are.</desc>
+  <g class="dg-line-a" style="color:#3A86FF">
+    <path d="M440 64 L240 124"/><path d="M440 64 L640 124"/>
+    <path d="M240 150 L140 196"/><path d="M240 150 L340 196"/>
+    <path d="M640 150 L540 196"/><path d="M640 150 L740 196"/>
+  </g>
+  <g class="dg-line">
+    <path d="M140 222 L90 250"/><path d="M140 222 L190 250"/>
+    <path d="M340 222 L290 250"/><path d="M340 222 L390 250"/>
+    <path d="M540 222 L490 250"/><path d="M540 222 L590 250"/>
+    <path d="M740 222 L690 250"/><path d="M740 222 L790 250"/>
+  </g>
+  <rect x="360" y="22" width="160" height="42" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="440" y="48" text-anchor="middle">Root → blockchain</text>
+  <rect x="180" y="124" width="120" height="26" rx="8" class="dg-box-a"/>
+  <text class="dg-s" x="240" y="141" text-anchor="middle">AB · SHOWN</text>
+  <rect x="580" y="124" width="120" height="26" rx="8" class="dg-box"/>
+  <text class="dg-s" x="640" y="141" text-anchor="middle">CD</text>
+  <rect x="90" y="196" width="100" height="26" rx="8" class="dg-box"/>
+  <text class="dg-s" x="140" y="213" text-anchor="middle">A</text>
+  <rect x="290" y="196" width="100" height="26" rx="8" class="dg-box"/>
+  <text class="dg-s" x="340" y="213" text-anchor="middle">B</text>
+  <rect x="490" y="196" width="100" height="26" rx="8" class="dg-box"/>
+  <text class="dg-s" x="540" y="213" text-anchor="middle">C</text>
+  <rect x="690" y="196" width="100" height="26" rx="8" class="dg-box-a"/>
+  <text class="dg-s" x="740" y="213" text-anchor="middle">D · SHOWN</text>
+  <rect x="50" y="250" width="80" height="26" rx="8" class="dg-box"/><text class="dg-s" x="90" y="267" text-anchor="middle">FIRM 1</text>
+  <rect x="150" y="250" width="80" height="26" rx="8" class="dg-box"/><text class="dg-s" x="190" y="267" text-anchor="middle">FIRM 2</text>
+  <rect x="250" y="250" width="80" height="26" rx="8" class="dg-box"/><text class="dg-s" x="290" y="267" text-anchor="middle">FIRM 1</text>
+  <rect x="350" y="250" width="80" height="26" rx="8" class="dg-box"/><text class="dg-s" x="390" y="267" text-anchor="middle">FIRM 3</text>
+  <rect x="450" y="250" width="80" height="26" rx="8" class="dg-box-a"/><text class="dg-s" x="490" y="267" text-anchor="middle">SHOWN</text>
+  <rect x="550" y="250" width="80" height="26" rx="8" class="dg-box-a"/><text class="dg-l" x="590" y="267" text-anchor="middle">YOURS</text>
+  <rect x="650" y="250" width="80" height="26" rx="8" class="dg-box"/><text class="dg-s" x="690" y="267" text-anchor="middle">FIRM 3</text>
+  <rect x="750" y="250" width="80" height="26" rx="8" class="dg-box"/><text class="dg-s" x="790" y="267" text-anchor="middle">FIRM 1</text>
+  <text class="dg-l" x="10" y="300">TO PROVE YOURS, SHOW THREE HASHES MARKED SHOWN · EVERYTHING ELSE STAYS HIDDEN</text>
+  <text class="dg-s" x="870" y="40" text-anchor="end">PUBLISHED ON A FIXED</text>
+  <text class="dg-s" x="870" y="56" text-anchor="end">SCHEDULE, EVEN IF EMPTY</text>
+</svg>

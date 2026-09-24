@@ -1078,8 +1078,8 @@
       ok('5 lawyers at 100 AI documents a month pay about $900 a year as they go (financial_model.py)',
         Math.abs(tier(yr(5, 100), 'payg') - 900) < 0.01, '$' + tier(yr(5, 100), 'payg').toFixed(2));
       ok('a seat is its usage at list: 100 certifications and 500 notarizations = $15',
-        Math.abs(B.pricing.PLAN.team.seat - (B.pricing.PLAN.team.certs * B.pricing.PLAN.cert
-          + B.pricing.PLAN.team.notaries * B.pricing.PLAN.notary)) < 1e-9);
+        Math.abs(B.pricing.PLAN.enterprise.seat - (B.pricing.PLAN.enterprise.certs * B.pricing.PLAN.cert
+          + B.pricing.PLAN.enterprise.notaries * B.pricing.PLAN.notary)) < 1e-9);
       ok('300 lawyers on Enterprise at 100 a month pay $54,000',
         tier(yr(300, 100), 'enterprise') === 54000, '$' + tier(yr(300, 100), 'enterprise'));
       ok('usage beyond the pool is billed at list ($0.15 a document)',

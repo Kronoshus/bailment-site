@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 300" role="img" aria-labelledby="fchT fchD">
+  <title id="fchT">Two channels with opposite defaults</title>
+  <desc id="fchD">Everything a client and lawyer do in the workplace flows automatically into the Client Communication Protocol, which publishes one blinded root per firm per period into one shared contract. The chain shows a root, and no firm, matter or count. Separately, a lawyer can choose one document and notarize it into the Document Record. That writes one commitment, a disposition and a timestamp into a per-matter contract, so it can be proven to a named reader now. Notarizing cannot be undone.</desc>
+  <defs><marker id="m-ch" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <rect x="10" y="100" width="170" height="90" rx="10" class="dg-box"/>
+  <text class="dg-s" x="95" y="126" text-anchor="middle">THE WORKPLACE</text>
+  <text class="dg-t" x="95" y="150" text-anchor="middle">Client + lawyer</text>
+  <text class="dg-t" x="95" y="170" text-anchor="middle">work together</text>
+  <text class="dg-l" x="226" y="30">CHANNEL 1 · CLIENT COMMUNICATION PROTOCOL · AUTOMATIC</text>
+  <rect x="226" y="40" width="200" height="80" rx="10" class="dg-box"/>
+  <text class="dg-t" x="326" y="68" text-anchor="middle">Sweeps everything</text>
+  <text class="dg-s" x="326" y="88" text-anchor="middle">NO ONE HAS TO CHOOSE</text>
+  <text class="dg-s" x="326" y="104" text-anchor="middle">FORGETTING IS SAFE</text>
+  <rect x="456" y="40" width="200" height="80" rx="10" class="dg-box"/>
+  <text class="dg-t" x="556" y="68" text-anchor="middle">One blinded root</text>
+  <text class="dg-s" x="556" y="88" text-anchor="middle">PER FIRM, PER PERIOD</text>
+  <text class="dg-s" x="556" y="104" text-anchor="middle">ON A FIXED SCHEDULE</text>
+  <rect x="686" y="40" width="184" height="80" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="778" y="64" text-anchor="middle">CHAIN SHOWS</text>
+  <text class="dg-t" x="778" y="86" text-anchor="middle">A root. No firm,</text>
+  <text class="dg-t" x="778" y="106" text-anchor="middle">no matter, no count.</text>
+  <text class="dg-l" x="226" y="176">CHANNEL 2 · DOCUMENT RECORD · A LAWYER CHOOSES</text>
+  <rect x="226" y="186" width="200" height="80" rx="10" class="dg-box"/>
+  <text class="dg-t" x="326" y="214" text-anchor="middle">One chosen document</text>
+  <text class="dg-s" x="326" y="234" text-anchor="middle">OPT-IN, PER DOCUMENT</text>
+  <text class="dg-s" x="326" y="250" text-anchor="middle">CANNOT BE UNDONE</text>
+  <rect x="456" y="186" width="200" height="80" rx="10" class="dg-box"/>
+  <text class="dg-t" x="556" y="214" text-anchor="middle">One commitment</text>
+  <text class="dg-s" x="556" y="234" text-anchor="middle">PER-MATTER CONTRACT</text>
+  <text class="dg-s" x="556" y="250" text-anchor="middle">SALTED HASH, NO TEXT</text>
+  <rect x="686" y="186" width="184" height="80" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="778" y="210" text-anchor="middle">CHAIN SHOWS</text>
+  <text class="dg-t" x="778" y="232" text-anchor="middle">Commitment, status,</text>
+  <text class="dg-t" x="778" y="252" text-anchor="middle">and a timestamp.</text>
+  <path class="dg-line-a" d="M180 130 H200 V80 H220" marker-end="url(#m-ch)" style="color:#3A86FF"/>
+  <path class="dg-line" d="M180 160 H200 V226 H220" marker-end="url(#m-ch)" style="color:#9BA7B4;stroke-dasharray:5 4"/>
+  <path class="dg-line-a" d="M426 80 H450" marker-end="url(#m-ch)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M656 80 H680" marker-end="url(#m-ch)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M426 226 H450" marker-end="url(#m-ch)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M656 226 H680" marker-end="url(#m-ch)" style="color:#3A86FF"/>
+  <text class="dg-s" x="10" y="292">PROVES LATER, ONLY IF THE FIRM CHOOSES</text>
+  <text class="dg-s" x="870" y="292" text-anchor="end">PROVES NOW, TO A NAMED READER</text>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 270" role="img" aria-labelledby="ftlT ftlD">
+  <title id="ftlT">Milestones, Q4 2026 to 2029</title>
+  <desc id="ftlD">Q4 2026: Certificate spec out, Testnet contracts. Q1 2027: Redaction + AI thread, Recall above 98%. Q2 2027: Public-law library, Judge-by-judge rules. Q3 2027: 2 design partners, Root key ceremony. Q4 2027: Audit clean, Mainnet, real filings. Q1 2028: Open-source release, 100 clean filings. Q2 2028: Hosted service live, 10 paying firms. Q4 2028: Conflicts pilot, 5 firms, one city. 2029: Profitable, Guidelines clause. No certificate goes on a real filing before the external audit in Q4 2027.</desc>
+  <path d="M90 135 H790" class="dg-line-a" style="color:#3A86FF"/>
+  <path d="M90.0 114 V135" class="dg-line"/>
+  <circle cx="90.0" cy="135" r="5" class="dg-box"/>
+  <rect x="8.0" y="30" width="164" height="84" rx="10" class="dg-box"/>
+  <text class="dg-l" x="90.0" y="52" text-anchor="middle">Q4 2026</text>
+  <text class="dg-t" x="90.0" y="76" text-anchor="middle">Certificate spec out</text>
+  <text class="dg-t" x="90.0" y="98" text-anchor="middle">Testnet contracts</text>
+  <path d="M177.5 135 V158" class="dg-line"/>
+  <circle cx="177.5" cy="135" r="5" class="dg-box"/>
+  <rect x="95.5" y="158" width="164" height="84" rx="10" class="dg-box"/>
+  <text class="dg-l" x="177.5" y="180" text-anchor="middle">Q1 2027</text>
+  <text class="dg-t" x="177.5" y="204" text-anchor="middle">Redaction + AI thread</text>
+  <text class="dg-t" x="177.5" y="226" text-anchor="middle">Recall above 98%</text>
+  <path d="M265.0 114 V135" class="dg-line"/>
+  <circle cx="265.0" cy="135" r="5" class="dg-box"/>
+  <rect x="183.0" y="30" width="164" height="84" rx="10" class="dg-box"/>
+  <text class="dg-l" x="265.0" y="52" text-anchor="middle">Q2 2027</text>
+  <text class="dg-t" x="265.0" y="76" text-anchor="middle">Public-law library</text>
+  <text class="dg-t" x="265.0" y="98" text-anchor="middle">Judge-by-judge rules</text>
+  <path d="M352.5 135 V158" class="dg-line"/>
+  <circle cx="352.5" cy="135" r="5" class="dg-box"/>
+  <rect x="270.5" y="158" width="164" height="84" rx="10" class="dg-box"/>
+  <text class="dg-l" x="352.5" y="180" text-anchor="middle">Q3 2027</text>
+  <text class="dg-t" x="352.5" y="204" text-anchor="middle">2 design partners</text>
+  <text class="dg-t" x="352.5" y="226" text-anchor="middle">Root key ceremony</text>
+  <path d="M440.0 114 V135" class="dg-line"/>
+  <circle cx="440.0" cy="135" r="7" class="dg-box-a"/>
+  <rect x="358.0" y="30" width="164" height="84" rx="10" class="dg-box-a"/>
+  <text class="dg-l" x="440.0" y="52" text-anchor="middle">Q4 2027</text>
+  <text class="dg-t" x="440.0" y="76" text-anchor="middle">Audit clean</text>
+  <text class="dg-t" x="440.0" y="98" text-anchor="middle">Mainnet, real filings</text>
+  <path d="M527.5 135 V158" class="dg-line"/>
+  <circle cx="527.5" cy="135" r="5" class="dg-box"/>
+  <rect x="445.5" y="158" width="164" height="84" rx="10" class="dg-box"/>
+  <text class="dg-l" x="527.5" y="180" text-anchor="middle">Q1 2028</text>
+  <text class="dg-t" x="527.5" y="204" text-anchor="middle">Open-source release</text>
+  <text class="dg-t" x="527.5" y="226" text-anchor="middle">100 clean filings</text>
+  <path d="M615.0 114 V135" class="dg-line"/>
+  <circle cx="615.0" cy="135" r="5" class="dg-box"/>
+  <rect x="533.0" y="30" width="164" height="84" rx="10" class="dg-box"/>
+  <text class="dg-l" x="615.0" y="52" text-anchor="middle">Q2 2028</text>
+  <text class="dg-t" x="615.0" y="76" text-anchor="middle">Hosted service live</text>
+  <text class="dg-t" x="615.0" y="98" text-anchor="middle">10 paying firms</text>
+  <path d="M702.5 135 V158" class="dg-line"/>
+  <circle cx="702.5" cy="135" r="5" class="dg-box"/>
+  <rect x="620.5" y="158" width="164" height="84" rx="10" class="dg-box"/>
+  <text class="dg-l" x="702.5" y="180" text-anchor="middle">Q4 2028</text>
+  <text class="dg-t" x="702.5" y="204" text-anchor="middle">Conflicts pilot</text>
+  <text class="dg-t" x="702.5" y="226" text-anchor="middle">5 firms, one city</text>
+  <path d="M790.0 114 V135" class="dg-line"/>
+  <circle cx="790.0" cy="135" r="5" class="dg-box"/>
+  <rect x="708.0" y="30" width="164" height="84" rx="10" class="dg-box"/>
+  <text class="dg-l" x="790.0" y="52" text-anchor="middle">2029</text>
+  <text class="dg-t" x="790.0" y="76" text-anchor="middle">Profitable</text>
+  <text class="dg-t" x="790.0" y="98" text-anchor="middle">Guidelines clause</text>
+  <text class="dg-s" x="10" y="264">GATE: NO CERTIFICATE GOES ON A REAL FILING BEFORE THE EXTERNAL AUDIT (Q4 2027)</text>
+</svg>

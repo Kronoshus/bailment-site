@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 300" role="img" aria-labelledby="ftT ftD">
+  <title id="ftT">The shared AI thread: send is adoption, and there is no automatic path</title>
+  <desc id="ftD">The local model writes a draft. The draft appears only in the lawyer's compose pane. The lawyer edits it and presses Send, which records their key and makes it theirs. Only then does it reach the client's view. There is no path from the model straight to the client: no auto-reply and no service account. Separately, anything made from a privileged thread carries a taint, and the notarize button refuses it.</desc>
+  <defs><marker id="m-th" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+  <rect x="10" y="40" width="170" height="72" rx="10" class="dg-box"/>
+  <text class="dg-s" x="95" y="64" text-anchor="middle">ON THE APPLIANCE</text>
+  <text class="dg-t" x="95" y="86" text-anchor="middle">Model writes a draft</text>
+  <text class="dg-s" x="95" y="102" text-anchor="middle">ORIGIN = MODEL</text>
+  <rect x="236" y="40" width="190" height="72" rx="10" class="dg-box"/>
+  <text class="dg-s" x="331" y="64" text-anchor="middle">LAWYER ONLY</text>
+  <text class="dg-t" x="331" y="86" text-anchor="middle">Compose pane</text>
+  <text class="dg-s" x="331" y="102" text-anchor="middle">READ, EDIT, OR DISCARD</text>
+  <rect x="482" y="40" width="150" height="72" rx="10" class="dg-box-a"/>
+  <text class="dg-s" x="557" y="64" text-anchor="middle">THE ONE GATE</text>
+  <text class="dg-t" x="557" y="86" text-anchor="middle">Send</text>
+  <text class="dg-s" x="557" y="102" text-anchor="middle">LAWYER KEY RECORDED</text>
+  <rect x="688" y="40" width="182" height="72" rx="10" class="dg-box"/>
+  <text class="dg-s" x="779" y="64" text-anchor="middle">CLIENT SEES IT</text>
+  <text class="dg-t" x="779" y="86" text-anchor="middle">Labelled: draft</text>
+  <text class="dg-s" x="779" y="102" text-anchor="middle">DEFAULT, NEVER "ADVICE"</text>
+  <path class="dg-line-a" d="M180 76 H230" marker-end="url(#m-th)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M426 76 H476" marker-end="url(#m-th)" style="color:#3A86FF"/>
+  <path class="dg-line-a" d="M632 76 H682" marker-end="url(#m-th)" style="color:#3A86FF"/>
+  <path class="dg-line" d="M95 112 V150 H779 V118" style="stroke-dasharray:5 4"/>
+  <text class="dg-l" x="437" y="144" text-anchor="middle">✕  NO AUTO-REPLY · NO SERVICE ACCOUNT · NO PATH AROUND SEND</text>
+  <rect x="10" y="196" width="250" height="64" rx="10" class="dg-box"/>
+  <text class="dg-t" x="26" y="222">Made from a privileged thread</text>
+  <text class="dg-s" x="26" y="242">CARRIES PRIVILEGED_TAINT</text>
+  <rect x="316" y="196" width="190" height="64" rx="10" class="dg-box"/>
+  <text class="dg-t" x="411" y="222" text-anchor="middle">Notarize</text>
+  <text class="dg-s" x="411" y="242" text-anchor="middle">REFUSED</text>
+  <rect x="562" y="196" width="308" height="64" rx="10" class="dg-box-a"/>
+  <text class="dg-t" x="578" y="222">Citing a notarized record</text>
+  <text class="dg-s" x="578" y="242">INTO A THREAD IS ALWAYS ALLOWED</text>
+  <path class="dg-line" d="M260 228 H310" marker-end="url(#m-th)" style="color:#9BA7B4"/>
+  <text class="dg-l" x="10" y="292">REFERENCE FLOWS ONE WAY: PUBLIC RECORD INTO PRIVATE WORK, NEVER THE REVERSE BY ACCIDENT</text>
+</svg>
