@@ -87,7 +87,8 @@
     lines.push('the document itself.');
     lines.push('');
     rows.forEach(function (r, i) {
-      lines.push(String(i + 1) + '. ' + (r.kind === 'certification' ? 'Certificate of AI use' : 'Document Record notarisation'));
+      lines.push(String(i + 1) + '. ' + (r.kind === 'certification' ? 'Certificate of AI use'
+        : 'Document Record notarisation' + (r.by === 'client' ? ' (made by the client)' : '')));
       lines.push('   Date            ' + new Date(r.at).toLocaleString('en-US'));
       if (r.title) lines.push('   Matter or filing ' + r.title);
       if (r.digest) lines.push('   Document digest  ' + r.digest);
@@ -132,15 +133,28 @@
       + (warn ? '<p class="pf-warn">' + warn + '</p>' : '') + '</div>';
   }
 
+  // Old entries carry no `by` or `matter`: they were the lawyer's, under their title.
+  const byOf = (r) => (r.by === 'client' ? 'client' : 'lawyer');
+  const caseOf = (r) => r.matter || r.title || 'Untitled';
+  let caseFilter = '';
   function historyHTML(kind) {
-    const rows = history().filter((r) => r.kind === kind);
+    const all = history().filter((r) => r.kind === kind);
+    const cases = all.map(caseOf).filter((c, i, a) => a.indexOf(c) === i);
+    if (caseFilter && cases.indexOf(caseFilter) < 0) caseFilter = '';
+    const rows = caseFilter ? all.filter((r) => caseOf(r) === caseFilter) : all;
+    const filter = cases.length > 1 || caseFilter
+      ? '<label class="pf-filter">Case <select id="pf-case"><option value="">All cases</option>'
+        + cases.map((c) => '<option value="' + esc(c) + '"' + (c === caseFilter ? ' selected' : '') + '>'
+          + esc(c) + '</option>').join('') + '</select></label>'
+      : '';
     if (!rows.length) {
       return '<p class="muted">Nothing yet. ' + (kind === 'certification'
         ? 'Sign a certificate and it lands here.'
         : 'Notarize a message or a document and it lands here.') + '</p>';
     }
-    return '<ul class="pf-hist">' + rows.map(function (r) {
+    return filter + '<ul class="pf-hist">' + rows.map(function (r) {
       return '<li><label><input type="checkbox" class="pf-pick" data-at="' + esc(r.at) + '">'
+        + (kind === 'notarization' ? '<span class="pf-by ' + byOf(r) + '">' + byOf(r) + '</span>' : '')
         + '<span class="pf-when">' + esc(new Date(r.at).toLocaleString('en-US')) + '</span>'
         + '<span class="pf-what">' + esc(r.title || r.kind) + '</span>'
         + '<code>' + esc(String(r.commitment || r.digest || '').slice(0, 16)) + '\u2026</code></label></li>';
@@ -165,8 +179,8 @@
     if (tab === 'firm') {
       return line('Firm', f.name) + line('Address', (f.address || []).join(', '))
         + line('Email', f.email) + line('Phone', f.phone)
-        + line('Licence key', f.licence, 'A licence key is the firm\'s credential with the appliance API. It is one string, it is issued once by the Bailment admin console, and only its SHA-256 hash is kept — lose it and the fix is to revoke it and issue another. It identifies the FIRM, not a person: it opens matters and pays for certified filings at 25 USD each, and it is deliberately not allowed to send a message, because sending is adoption and only a named human does that. The key here is the free public demo key, printed on purpose: a key everyone holds proves nothing about who used it, which is exactly why a demo is a demo.')
-        + line('Appliance API', f.appliance || 'http://127.0.0.1:8402', 'The Appliance API is the firm\'s own server — the box in the firm\'s building, or its own cloud account, that runs the model and holds the matter. This page talks to it over HTTP: open a matter, write a draft, ask the model, notarise, issue a certificate. Bailment does not host it and cannot read it. Leave it unconnected and everything above runs on a stand-in inside this page, which is why the demo works with no server at all. Point it at http://127.0.0.1:8402 to drive the real API on your own machine.')
+        + line('Licence key', f.licence, 'The firm\u2019s password for the appliance. It opens cases and pays for filings at $25 each. It can never send a message; only a named lawyer can.')
+        + line('Appliance API', f.appliance || 'http://127.0.0.1:8402', 'The appliance is the firm\u2019s own server. It runs the AI and stores the case. Without one, the demo uses a built-in stand-in.')
         + line('Registry entry', f.registryEntry)
         + line('Signing key id', k.id) + line('Key fingerprint', k.fingerprint)
         + '<p class="muted">The licence is what pays for a certified filing. The registry entry is '
@@ -236,6 +250,9 @@
       + '<div class="pf-tabs"></div><div class="pf-pane"></div>';
     doc.body.appendChild(dlg);
     dlg.addEventListener('click', onClick);
+    dlg.addEventListener('change', function (e) {
+      if (e.target && e.target.id === 'pf-case') { caseFilter = e.target.value; paint(dlg); }
+    });
     return dlg;
   }
 

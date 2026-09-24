@@ -226,6 +226,10 @@
       if (!text) throw fail(400, 'An empty message is not a message.');
 
       const side = who === 'client' ? 'client' : 'lawyer';
+      // The client's link is a VPN. A client session that says it is disconnected cannot send.
+      if (side === 'client' && auth && auth.vpn === false) {
+        throw fail(403, 'The client VPN is not connected. Connect it, then send.');
+      }
       // R2 and R6. The firm side is compose-then-send; the client side is live.
       const live = side === 'client';
       const msg = {
@@ -682,6 +686,8 @@
     const cm = await api.postMessage(client, id, { body: 'They stopped shipping.', origin: 'human' });
     ok('R4 kind defaults to draft, not advice', cm.kind === 'draft', cm.kind);
     ok('R6 the client side is live', cm.sent === true);
+    await refuses('a client with the VPN disconnected cannot send', 403,
+      () => api.postMessage(Object.assign({}, client, { vpn: false }), id, { body: 'hi', origin: 'human' }));
 
     const draft = await api.assist(lawyer, id, { prompt: 'do we have a claim' });
     ok('R2 model output lands unsent in the lawyer pane', draft.sent === false && draft.origin === 'model');
@@ -901,7 +907,7 @@
   // offline stand-in, where the firm key IS the lawyer).
   function session(st, as) {
     const who = as || st.party;
-    if (who === 'client') return { role: 'client', key: st.clientToken };
+    if (who === 'client') return { role: 'client', key: st.clientToken, vpn: st.vpn !== false };
     return { role: 'lawyer', key: st.lawyerToken || st.firmKey, interactive: true };
   }
 
@@ -962,14 +968,14 @@
         : 'Live. The client\u2019s own work.')
         + ' <span class="mono">' + esc(String(m.sentAt || m.at).slice(11, 19)) + '</span></div>';
     }
-    void party;
     // One click from the thread to the Document Record. Not "export, then hash what you
     // exported" \u2014 that leaves a gap where the words can change.
     const notarised = record
       ? '<div class="wp-foot">Notarised. <span class="mono">' + esc(String(record.commitment).slice(0, 16))
         + '\u2026</span> ' + esc(String(record.identifiersRemoved)) + ' identifier(s) redacted here first.</div>'
-        + '<div class="wp-sendrow"><button class="btn" data-act="certify-msg" data-id="'
-        + esc(m.id) + '">Certify this message</button></div>'
+        + (party === 'client' ? '<div class="wp-foot">Logged for the firm. Only the lawyer certifies.</div>'
+          : '<div class="wp-sendrow"><button class="btn" data-act="certify-msg" data-id="'
+            + esc(m.id) + '">Certify this message</button></div>')
       : '<div class="wp-sendrow"><button class="btn ghost" data-act="notarize-msg" data-id="'
         + esc(m.id) + '">Notarize this message</button></div>';
     return '<article class="' + cls + '"><header class="wp-attrib"><b>' + who + '</b>'
@@ -1029,7 +1035,8 @@
     // button goes back to Notarize Chat rather than certify something that is no longer all of it.
     const chat = chatRecord(st);
     const chatBtn = chat
-      ? '<button class="btn ghost" data-act="certify-chat">Certify this chat</button>'
+      ? (client ? '<span class="muted">Chat notarized. Logged for the firm.</span>'
+        : '<button class="btn ghost" data-act="certify-chat">Certify this chat</button>')
       : '<button class="btn ghost" data-act="notarize-chat">Notarize Chat</button>'
         + help('Records a tamper-proof fingerprint of every sent message in this chat, with names '
           + 'and contact details removed first. Costs one certified filing ($25).');
@@ -1037,9 +1044,17 @@
       ? '<button class="btn" data-act="send" data-id="' + esc(pending.id) + '">Send (this is adoption)</button>'
         + '<button class="btn ghost" data-act="send-auto" data-id="' + esc(pending.id)
         + '">Try an automated send</button>'
-      : '<button class="btn" data-act="post">' + (client ? 'Send' : 'Hold as a draft') + '</button>';
+      : '<button class="btn" data-act="post"' + (client && !st.vpn ? ' disabled title="Connect the VPN first"' : '')
+        + '>' + (client ? 'Send' : 'Hold as a draft') + '</button>';
+    const vpn = client
+      ? '<div class="wp-vpn"><button class="btn ghost" data-act="vpn">' + (st.vpn ? 'Disconnect VPN' : 'Connect VPN')
+        + '</button><span class="wp-vpn-status' + (st.vpn ? ' on' : '') + '" role="status">'
+        + (st.vpn ? 'Connected' : 'Disconnected') + '</span>'
+        + help('Your messages travel over a private VPN to your law firm. Connect it before you '
+          + 'send. While it is disconnected, the firm\u2019s system refuses your messages.') + '</div>'
+      : '';
     return '<div class="panel wp-compose' + (client ? ' local' : ' chain') + '">'
-      + cannot
+      + cannot + vpn
       + wmField({ id: 'wp-text', label: client ? 'Write to your lawyer' : 'Write to your client',
           options: [pending ? pending.body : ''], multiline: true, rows: 3,
           help: client
@@ -1053,7 +1068,7 @@
       + '<input type="file" id="wp-file" class="wp-file">'
       + kindPick
       + pick('wp-model', 'Model', MODELS, st.model)
-      + pick('wp-harness', 'Harness', HARNESSES, st.harness)
+      + pick('wp-harness', 'Harness', HARNESSES, st.harnessBy[st.party])
       + '</div>'
       + '<div class="actions">'
       + chatBtn
@@ -1276,7 +1291,15 @@
     const auth = session(st);
 
     try {
-      if (name === 'role') {
+      if (name === 'vpn') {
+        st.vpn = !st.vpn;
+        note(st, 'ok', st.vpn ? 'Client VPN connected. The client can send.'
+          : 'Client VPN disconnected. Client messages are refused until it reconnects.');
+      } else if ((name === 'certify-chat' || name === 'certify-msg') && st.party === 'client') {
+        note(st, 'bad', 'Only the lawyer certifies. The client\u2019s notarizations are logged for the firm.');
+      } else if (name === 'post' && st.party === 'client' && !st.vpn) {
+        note(st, 'bad', 'Not sent. Connect the VPN first.');
+      } else if (name === 'role') {
         st.party = target.dataset.role === 'lawyer' ? 'lawyer' : 'client';
         note(st, 'ok', 'Viewing as the ' + st.party + '. The thread is re-fetched for that party.');
       } else if (name === 'post') {
@@ -1289,7 +1312,7 @@
           : 'Held as an unsent draft. ' + m.id + ' is not in the client\u2019s view.');
       } else if (name === 'assist') {
         const m = await st.api.assist(auth, st.matterId,
-          { prompt: text(), model: st.model, harness: st.harness });
+          { prompt: text(), model: st.model, harness: st.harnessBy[st.party] });
         clear();
         note(st, 'ok', st.party === 'lawyer'
           ? 'Model output landed in the lawyer pane as an unsent draft, attributed to ' + m.modelId + '.'
@@ -1330,13 +1353,15 @@
           if (root.Bailee && root.Bailee.profile) {
             root.Bailee.profile.record({
               kind: 'notarization', title: (st.matterTitle || 'Matter') + ' — whole chat',
+              matter: st.matterTitle || 'Matter', by: st.party,
               commitment: st.chatRecord.commitment, digest: st.chatRecord.digest,
               identifiersRemoved: red.identifiersRemoved || 0,
             });
           }
-          if (UI.emit) UI.emit('bailee:notarized', { scope: 'chat', digest: st.chatRecord.digest,
+          // A client notarization is a log entry for the firm; only the lawyer's moves the work on.
+          if (UI.emit && st.party === 'lawyer') UI.emit('bailee:notarized', { scope: 'chat', digest: st.chatRecord.digest,
             commitment: st.chatRecord.commitment, title: st.matterTitle });
-          note(st, 'ok', 'Chat notarised: ' + (red.messageCount || 0) + ' sent message(s) in one record. '
+          note(st, 'ok', (st.party === 'client' ? 'Client notarization, logged for the firm. ' : '') + 'Chat notarised: ' + (red.messageCount || 0) + ' sent message(s) in one record. '
             + 'The appliance redacted them first: ' + (red.identifiersRemoved || 0) + ' identifier(s) out.');
         } catch (e) {
           if (e.status !== 402) throw e;
@@ -1355,6 +1380,7 @@
           if (root.Bailee && root.Bailee.profile) {
             root.Bailee.profile.record({
               kind: 'notarization', title: d.filename || st.matterTitle,
+              matter: st.matterTitle || 'Matter', by: st.party,
               commitment: (d.notarized || {}).commitment || '', digest: d.digest,
             });
           }
@@ -1378,17 +1404,19 @@
           st.records[id] = { commitment: (out.record || {}).commitment || '',
                              digest: (out.document || {}).digest || '',
                              identifiersRemoved: red.identifiersRemoved || 0 };
-          if (UI.emit) UI.emit('bailee:notarized', { scope: 'message', digest: st.records[id].digest,
+          if (UI.emit && st.party === 'lawyer') UI.emit('bailee:notarized', { scope: 'message', digest: st.records[id].digest,
             commitment: st.records[id].commitment, title: st.matterTitle });
           // The attorney's own history, on their own device.
           if (root.Bailee && root.Bailee.profile) {
             root.Bailee.profile.record({
               kind: 'notarization', title: st.matterTitle || 'Matter',
+              matter: st.matterTitle || 'Matter', by: st.party,
               commitment: st.records[id].commitment, digest: st.records[id].digest,
               identifiersRemoved: red.identifiersRemoved || 0,
             });
           }
-          note(st, 'ok', 'Notarised from the thread. The appliance redacted it first: '
+          note(st, 'ok', (st.party === 'client' ? 'Client notarization, logged for the firm. ' : '')
+            + 'Notarised from the thread. The appliance redacted it first: '
             + (red.identifiersRemoved || 0) + ' identifier(s) out. What the commitment covers: "'
             + String(red.redactedBody || '').slice(0, 160) + '"');
         } catch (e) {
@@ -1469,7 +1497,9 @@
   function render(el) {
     const st = {
       party: 'client', api: null, matterId: null,
-      model: MODELS[0][0], harness: HARNESSES[0][0],
+      model: MODELS[0][0], vpn: false,
+      // The client starts on redacted research: nothing identifying leaves their side by default.
+      harnessBy: { client: 'redacted', lawyer: HARNESSES[0][0] },
       // Two participant tokens, because there are two parties and the API issues one to
       // each. The role switch swaps which one the page is holding.
       clientToken: null, lawyerToken: null, maySend: true,
@@ -1505,8 +1535,8 @@
         return;
       }
       if (e.target && e.target.id === 'wp-harness') {
-        st.harness = e.target.value;
-        note(st, 'ok', 'Harness for the next request: ' + st.harness + '.');
+        st.harnessBy[st.party] = e.target.value;
+        note(st, 'ok', 'Harness for the next request: ' + e.target.value + '.');
         return;
       }
       if (!e.target || e.target.id !== 'wp-file') return;

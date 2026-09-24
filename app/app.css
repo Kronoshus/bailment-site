@@ -808,3 +808,9 @@
   box-shadow:0 0 0 4px var(--accent-ring);animation:together-pulse 2.2s ease-in-out infinite}
 @keyframes together-pulse{50%{box-shadow:0 0 0 9px transparent}}
 @media (prefers-reduced-motion:reduce){.together-publish,.widget .btn.together-publish{animation:none}}
+/* the client's VPN: a button, and a status that says which it is */
+.widget .wp-vpn{display:flex;align-items:center;gap:10px;margin:0 0 12px;position:relative}
+.widget .wp-vpn-status{font-size:.85rem;padding:3px 10px;border-radius:999px;
+  border:1px solid color-mix(in srgb,var(--tint-ember) 55%,transparent);color:var(--tint-ember)}
+.widget .wp-vpn-status::before{content:'\25CF  '}
+.widget .wp-vpn-status.on{border-color:color-mix(in srgb,var(--tint-lime) 55%,transparent);color:var(--tint-lime)}
