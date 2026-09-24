@@ -69,7 +69,7 @@
   function goCertify() {
     closePart(1);
     say(1, 'Done. Your notarized documents are listed here.');
-    say(2, 'Paste the hash into Document digest, check the citations, then press Issue & sign certificate.');
+    say(2, 'Paste the hash into Document digest, check the citations and remove any false ones, then press Issue & sign certificate.');
     openPart(2);
     var box = digestBox();
     if (!box) return;
@@ -189,8 +189,26 @@
   }, true);
 
   // ---- Part 4: it verified. Everything closes, and the reader is told what they did.
+  function backToCertify() {
+    closePart(3);
+    closePart(4);
+    say(4, 'Opens again when the new certificate is published.');
+    say(2, 'Remove the false citations, check them again, then press Issue & sign certificate.');
+    openPart(2);
+    var cite = part(2).querySelector('#ct-cite');
+    if (cite) setTimeout(function () { cite.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+  }
   document.addEventListener('bailee:verified', function (e) {
-    if (fold(4).hidden || state.done || !(e.detail || {}).ok) return;
+    if (fold(4).hidden || state.done) return;
+    if (!(e.detail || {}).ok) {
+      say(4, 'This certificate does not verify. Go back to Certify and remove the false citations.');
+      popup('This certificate does not verify',
+        '<p>It still carries false citations, so the citation check fails. A court would reject it.</p>'
+          + '<p>Go back to Certify. Press <em>Use the corrected passage</em> (or <em>Restart citation check</em> '
+          + 'and remove the false citations yourself), check the citations again, then issue a new certificate.</p>',
+        'Back to Certify', backToCertify);
+      return;
+    }
     state.done = true;
     say(4, 'Verified.');
     popup('Congratulations! You certified your work to the court!',

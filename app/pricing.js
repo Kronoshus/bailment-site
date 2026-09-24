@@ -77,7 +77,7 @@
           <thead><tr><th>Plan</th><th class="num">Per year</th></tr></thead>
           <tbody>
             ${r.tiers.filter((t) => t.id !== 'team').map((t) => `<tr>
-              <td>${esc(t.label)}${t.id === r.suggested ? ' <strong>&larr; this firm</strong>' : ''}
+              <td>${esc(t.label)}${t.id === r.suggested ? ' <strong>&larr; This Plan</strong>' : ''}
                 <br><span class="muted">${esc(t.fits)}</span></td>
               <td class="num">${money(t.annual)}</td></tr>`).join('')}
           </tbody>
@@ -85,20 +85,19 @@
         <div class="cols" style="margin-top:16px">
           <div class="panel">
             <h3>Two ways to pay, one price</h3>
-            ${row('USDM on Cardano', 'debited from a prepaid balance as it happens')}
-            ${row('USD through Stripe', 'metered, invoiced at month end')}
-            ${row('Chain fees', '$0 to the firm; DUST comes from held NIGHT')}
+            ${row('USDM on Cardano', 'Debited live via blockchain tech')}
+            ${row('USD through Stripe', 'Metered monthly billing')}
+            ${row('Chain fees', 'Chain fees paid by Bailment')}
           </div>
           <div class="panel">
             <h3>What a seat includes</h3>
-            ${row('Team or Enterprise, $' + PLAN.team.seat + ' a lawyer a month', PLAN.team.certs + ' certifications, ' + PLAN.team.notaries + ' notarizations')}
+            ${row('Team or Enterprise', '$' + PLAN.team.seat + '/lawyer a month, the same at every firm size')}
             ${row('Pooled', 'across the whole firm')}
             ${row('Enterprise adds', PLAN.enterprise.minSeats + '-seat minimum, annual prepay, single sign-on, audit export')}
-            ${row('Beyond the pool', 'list price, ' + money(r.overage) + ' a year on Team here')}
           </div>
         </div>
-        <p class="note">Bailment's running cost is ${money(PLAN.infraMonthly[0])}&ndash;${money(PLAN.infraMonthly[1])}
-        a month whatever the customer count. The model behind these numbers is docs/financial_model.py.</p>`;
+        <p class="note">Running Bailment costs about ${money(PLAN.infraMonthly[0])} to ${money(PLAN.infraMonthly[1])}
+        a month. That cost stays the same whether we have a few customers or thousands.</p>`;
       wireCopy(out);
     }
 

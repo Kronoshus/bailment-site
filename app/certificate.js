@@ -686,7 +686,8 @@
       return `<div class="ct-cite-out bad"><p><strong>Not checked.</strong>
         ${esc(r.message || 'The appliance did not answer.')}</p>
         <p class="wm-hint">The counts above are still yours to type, and a certificate
-        issued from them says so: nothing here has been verified against anything.</p></div>`;
+        issued from them says so: nothing here has been verified against anything.</p>
+        <div class="actions"><button type="button" class="btn ghost ct-citereset">Restart citation check</button></div></div>`;
     }
     const all = r.unverified === 0;
     const line = all
@@ -702,8 +703,13 @@
       digest of nothing.${all ? '' : ' A certificate issued from this passage records '
         + 'both true numbers, so a verifier checking that every citation was verified '
         + 'will fail claim 3. That is the honest answer and the demo does not hide it.'}</p>
-      ${r.corrected ? `<p><strong>Corrected passage:</strong> ${esc(r.corrected)}</p>
-      <button type="button" class="btn ghost ct-citefix">Use the corrected passage</button>` : ''}
+      ${all ? '' : `<p class="ct-cite-todo"><strong>Remove the false citations before you issue.</strong>
+      A certificate that still carries them will not verify. Press Use the corrected passage, or
+      edit the passage and check it again.</p>`}
+      ${r.corrected ? `<p><strong>Corrected passage:</strong> ${esc(r.corrected)}</p>` : ''}
+      ${all ? '' : `<div class="actions">${r.corrected
+        ? '<button type="button" class="btn ghost ct-citefix">Use the corrected passage</button>' : ''}
+      <button type="button" class="btn ghost ct-citereset">Restart citation check</button></div>`}
       </div>`;
   }
 
@@ -1393,6 +1399,16 @@
           : 'Typed by hand, those two numbers are an assertion: the certificate records '
             + 'them, and nothing has checked them. Below is the same claim, checked.';
       };
+      const startCounts = [cites.value, cverified.value];
+      const resetCite = () => {
+        $(el, '#ct-citetext').value = CITE_EXAMPLE;
+        lastCheck = null;
+        typedCounts = { citations: '', verified: '' };
+        lockCounts(false);
+        [cites.value, cverified.value] = startCounts;
+        citeOut.innerHTML = '';
+        assertNote.innerHTML = '';
+      };
       $(el, '#ct-citecheck').addEventListener('click', async (ev) => {
         const btn = ev.currentTarget;
         btn.disabled = true;
@@ -1401,10 +1417,14 @@
           base: raw('#ct-citebase'), key: raw('#ct-citekey'), text: raw('#ct-citetext'),
         });
         if (r.error === 'unreachable' || r.error === 'no_fetch') {
-          r = (await demoCitationCheck(raw('#ct-citetext'))) || r;
+          r = (await demoCitationCheck(raw('#ct-citetext'))) || { checked: false, error: r.error,
+            message: 'With no appliance running, this demo can only check its example passage. '
+              + 'Press Restart citation check to put it back.' };
         }
         btn.disabled = false;
         citeOut.innerHTML = citeResultHTML(r);
+        const resetBtn = citeOut.querySelector('button.ct-citereset');
+        if (resetBtn) resetBtn.addEventListener('click', resetCite);
         const fixBtn = citeOut.querySelector('button.ct-citefix');
         if (fixBtn) {
           fixBtn.addEventListener('click', () => {
