@@ -803,3 +803,8 @@
 .together-link code{font-family:var(--font-mono);font-size:1.05rem;color:var(--ink);user-select:all}
 .together-link .copied{border-color:var(--tint-lime);color:var(--tint-lime)}
 .together-bottom{margin-top:16px}
+/* the one button that moves the demo on: bigger, ringed, gently pulsing */
+.together-publish,.widget .btn.together-publish{font-size:1.08rem;padding:13px 34px;
+  box-shadow:0 0 0 4px var(--accent-ring);animation:together-pulse 2.2s ease-in-out infinite}
+@keyframes together-pulse{50%{box-shadow:0 0 0 9px transparent}}
+@media (prefers-reduced-motion:reduce){.together-publish,.widget .btn.together-publish{animation:none}}

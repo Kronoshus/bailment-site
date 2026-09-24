@@ -161,15 +161,13 @@
           <div class="field"><label>Document</label>
             <select id="pk-leaf">${S.docs.map((d, i) => `<option value="${i}">#${i + 1} \u2014 ${esc(d.label)}</option>`).join('')}</select></div>
           <button class="btn ghost" id="pk-prove"${n ? '' : ' disabled'}>Show inclusion proof</button>
-          <button class="btn ghost" id="pk-forge">Try a document that was not in it</button>
         </div>
         <div id="pk-proof"></div>`;
       wireCopy(out);
-      $(el, '#pk-prove').addEventListener('click', () => prove(false));
-      $(el, '#pk-forge').addEventListener('click', () => prove(true));
+      $(el, '#pk-prove').addEventListener('click', prove);
     }
 
-    async function prove(forge) {
+    async function prove() {
       // An empty period has a root but nothing to prove into it.
       if (!S.docs.length) {
         $(el, '#pk-proof').innerHTML = '<p class="muted">This period held nothing. The root still'
@@ -178,8 +176,7 @@
       }
       const i = Number($(el, '#pk-leaf').value);
       const proof = await documentProof(S.docTree, i, S.netTree, S.ourFirm);
-      const leaf = forge ? await commit('a document that was never in this period', randomNonce(32))
-                         : S.docs[i].commitment;
+      const leaf = S.docs[i].commitment;
       const r = await verifyDocumentProof(leaf, proof, S.net);
       const steps = [...proof.leafProof.map((p) => ['document tree', p]), ...proof.firmProof.map((p) => ['network tree', p])];
       $(el, '#pk-proof').innerHTML = `
@@ -189,7 +186,6 @@
           &middot; firm root \u2192 network root ${r.inNetwork ? '<span class="ok">\u2713</span>' : '<span class="bad">\u2717</span>'}
           &middot; ${steps.length} sibling hashes, ${(steps.length * 32)} bytes of proof
           &mdash; the same ${steps.length} for every document in every period
-          ${forge ? '<br><span class="muted">That is a real commitment, just not one that was batched this period.</span>' : ''}
           </span></div>
         ${monoBlock(hex(leaf), 'Commitment being proved')}
         <div class="tree">

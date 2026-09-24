@@ -137,7 +137,7 @@
   });
 
   // ---- Part 3: the root is already built when the reader arrives, with their record in it.
-  // The Build button moves under the result, so pressing it is the step that publishes.
+  // The Build button moves under the result, renamed Publish: pressing it is the step that publishes.
   function buildPeriod() {
     var proto = document.getElementById('widget-protocol');
     proto.dataset.seed = state.commitment || state.digest;
@@ -147,13 +147,15 @@
       bottom.className = 'actions together-bottom';
       proto.appendChild(bottom);
       bottom.appendChild(btn);
+      btn.textContent = 'Publish';               // on this page, pressing it IS publishing
+      btn.classList.add('together-publish');
     }
     state.previewing = true;          // this build is the preview, not the publish
     if (btn) btn.click();
-    say(3, 'Your record is communication #1 in this batch. Look it over, then press Build the period root at the bottom.');
+    say(3, 'Your record is communication #1 in this batch. Look it over, then press Publish at the bottom.');
   }
 
-  // ---- Part 3 -> 4: the reader pressed Build the period root.
+  // ---- Part 3 -> 4: the reader pressed Publish.
   document.addEventListener('bailee:published', function (e) {
     if (fold(3).hidden || !(e.detail || {}).seeded) return;
     if (state.previewing) { state.previewing = false; return; }
@@ -195,10 +197,16 @@
       '<p>Your work was timestamped, certified, published, and checked the way a court checks it. '
         + 'The certificate proves how the filing was made without revealing what is in it.</p>',
       'Done', function () {
-        [1, 2, 3, 4].forEach(closePart);
+        // Parts 1-3 close; part 4 stays open so the reader can read what the check did.
+        [1, 2, 3].forEach(closePart);
         var lead = document.querySelector('.hero .lead');
         if (lead) lead.textContent = 'Congratulations! You certified your work to the court.';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        say(4, 'Verified. Read what the check did below, or start over.');
+        var again = document.createElement('div');
+        again.className = 'actions together-bottom';
+        again.innerHTML = '<button type="button" class="btn btn-primary together-publish">Start Over</button>';
+        again.firstChild.addEventListener('click', function () { location.reload(); });
+        fold(4).appendChild(again);
       });
   });
 })();
