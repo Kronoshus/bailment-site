@@ -694,7 +694,7 @@
       // Node only: the reveal is done in CSS, so the CSS is where it has to be proved.
       let appcss = '';
       if (typeof require === 'function' && typeof __dirname === 'string') {
-        try { appcss = require('fs').readFileSync(require('path').join(__dirname, 'app.css'), 'utf8'); }
+        try { appcss = ['app.css', '../style.css'].map((f) => require('fs').readFileSync(require('path').join(__dirname, f), 'utf8')).join('\n'); }
         catch { appcss = ''; }
       }
       if (appcss) {
@@ -712,7 +712,7 @@
             && /\.wm-q:focus\s*\+\s*\.wm-tip/.test(reveal.sel)
             && /\.wm-q:focus-visible\s*\+\s*\.wm-tip/.test(reveal.sel),
           reveal ? reveal.sel.trim().replace(/\s+/g, ' ') : 'rule not found');
-        const tip = rule('.widget .wm-tip{');
+        const tip = rule(':is(.widget,.pf-dialog) .wm-tip{');
         ok('the explainer is hidden until then, sits below the field, and cannot swallow a click',
           !!tip && /display:\s*none/.test(tip.body) && /top:\s*100%/.test(tip.body)
             && /pointer-events:\s*none/.test(tip.body) && /left:\s*0/.test(tip.body));
@@ -923,10 +923,9 @@
 
       // The control itself, in the form the reader is handed.
       const cform = K.certFormHTML(K.CERT_DEFAULTS);
-      ok('the form carries the checker: a passage box, a check button and a way back '
-        + 'to typing the counts',
+      ok('the form carries the checker: a passage box, a check button and a restart',
         cform.indexOf('id="ct-citetext"') >= 0 && cform.indexOf('id="ct-citecheck"') >= 0
-          && cform.indexOf('id="ct-citemanual"') >= 0 && cform.indexOf('id="ct-citeout"') >= 0);
+          && cform.indexOf('id="ct-citereset"') >= 0 && cform.indexOf('id="ct-citeout"') >= 0);
       ok('the example in the box is the one that carries the fabricated citation',
         cform.indexOf('925 F.3d 1339') >= 0 && cform.indexOf('Mata v. Avianca') >= 0);
       ok('the licence key box carries the public demo key and does not remember it',
@@ -1081,12 +1080,10 @@
       ok('a seat is its usage at list: 100 certifications and 500 notarizations = $15',
         Math.abs(B.pricing.PLAN.team.seat - (B.pricing.PLAN.team.certs * B.pricing.PLAN.cert
           + B.pricing.PLAN.team.notaries * B.pricing.PLAN.notary)) < 1e-9);
-      ok('30 lawyers on Team at 100 a month pay $5,400',
-        tier(yr(30, 100), 'team') === 5400, '$' + tier(yr(30, 100), 'team'));
       ok('300 lawyers on Enterprise at 100 a month pay $54,000',
         tier(yr(300, 100), 'enterprise') === 54000, '$' + tier(yr(300, 100), 'enterprise'));
       ok('usage beyond the pool is billed at list ($0.15 a document)',
-        Math.abs(tier(yr(30, 110), 'team') - (5400 + 30 * 10 * 12 * 0.15)) < 0.01);
+        Math.abs(tier(yr(300, 110), 'enterprise') - (54000 + 300 * 10 * 12 * 0.15)) < 0.01);
       ok('Enterprise never bills fewer than 50 seats', yr(10, 100).seats === 50);
       ok('each firm size is pointed at its own plan',
         yr(5, 100).suggested === 'payg' && yr(30, 100).suggested === 'payg' && yr(300, 100).suggested === 'enterprise');

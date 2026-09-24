@@ -642,10 +642,6 @@
       + '</div>';
   }
 
-  // The three digests the demo computes for the reader. They are not inputs, but they are
-  // the least self-explanatory words on the certificate, so they get the same "?".
-  const ctDigestNote = () => '';
-
   // --------------------------------------------------- the citation checker
   // Three pure functions and one call. The rendering is pure so the self-check can run
   // it over a recorded answer with no network, and the call takes its `fetch` as an
@@ -976,7 +972,6 @@
         <div class="actions">
           <button type="button" class="btn ghost" id="ct-citecheck">Check citations</button>
           <button type="button" class="btn ghost" id="ct-citereset">Restart citation check</button>
-          <button type="button" class="btn ghost" id="ct-citemanual" style="display:none">Go back to typing the counts</button>
         </div>
         <p class="wm-hint" id="ct-cite-privacy">The passage is sent to your appliance, which sends it
         to CourtListener and to nowhere else. No model sees it, in this page or on the server.
@@ -993,7 +988,6 @@
           <input id="ct-leaked" type="number" min="0" value="${e['no-identifier'].identifiersReachedModel}">
         </div>
       </div>
-      ${ctDigestNote()}
       <div class="actions">
         <button class="btn" id="ct-issue">Issue &amp; sign certificate</button>
         <button class="btn ghost" id="ct-break">Tamper with it</button>
@@ -1428,7 +1422,6 @@
       // what is typed has not been checked.
       const cites = $(el, '#ct-cites'), cverified = $(el, '#ct-cverified');
       const manualNote = $(el, '#ct-cite-manualnote');
-      const manualBtn = $(el, '#ct-citemanual');
       const citeOut = $(el, '#ct-citeout');
       const assertNote = $(el, '#ct-assertnote');
       const lockCounts = (on) => {
@@ -1436,7 +1429,6 @@
           box.readOnly = !!on;
           box.classList.toggle('ct-locked', !!on);
         }
-        manualBtn.style.display = on ? '' : 'none';
         manualNote.textContent = on
           ? 'Those two numbers came from a real lookup, not from this form, so they are '
             + 'read-only. The certificate will carry them and the digest of the log they '
@@ -1488,15 +1480,6 @@
           { citations: r.total, verified: r.verified }), r);
       }
       btn.addEventListener('click', runCheck);
-      manualBtn.addEventListener('click', () => {
-        lastCheck = null;
-        typedCounts = { citations: '', verified: '' };
-        assertNote.innerHTML = '';
-        lockCounts(false);
-        citeOut.innerHTML = '<div class="ct-cite-out bad"><p><strong>Back to typed counts.</strong> '
-          + 'Nothing here has been checked, and a certificate issued now carries the '
-          + 'demo\u2019s stand-in retrieval-log digest.</p></div>';
-      });
 
       $(el, '#ct-issue').addEventListener('click', () => issueRequested());
       $(el, '#ct-print').addEventListener('click', () => window.print());

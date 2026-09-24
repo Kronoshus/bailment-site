@@ -25,21 +25,19 @@
     const certs = Math.round(lawyers * perLawyer * 12);
     const notaries = certs * PLAN.notariesPerCert;
     const usage = certs * PLAN.cert + notaries * PLAN.notary;
-    const t = PLAN.team, e = PLAN.enterprise;
+    const e = PLAN.enterprise;
     // what a seat plan pays beyond its pooled allowance, at list
     const beyond = (p, seats) => Math.max(0, certs - seats * p.certs * 12) * PLAN.cert
       + Math.max(0, notaries - seats * p.notaries * 12) * PLAN.notary;
     const seatPlan = (p, seats) => seats * p.seat * 12 + beyond(p, seats);
     const seats = Math.max(lawyers, e.minSeats);
-    const overage = beyond(t, lawyers);
     const tiers = [
       { id: 'payg', label: 'Pay as you go', fits: 'Solo and small firms', annual: usage },
-      { id: 'team', label: 'Team', fits: 'Mid-size firms', annual: seatPlan(t, lawyers) },
       { id: 'enterprise', label: 'Enterprise', fits: 'Large firms, ' + e.minSeats + '-seat minimum',
         annual: seatPlan(e, seats) },
     ];
     const suggested = lawyers < e.minSeats ? 'payg' : 'enterprise';
-    return { lawyers, perLawyer, certs, notaries, usage, overage, seats, tiers, suggested };
+    return { lawyers, perLawyer, certs, notaries, usage, seats, tiers, suggested };
   }
 
   const cents = (n) => '$' + n.toFixed(2);
@@ -76,7 +74,7 @@
         <table>
           <thead><tr><th>Plan</th><th class="num">Per year</th></tr></thead>
           <tbody>
-            ${r.tiers.filter((t) => t.id !== 'team').map((t) => `<tr>
+            ${r.tiers.map((t) => `<tr>
               <td>${esc(t.label)}${t.id === r.suggested ? ' <strong>&larr; This Plan</strong>' : ''}
                 <br><span class="muted">${esc(t.fits)}</span></td>
               <td class="num">${money(t.annual)}</td></tr>`).join('')}

@@ -48,11 +48,6 @@
     return { slots, positions, depth: TREE_DEPTH, root: await merkleRoot(slots) };
   }
 
-  // Convenience wrappers: the root only. Proofs need the whole tree, so keep the object
-  // from periodTree() if you are going to produce one.
-  async function firmPeriodRoot(commitments) { return (await periodTree(commitments)).root; }
-  async function networkRoot(firmRoots) { return (await periodTree(firmRoots)).root; }
-
   // A document's proof spans both trees and is produced only if the firm chooses to.
   // `docTree` is the firm's period tree, `netTree` the network tree over firm roots.
   async function documentProof(docTree, index, netTree, firmIndex) {
@@ -199,5 +194,5 @@
 
   mount('protocol', pkRender);
 
-  root.Bailee.protocol = { TREE_DEPTH, TREE_SLOTS, PROOF_DISCLOSURE, periodTree, firmPeriodRoot, networkRoot, documentProof, verifyDocumentProof };
+  root.Bailee.protocol = { TREE_DEPTH, TREE_SLOTS, PROOF_DISCLOSURE, periodTree, documentProof, verifyDocumentProof };
 })(typeof globalThis !== 'undefined' ? globalThis : this);

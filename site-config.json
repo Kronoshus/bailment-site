@@ -12,10 +12,9 @@
     "text": ""
   },
   "pricing": {
-    "certification": 0.10,
+    "certification": 0.1,
     "notarization": 0.01,
-    "teamSeat": 15,
-    "enterpriseSeat": 15
+    "teamSeat": 15
   },
   "maintenance": false,
   "theme": {
@@ -34,11 +33,7 @@
   "labels": {
     "nav": {
       "home": "Home",
-      "product": "Certificate Generator",
-      "workplace": "Workplace",
-      "technology": "Technology",
       "pricing": "Pricing",
-      "verify": "Verify",
       "plan": "Plan"
     },
     "footer": {
@@ -50,8 +45,6 @@
     }
   },
   "features": {
-    "demoChip": true,
-    "announcementBar": true,
     "notarize": true,
     "protocol": true,
     "certificate": true,

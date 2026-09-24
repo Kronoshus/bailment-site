@@ -47,7 +47,6 @@
 
   const OUTCOMES = ['Settled. Paid in full.', 'Dismissed with prejudice.',
     'Withdrawn by the client.'];
-  const API_BASES = ['http://127.0.0.1:8402', 'https://appliance.example'];
 
   /* --------------------------------------------------------------- shared */
 
@@ -772,7 +771,7 @@
     const fresh = (key) => ({
       party: 'client', api: createRemoteApi(o.base || 'http://127.0.0.1:8402'),
       matterId: null, clientToken: null, lawyerToken: null, maySend: true,
-      lawyerName: 'Kevin G. Mohr, Esq.', firmKey: key, base: o.base, showConnect: false,
+      lawyerName: 'Kevin G. Mohr, Esq.', firmKey: key, base: o.base,
       messages: [], docs: [], progress: null, log: [], banner: null,
       adoption: null, payment: null,
     });
@@ -1173,21 +1172,6 @@
       + esc(DEMO_LICENCE) + '</code>' + help('The firm\u2019s password for the appliance. It opens cases and pays for each certification ($0.10) and notarization ($0.01). It can never send a message; only a named lawyer can.') + '</p>';
   }
 
-  function connectHtml(st) {
-    if (!st.showConnect) return '';
-    return '<div class="panel wp-connect"><h3>Connect an Appliance' + help('The appliance is the firm\u2019s own server. It runs the AI and stores the case. Without one, this page uses a built-in stand-in, so the demo still works.') + '</h3>'
-      + '<div class="inline">'
-      + wmField({ id: 'wp-base', label: 'API base', options: API_BASES, value: st.base || undefined })
-      + '<div class="field"><span class="wm-labelrow"><label for="wp-key">Firm licence key</label>'
-      + help('The firm\u2019s password for the appliance. It opens cases and pays for each certification ($0.10) and notarization ($0.01). It can never send a message; only a named lawyer can.') + '</span>'
-      + '<input id="wp-key" class="wm-box" value="' + esc(DEMO_LICENCE) + '" placeholder="bearer key"></div>'
-      + '<button class="btn" data-act="connect">Connect</button>'
-      + '</div>'
-      + '<p class="muted">Free demo key, already filled in: <code>' + esc(DEMO_LICENCE) + '</code>. '
-      + 'It opens matters and pays for filings on a Bailment appliance you are running yourself.</p>'
-      + '</div>';
-  }
-
   // Which matter the demo opens. Nothing is typed in for anyone: a title, a client and a
   // lawyer are chosen from a list, or written in, and the matter is opened through the
   // same createMatter() call the rest of the screen uses.
@@ -1214,7 +1198,7 @@
   function paint(st, el) {
     const slot = UI.$(el, '#wp-body');
     if (!slot) return;
-    slot.innerHTML = barHtml(st) + connectHtml(st) + matterHtml(st)
+    slot.innerHTML = barHtml(st) + matterHtml(st)
       + (st.banner ? '<p class="bad">' + esc(st.banner) + '</p>' : '')
       + railHtml(st.progress)
       + threadHtml(st) + composeHtml(st)
@@ -1449,22 +1433,12 @@
         note(st, 'ok', 'Closed with an outcome.');
       } else if (name === 'dismiss-pay') {
         st.payment = null;
-      } else if (name === 'connect-toggle') {
-        if (st.api.mode === 'live') return start(st, el, createLocalApi());
-        st.showConnect = !st.showConnect;
       } else if (name === 'reopen') {
         // Same three values the seed used, taken from the fields rather than from here.
         st.matterTitle = wmValue(el, 'wp-title') || st.matterTitle;
         st.clientName = wmValue(el, 'wp-client') || st.clientName;
         st.lawyerName = wmValue(el, 'wp-lawyer') || st.lawyerName;
         return start(st, el, st.api);
-      } else if (name === 'connect') {
-        const base = wmValue(el, 'wp-base');
-        const key = (UI.$(el, '#wp-key') || {}).value || '';
-        const api = createRemoteApi(base);
-        await api.listMatters({ role: 'firm', key: key });   // a probe that must pass first
-        st.firmKey = key;
-        return start(st, el, api);
       }
     } catch (e) { logError(st, e); }
 
@@ -1474,7 +1448,6 @@
 
   async function start(st, el, api) {
     st.api = api;
-    st.showConnect = false;
     st.docs = [];
     st.messages = [];
     st.log = [];
@@ -1506,7 +1479,7 @@
       clientToken: null, lawyerToken: null, maySend: true,
       lawyerName: LAWYER_NAMES[0],
       matterTitle: MATTER_TITLES[0], clientName: CLIENT_NAMES[0],
-      firmKey: 'firm_2a9f_cranmer_vale', base: '', showConnect: false,
+      firmKey: 'firm_2a9f_cranmer_vale', base: '',
       messages: [], docs: [], progress: null, log: [], banner: null,
       adoption: null, payment: null,
     };

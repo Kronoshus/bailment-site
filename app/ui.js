@@ -66,17 +66,6 @@
     });
   }
 
-  // Read the verification payload out of the URL fragment.
-  // Shapes: #c=<b64url>  #a=<b64url>  or a bare #<b64url>.
-  function hashPayload(tag) {
-    if (typeof location === 'undefined') return null;
-    const h = (location.hash || '').replace(/^#/, '');
-    if (!h) return null;
-    const m = h.match(/^([ca])=(.+)$/);
-    if (m) return m[1] === tag ? m[2] : null;
-    return h;
-  }
-
   function row(label, value, cls = '') {
     return `<div class="kv"><span class="k">${esc(label)}</span>
       <span class="v ${cls}">${value}</span></div>`;
@@ -168,7 +157,6 @@
     return registryPromise;
   }
 
-  function resetRegistry() { registryPromise = null; }        // tests only
 
   const normFP = (s) => String(s ?? '').replace(/\s+/g, '').toUpperCase();
 
@@ -347,7 +335,7 @@
     }
   };
 
-  root.Bailee.ui = { esc, $, $$, short, money, nowISO, fmtDate, mount, wireCopy, hashPayload, row, monoBlock,
-    REGISTRY_EMBEDDED, loadRegistry, resetRegistry, registrySigner, registryPipeline, normFP,
+  root.Bailee.ui = { esc, $, $$, short, money, nowISO, fmtDate, mount, wireCopy, row, monoBlock,
+    REGISTRY_EMBEDDED, loadRegistry, registrySigner, registryPipeline, normFP,
     WM_OWN, WM_OWN_LABEL, wmField, wmValue, wmSet, wmReset, wireFields, help, emit };
 })(typeof globalThis !== 'undefined' ? globalThis : this);

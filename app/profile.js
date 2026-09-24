@@ -70,7 +70,6 @@
     paintOpen();
     return row;
   }
-  function clearHistory() { writeJSON(KEY_HISTORY, []); paintOpen(); }
 
   /* ------------------------------------------------------------ the email */
   // A real message in the reader's own mail client. Nothing is sent from here.
@@ -352,5 +351,5 @@
   }
 
   root.Bailee = root.Bailee || {};
-  root.Bailee.profile = { load, open, record, history, clearHistory, disclosureEmail, fillStep4, DEFAULTS };
+  root.Bailee.profile = { load, open, record, history, disclosureEmail, fillStep4, DEFAULTS };
 })(typeof globalThis !== 'undefined' ? globalThis : this);

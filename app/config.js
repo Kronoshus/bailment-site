@@ -19,7 +19,7 @@
 //             are the ones tokens.css already uses, so nothing in style.css changes.
 //   labels    the nav and footer link text, matched on the href the link already has.
 //             A link carrying child elements (the brand, with its logo) is never touched.
-//   features  the demo chip, the announcement bar and each [data-widget] mount, on or off.
+//   features  each [data-widget] mount, on or off. The banners have their own `show`.
 //
 // The rule that matters: if the API is unreachable, this file does NOTHING. The page
 // keeps exactly the words it was written with, which is why the site still works when
@@ -169,9 +169,7 @@
   // A rename, done once here instead of in eight files. Links are found by the href
   // they already carry, so no page has to grow an attribute for this to work.
   var NAV_HREF = {
-    home: 'index.html', product: 'product.html', workplace: 'workplace.html',
-    technology: 'technology.html', pricing: 'pricing.html', verify: 'verify.html',
-    plan: 'plan.html'
+    home: 'index.html', pricing: 'pricing.html', plan: 'plan.html'
   };
   var FOOTER_HREF = {
     executiveSummary: 'plan.html#executive-summary',
@@ -214,12 +212,6 @@
       if (typeof features[WIDGETS[i]] !== 'boolean') continue;
       els = all('[data-widget="' + WIDGETS[i] + '"]');
       for (j = 0; j < els.length; j++) { show(els[j], features[WIDGETS[i]]); changed++; }
-    }
-    var pairs = [['demoChip', 'demoBanner'], ['announcementBar', 'announcement']];
-    for (i = 0; i < pairs.length; i++) {
-      if (features[pairs[i][0]] !== false) continue;   // only ever used to switch off
-      els = all('[data-config="' + pairs[i][1] + '"]');
-      for (j = 0; j < els.length; j++) { show(els[j], false); changed++; }
     }
     return changed;
   }
@@ -282,7 +274,7 @@
 
     var features = (cfg.features && typeof cfg.features === 'object') ? cfg.features : {};
     banner('demoBanner', cfg, 'stage', false);
-    banner('announcement', cfg, 'site-announcement', features.announcementBar !== false);
+    banner('announcement', cfg, 'site-announcement', true);
     if (cfg.maintenance === true) {
       banner('maintenance', { maintenance: { show: true,
         text: 'This service is under maintenance. Verification is unaffected.' } },
