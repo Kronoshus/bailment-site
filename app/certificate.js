@@ -686,8 +686,7 @@
       return `<div class="ct-cite-out bad"><p><strong>Not checked.</strong>
         ${esc(r.message || 'The appliance did not answer.')}</p>
         <p class="wm-hint">The counts above are still yours to type, and a certificate
-        issued from them says so: nothing here has been verified against anything.</p>
-        <div class="actions"><button type="button" class="btn ghost ct-citereset">Restart citation check</button></div></div>`;
+        issued from them says so: nothing here has been verified against anything.</p></div>`;
     }
     const all = r.unverified === 0;
     const line = all
@@ -707,9 +706,8 @@
       A certificate that still carries them will not verify. Press Use the corrected passage, or
       edit the passage and check it again.</p>`}
       ${r.corrected ? `<p><strong>Corrected passage:</strong> ${esc(r.corrected)}</p>` : ''}
-      ${all ? '' : `<div class="actions">${r.corrected
-        ? '<button type="button" class="btn ghost ct-citefix">Use the corrected passage</button>' : ''}
-      <button type="button" class="btn ghost ct-citereset">Restart citation check</button></div>`}
+      ${r.corrected ? `<div class="actions">
+        <button type="button" class="btn ghost ct-citefix">Use the corrected passage</button></div>` : ''}
       </div>`;
   }
 
@@ -885,6 +883,25 @@
     </div>`;
   }
 
+  // Fewer verified citations than citations means claim 3 fails, so the certificate will
+  // not verify. Said before signing, with the fix one click away.
+  function falseCiteWarningHTML(total, verified, fixable) {
+    const bad = total - verified;
+    return `<div class="ct-warn" id="ct-warn" role="alertdialog" tabindex="-1"
+      aria-labelledby="ct-warn-t" aria-describedby="ct-warn-d">
+      <h4 id="ct-warn-t"><span class="ct-warn-mark" aria-hidden="true">!</span>
+        ${bad} citation${bad === 1 ? '' : 's'} did not check out</h4>
+      <p id="ct-warn-d">Only ${verified} of ${total} citations were verified. A certificate issued now
+      fails the citation check and will not verify. Remove the false citations first.</p>
+      <div class="actions">
+        ${fixable ? '<button type="button" class="btn" id="ct-warn-fix">Use the corrected passage and issue</button>' : ''}
+        <button type="button" class="btn${fixable ? ' ghost' : ''}" id="ct-warn-back">Go back and fix them</button>
+        <button type="button" class="btn ghost" id="ct-warn-go">Issue anyway</button>
+      </div>
+      <p class="ct-warn-foot">Nothing has been signed yet.</p>
+    </div>`;
+  }
+
   function certFormHTML(d) {
     const e = d.evidence;
     const O = CERT_OPTIONS;
@@ -958,6 +975,7 @@
         </div>
         <div class="actions">
           <button type="button" class="btn ghost" id="ct-citecheck">Check citations</button>
+          <button type="button" class="btn ghost" id="ct-citereset">Restart citation check</button>
           <button type="button" class="btn ghost" id="ct-citemanual" style="display:none">Go back to typing the counts</button>
         </div>
         <p class="wm-hint" id="ct-cite-privacy">The passage is sent to your appliance, which sends it
@@ -1358,7 +1376,9 @@
         const back = focusId ? $(el, '#' + focusId) : null;
         if (back && back.focus) back.focus();
       };
-      const issueRequested = async () => {
+      const issueRequested = async (citesChecked) => {
+        const total = Number(cites.value) || 0, ok = Number(cverified.value) || 0;
+        if (citesChecked !== true && total > ok) return citeGate(total, ok);
         const blanks = blankFields(readForm);
         if (!blanks.length) { slot.innerHTML = ''; return issue(); }
         slot.innerHTML = blankWarningHTML(blanks);
@@ -1372,6 +1392,31 @@
         });
         box.addEventListener('keydown', (ev) => {
           if (ev.key === 'Escape') { ev.stopPropagation(); closeWarn(blanks[0].id); }
+        });
+        if (box.focus) box.focus();
+        if (box.scrollIntoView) box.scrollIntoView({ block: 'nearest' });
+      };
+      const citeGate = (total, ok) => {
+        const fixable = !!(lastCheck && lastCheck.corrected);
+        slot.innerHTML = falseCiteWarningHTML(total, ok, fixable);
+        const box = $(el, '#ct-warn');
+        const toCite = () => {
+          slot.innerHTML = '';
+          const c = $(el, '#ct-cite');
+          if (c && c.scrollIntoView) c.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        };
+        $(el, '#ct-warn-back').addEventListener('click', toCite);
+        $(el, '#ct-warn-go').addEventListener('click', () => { slot.innerHTML = ''; issueRequested(true); });
+        if (fixable) {
+          $(el, '#ct-warn-fix').addEventListener('click', async () => {
+            slot.innerHTML = '';
+            $(el, '#ct-citetext').value = lastCheck.corrected;
+            await runCheck();
+            issueRequested();
+          });
+        }
+        box.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Escape') { ev.stopPropagation(); toCite(); }
         });
         if (box.focus) box.focus();
         if (box.scrollIntoView) box.scrollIntoView({ block: 'nearest' });
@@ -1409,8 +1454,9 @@
         citeOut.innerHTML = '';
         assertNote.innerHTML = '';
       };
-      $(el, '#ct-citecheck').addEventListener('click', async (ev) => {
-        const btn = ev.currentTarget;
+      $(el, '#ct-citereset').addEventListener('click', resetCite);
+      const btn = $(el, '#ct-citecheck');
+      async function runCheck() {
         btn.disabled = true;
         citeOut.innerHTML = '<p class="wm-hint">Looking every citation up\u2026</p>';
         let r = await runCitationCheck({
@@ -1423,13 +1469,11 @@
         }
         btn.disabled = false;
         citeOut.innerHTML = citeResultHTML(r);
-        const resetBtn = citeOut.querySelector('button.ct-citereset');
-        if (resetBtn) resetBtn.addEventListener('click', resetCite);
         const fixBtn = citeOut.querySelector('button.ct-citefix');
         if (fixBtn) {
           fixBtn.addEventListener('click', () => {
             $(el, '#ct-citetext').value = r.corrected;
-            btn.click();
+            runCheck();
           });
         }
         if (!r.checked) { lastCheck = null; lockCounts(false); return; }
@@ -1442,7 +1486,8 @@
         lockCounts(true);
         assertNote.innerHTML = assertedNoteHTML(assertedBlock(typedCounts,
           { citations: r.total, verified: r.verified }), r);
-      });
+      }
+      btn.addEventListener('click', runCheck);
       manualBtn.addEventListener('click', () => {
         lastCheck = null;
         typedCounts = { citations: '', verified: '' };
@@ -1453,7 +1498,7 @@
           + 'demo\u2019s stand-in retrieval-log digest.</p></div>';
       });
 
-      $(el, '#ct-issue').addEventListener('click', issueRequested);
+      $(el, '#ct-issue').addEventListener('click', () => issueRequested());
       $(el, '#ct-print').addEventListener('click', () => window.print());
       $(el, '#ct-break').addEventListener('click', async () => {
         if (!last) { await issue(); }
@@ -1529,7 +1574,7 @@
 
   root.Bailee.certificate = { CERT_TYPE, VERIFY_BASE, CLAIM_SPEC, CERT_DEFAULTS, CERT_OPTIONS, MAX_CLAIMS, DEMO_SIGNER,
     DEMO_FIRM, NA, MODEL_VERSIONS, modelVersion, EXAMPLES, HELP,
-    CITE_EXAMPLE, CITE_CORRECTED, demoCitationCheck, CITE_BASE, CITE_VERDICTS, COURTLISTENER,
+    CITE_EXAMPLE, CITE_CORRECTED, demoCitationCheck, falseCiteWarningHTML, CITE_BASE, CITE_VERDICTS, COURTLISTENER,
     citeVerdict, citeRowHTML, citeResultHTML, runCitationCheck,
     ASSERTION_KEYS, ASSERTION_SOURCE, assertedBlock, assertionLine, assertedNoteHTML,
     certAssertedHTML, verdictHTML, claimRows,

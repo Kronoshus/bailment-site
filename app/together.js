@@ -111,9 +111,16 @@
     return '<button type="button" class="btn btn-ghost" data-copy="' + UI.esc(link) + '">' + (label || 'Copy') + '</button>';
   };
 
+  function clearVerifier() {
+    var v = document.getElementById('widget-verifier');
+    var payload = v.querySelector('#ct-payload'), result = v.querySelector('#ct-result');
+    if (payload) payload.value = '';
+    if (result) result.innerHTML = '';
+  }
   document.addEventListener('bailee:certified', function (e) {
     state.url = (e.detail || {}).url || '';
     state.link = shortLink(state.url);
+    clearVerifier();
     // Part 2 shows the short link instead of the full certificate (hidden on this page by app.css).
     var box = document.getElementById('together-link') || document.createElement('div');
     box.id = 'together-link';
@@ -183,6 +190,7 @@
     if (!e.target.closest || !e.target.closest('#ct-verify')) return;
     var box = this.querySelector('#ct-payload');
     var typed = box ? box.value.trim().replace(/^https?:\/\//, '') : '';
+    state.pasted = typed;
     if (!links[typed]) return;
     box.value = links[typed];
     setTimeout(function () { box.value = typed; }, 0);
@@ -192,6 +200,8 @@
   function backToCertify() {
     closePart(3);
     closePart(4);
+    clearVerifier();
+    state.done = false;
     say(4, 'Opens again when the new certificate is published.');
     say(2, 'Remove the false citations, check them again, then press Issue & sign certificate.');
     openPart(2);
@@ -201,6 +211,17 @@
   document.addEventListener('bailee:verified', function (e) {
     if (fold(4).hidden || state.done) return;
     if (!(e.detail || {}).ok) {
+      // An older link from an earlier try: point at the newest one rather than send them back.
+      if (state.pasted && state.pasted !== state.link && links[state.pasted]) {
+        popup('That link is for an older certificate',
+          '<p>You have issued a newer certificate since. Its link is below. Close this, and it goes '
+            + 'into the verifier for you. Then press <em>Verify</em>.</p>'
+            + '<p><code class="mono together-hash">' + UI.esc(state.link) + '</code></p>',
+          'Use my newest link', function () {
+            put(document.getElementById('widget-verifier'), '#ct-payload', state.link);
+          });
+        return;
+      }
       say(4, 'This certificate does not verify. Go back to Certify and remove the false citations.');
       popup('This certificate does not verify',
         '<p>It still carries false citations, so the citation check fails. A court would reject it.</p>'
@@ -220,11 +241,15 @@
         var lead = document.querySelector('.hero .lead');
         if (lead) lead.textContent = 'Congratulations! You certified your work to the court.';
         say(4, 'Verified. Read what the check did below, or start over.');
-        var again = document.createElement('div');
-        again.className = 'actions together-bottom';
-        again.innerHTML = '<button type="button" class="btn btn-primary together-publish">Start Over</button>';
-        again.firstChild.addEventListener('click', function () { location.reload(); });
-        fold(4).appendChild(again);
       });
   });
+
+  // Part 4 always has a way out, whatever the verifier says.
+  var bar = document.createElement('div');
+  bar.className = 'actions together-bottom';
+  bar.innerHTML = '<button type="button" class="btn btn-ghost" data-act="back">Back to Certify</button>'
+    + '<button type="button" class="btn btn-primary together-publish" data-act="over">Start Over</button>';
+  bar.querySelector('[data-act="back"]').addEventListener('click', backToCertify);
+  bar.querySelector('[data-act="over"]').addEventListener('click', function () { location.reload(); });
+  fold(4).appendChild(bar);
 })();
