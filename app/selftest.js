@@ -1072,24 +1072,24 @@
     /* ---------------------------------------------------------- pricing */
     if (B.pricing) {
       group('Pricing');
-      const yr = (n, m) => B.pricing.computePricing({ lawyers: n, certsPerMonth: m });
+      const yr = (n, m) => B.pricing.computePricing({ lawyers: n, docsPerMonth: m });
       const tier = (r, id) => r.tiers.find((t) => t.id === id).annual;
       ok('a certification is $0.10 and a notarization $0.01',
         B.pricing.PLAN.cert === 0.10 && B.pricing.PLAN.notary === 0.01);
-      ok('5 lawyers at 12.5 a month pay about $195 a year as they go (financial_model.py)',
-        Math.abs(tier(yr(5, 12.5), 'payg') - 195) < 0.01, '$' + tier(yr(5, 12.5), 'payg').toFixed(2));
-      ok('a seat is its expected certifications at list: $5 for 50, $10 for 100',
-        B.pricing.PLAN.team.seat === B.pricing.PLAN.team.certs * B.pricing.PLAN.cert
-          && B.pricing.PLAN.enterprise.seat === B.pricing.PLAN.enterprise.certs * B.pricing.PLAN.cert);
-      ok('30 lawyers on Team at 50 a month pay $1,800, notarizations included',
-        tier(yr(30, 50), 'team') === 1800, '$' + tier(yr(30, 50), 'team'));
-      ok('300 lawyers on Enterprise at 100 a month pay $36,000',
-        tier(yr(300, 100), 'enterprise') === 36000, '$' + tier(yr(300, 100), 'enterprise'));
-      ok('certifications beyond the pool are billed at $0.10',
-        Math.abs(tier(yr(30, 60), 'team') - (1800 + 30 * 10 * 12 * 0.10)) < 0.01);
+      ok('5 lawyers at 100 AI documents a month pay about $900 a year as they go (financial_model.py)',
+        Math.abs(tier(yr(5, 100), 'payg') - 900) < 0.01, '$' + tier(yr(5, 100), 'payg').toFixed(2));
+      ok('a seat is its usage at list: 100 certifications and 500 notarizations = $15',
+        Math.abs(B.pricing.PLAN.team.seat - (B.pricing.PLAN.team.certs * B.pricing.PLAN.cert
+          + B.pricing.PLAN.team.notaries * B.pricing.PLAN.notary)) < 1e-9);
+      ok('30 lawyers on Team at 100 a month pay $5,400',
+        tier(yr(30, 100), 'team') === 5400, '$' + tier(yr(30, 100), 'team'));
+      ok('300 lawyers on Enterprise at 100 a month pay $54,000',
+        tier(yr(300, 100), 'enterprise') === 54000, '$' + tier(yr(300, 100), 'enterprise'));
+      ok('usage beyond the pool is billed at list ($0.15 a document)',
+        Math.abs(tier(yr(30, 110), 'team') - (5400 + 30 * 10 * 12 * 0.15)) < 0.01);
       ok('Enterprise never bills fewer than 50 seats', yr(10, 100).seats === 50);
       ok('each firm size is pointed at its own plan',
-        yr(5, 12.5).suggested === 'payg' && yr(30, 50).suggested === 'team' && yr(300, 100).suggested === 'enterprise');
+        yr(5, 100).suggested === 'payg' && yr(30, 100).suggested === 'team' && yr(300, 100).suggested === 'enterprise');
     }
 
     report('', null, '');

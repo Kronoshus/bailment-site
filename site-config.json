@@ -14,8 +14,8 @@
   "pricing": {
     "certification": 0.10,
     "notarization": 0.01,
-    "teamSeat": 5,
-    "enterpriseSeat": 10
+    "teamSeat": 15,
+    "enterpriseSeat": 15
   },
   "maintenance": false,
   "theme": {
