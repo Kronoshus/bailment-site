@@ -1,7 +1,8 @@
 // Pricing calculator. Every number comes from docs/financial_model.py, nothing is invented.
 //   $0.10 per certification, $0.01 per notarization, whoever pays and however.
-//   Team $40 per lawyer per month, 25 certifications + 400 notarizations included per seat, pooled.
-//   Enterprise $30 per seat per month (50-seat minimum) plus usage at list.
+//   A seat is its expected certifications at list: Team $5 per lawyer per month (50 a month,
+//   mid-size firm), Enterprise $10 per seat per month (100 a month, large firm, 50-seat minimum).
+//   Pooled across the firm, drafting notarizations included, certifications beyond the pool $0.10.
 //   USDM is debited as it happens; Stripe (USD) is metered and invoiced at month end.
 (function (root) {
   'use strict';
@@ -12,27 +13,28 @@
     cert: 0.10,
     notary: 0.01,
     notariesPerCert: 10,          // drafting checkpoints per certified document (assumption)
-    otherNotariesPerLawyer: 900,  // notarized drafts that never become a certified document
-    team: { seat: 40, certs: 25, notaries: 400 },
-    enterprise: { seat: 30, minSeats: 50 },
+    otherNotariesPerLawyer: 75,   // a month: notarized drafts that never become a certified document
+    team: { seat: 5, certs: 50 },
+    enterprise: { seat: 10, certs: 100, minSeats: 50 },
     infraMonthly: [1500, 4000],   // flat, whatever the customer count
   };
 
   function computePricing(input) {
     const lawyers = Math.max(1, Math.round(Number(input.lawyers) || 1));
-    const perLawyer = Math.max(0, Number(input.certsPerLawyer) || 0);
-    const certs = lawyers * perLawyer;
-    const notaries = certs * PLAN.notariesPerCert + lawyers * PLAN.otherNotariesPerLawyer;
+    const perLawyer = Math.max(0, Number(input.certsPerMonth) || 0);   // a month
+    const certs = Math.round(lawyers * perLawyer * 12);
+    const notaries = certs * PLAN.notariesPerCert + lawyers * PLAN.otherNotariesPerLawyer * 12;
     const usage = certs * PLAN.cert + notaries * PLAN.notary;
     const t = PLAN.team, e = PLAN.enterprise;
-    const overage = Math.max(0, certs - lawyers * t.certs * 12) * PLAN.cert
-      + Math.max(0, notaries - lawyers * t.notaries * 12) * PLAN.notary;
+    // a seat plan pays its seats plus any certifications beyond the pooled allowance
+    const seatPlan = (p, seats) => seats * p.seat * 12 + Math.max(0, certs - seats * p.certs * 12) * PLAN.cert;
     const seats = Math.max(lawyers, e.minSeats);
+    const overage = Math.max(0, certs - lawyers * t.certs * 12) * PLAN.cert;
     const tiers = [
       { id: 'payg', label: 'Pay as you go', fits: 'Solo and small firms', annual: usage },
-      { id: 'team', label: 'Team', fits: 'Mid-size firms', annual: lawyers * t.seat * 12 + overage },
+      { id: 'team', label: 'Team', fits: 'Mid-size firms', annual: seatPlan(t, lawyers) },
       { id: 'enterprise', label: 'Enterprise', fits: 'Large firms, ' + e.minSeats + '-seat minimum',
-        annual: seats * e.seat * 12 + usage },
+        annual: seatPlan(e, seats) },
     ];
     const suggested = lawyers < 10 ? 'payg' : lawyers < 100 ? 'team' : 'enterprise';
     return { lawyers, perLawyer, certs, notaries, usage, overage, seats, tiers, suggested };
@@ -49,12 +51,12 @@
         <div class="inline">
           <div class="field"><label>Lawyers in the firm</label>
             <input id="pr-lawyers" type="number" min="1" max="2000" value="30"></div>
-          <div class="field"><label>Certifications per lawyer per year</label>
-            <input id="pr-certs" type="number" min="0" max="2000" value="150"></div>
+          <div class="field"><label>Certifications per lawyer per month</label>
+            <input id="pr-certs" type="number" min="0" max="500" value="50"></div>
         </div>
         <div class="inline">
           <div class="field"><input id="pr-lawyers-r" type="range" min="1" max="500" value="30"></div>
-          <div class="field"><input id="pr-certs-r" type="range" min="0" max="600" step="10" value="150"></div>
+          <div class="field"><input id="pr-certs-r" type="range" min="0" max="200" step="5" value="50"></div>
         </div>
       </div>
       <div id="pr-out"></div>`;
@@ -63,7 +65,7 @@
     wireCopy(el);
 
     function draw() {
-      const r = computePricing({ lawyers: $(el, '#pr-lawyers').value, certsPerLawyer: $(el, '#pr-certs').value });
+      const r = computePricing({ lawyers: $(el, '#pr-lawyers').value, certsPerMonth: $(el, '#pr-certs').value });
       out.innerHTML = `
         <div class="cols3">
           <div class="panel"><div class="bignum">${r.certs.toLocaleString('en-US')}<small>Certifications a year at ${cents(PLAN.cert)}</small></div></div>
@@ -87,10 +89,11 @@
             ${row('Chain fees', '$0 to the firm; DUST comes from held NIGHT')}
           </div>
           <div class="panel">
-            <h3>What Team includes</h3>
-            ${row('Per lawyer, per month', PLAN.team.certs + ' certifications, ' + PLAN.team.notaries + ' notarizations')}
-            ${row('Pooled', 'across the whole firm')}
-            ${row('Beyond that', 'list price, ' + money(r.overage) + ' a year here')}
+            <h3>What a seat includes</h3>
+            ${row('Team, $' + PLAN.team.seat + ' a lawyer a month', PLAN.team.certs + ' certifications')}
+            ${row('Enterprise, $' + PLAN.enterprise.seat + ' a seat a month', PLAN.enterprise.certs + ' certifications')}
+            ${row('Notarizations while drafting', 'included, pooled across the firm')}
+            ${row('Beyond the pool', '$0.10 a certification, ' + money(r.overage) + ' a year on Team here')}
           </div>
         </div>
         <p class="note">Bailment's running cost is ${money(PLAN.infraMonthly[0])}&ndash;${money(PLAN.infraMonthly[1])}

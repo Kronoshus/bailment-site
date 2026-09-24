@@ -141,7 +141,7 @@
   <div class="wrap">
     <span class="eyebrow">Bailment</span>
     <h1>Business plan</h1>
-    <p class="lead">Verifiable AI-use certification for court filings, on a private workspace the firm owns.</p>
+    <p class="lead">The attestation company for AI-assisted court filings, built on a private workspace the firm owns.</p>
     <p class="plan-meta">Kevin Mohr &middot; 23 September 2026</p>
     <p class="stage-note">This is the plan. Parts of it are built, parts of it are planned.</p>
   </div>
@@ -186,6 +186,9 @@
 <li><a href="#team-milestones-and-roadmap">Team, Milestones and Roadmap</a>
 </li>
 <li><a href="#financial-plan-and-risk-register">Financial Plan and Risk Register</a>
+<ol>
+<li><a href="#risk-register">Risk register</a></li>
+</ol>
 </li>
 <li><a href="#sources">Sources</a>
 </li>
@@ -196,22 +199,22 @@
 <section class="plan-sec">
 <h2 id="executive-summary">Executive Summary</h2>
 <p class="lead">Courts now demand that lawyers certify how they used AI, and lawyers have no way to prove it.</p>
-<p>As of May 2026 there were 143 individual federal district judge standing orders on AI use, roughly 61 of them requiring affirmative disclosure plus certification, and a newer category, about 15 orders and growing, requiring “the name, version, and provider of any generative artificial intelligence tool used.” Sixteen states have adopted statewide rules. More than 85 judicial opinions have addressed AI errors in filings, against about a dozen in late 2023, and sanctions have run from $5,000 in Mata v. Avianca to $15,000 per attorney in the Sixth Circuit’s Whiting v. City of Athens.</p>
-<p>A lawyer signing such a certificate today is attesting to something they cannot demonstrate. They do not know with certainty which model version touched the draft, whether a human actually reviewed it before it went out, or whether client identifiers reached a vendor’s servers. Bailment produces a certificate that proves all three, and reveals none of the document.</p>
+<p>According to The Legal Stack’s 2026 judicial response report, as of May 2026 there were <strong>143 individual federal district judge standing orders</strong> on AI use, roughly 61 of them requiring affirmative disclosure plus certification, and a newer category, about 15 orders and growing, requiring “the name, version, and provider of any generative artificial intelligence tool used.” Sixteen states have adopted statewide rules. More than 85 judicial opinions have addressed AI errors in filings, against about a dozen in late 2023, and sanctions have run from $5,000 in Mata v. Avianca to $15,000 per attorney in the Sixth Circuit’s Whiting v. City of Athens. The appellate courts are now moving as well: the Ninth Circuit’s published Lnu v. Blanche order binds an entire firm for two years, and the Tenth Circuit has proposed revisions to its signing rule to address generative AI, effective January 1, 2027.</p>
+<p>A lawyer signing such a certificate today is attesting to something they cannot demonstrate. They do not know with certainty which model version touched the draft, whether its citations were checked, or whether client details were redacted before any model saw them. <strong>Bailment is an attestation company. It records evidence of all three, using AI that runs on hardware the firm owns and a blockchain record no one can quietly rewrite, and it reveals none of the document.</strong> The lawyer still certifies personal review; Bailment gives that certification something to stand on.</p>
 <p>The product is Bailee: a private AI workspace where a client and their lawyer work together, on hardware the firm owns. Every filing that comes out of it carries a verifiable certificate a court can check independently. That is the wedge. The longer bet is that the same privacy substrate supports things no one can build today, starting with conflicts checking across firms that reveals no client lists.</p>
-<p>The mechanism is two channels with opposite defaults. The Client Communication Protocol is where a client and their lawyer actually work: uploads, questions, drafts, advice, and AI the two of them use together. It is privileged, the firm edits it freely, and it leaves no per-document trace anywhere. Document Record is the deliberate act of notarizing one document, taken when a lawyer decides a specific item should be provable to someone outside the privilege. Identifiers are stripped on the firm’s own appliance before any model sees anything, and what reaches the chain is a salted commitment, never text, names or vectors.</p>
-<p>Three things make this buildable in 2026 rather than 2028. Confidential AI became practical at a price a mid-market firm can bear, because a $12,000 box now runs a model good enough for redaction and retrieval without anything leaving the building. Midnight reached mainnet in the first half of 2026 as a Cardano partner chain with a working zero-knowledge contract language, Compact, which is what makes selective, deliberate provability possible instead of all-or-nothing. And the legal AI category acquired a credible open-source anchor in MikeOSS, which already speaks MCP and already integrates CourtListener, so the workflow layer is something to build on rather than rebuild.</p>
-<p>The company is <strong>Bailment</strong> and the product is <strong>Bailee</strong>. A bailment is the legal doctrine covering delivery of property to another party for a specific purpose, without transfer of ownership: the bailee holds and safeguards, and never owns. The firm holds the client’s documents; Bailment holds nothing. A bailee holds custody of the evidence, controls who enters the room, keeps order, and neither testifies nor adjudicates. Both words descend from the same Old French root, bail, meaning custody or charge. Throughout this plan, Bailment is the actor in any sentence about what the vendor does or cannot do, and Bailee is the system a firm runs. Trademark clearance is an open item, including whether to ship the one-L spelling of the product name.</p>
-<p><strong>How the business works.</strong> Priced the way OpenAI and Anthropic price: usage for anyone, seats for teams, a contract for the enterprise, and none of it is access to a client’s documents. Every certification costs $0.10 and every notarization made while drafting costs $0.01, whoever pays and however. USDM on Cardano is charged there and then from a prepaid balance; dollars through Stripe are metered and invoiced at month end. Mid-size firms buy a Team plan at $40 per lawyer per month with that usage included, and large firms sign an Enterprise contract at $30 per seat per month plus usage at list rates. A 300-lawyer firm comes to about $120,000 a year and a 30-lawyer firm to about $14,400, at roughly 89% gross margin.</p>
-<p>Why the substrate matters more than the wedge. Certification gets Bailment inside firms with a regulator creating the demand. What keeps it there is the class of products that only a privacy substrate can support: conflicts checking between firms that reveals neither client list, and blind industry benchmarking that no firm would otherwise contribute to. Those are clearinghouses with increasing returns rather than vendor relationships, and they are the reason this is built on Midnight rather than on a timestamp service.</p>
-<p>The ask. A seed round of $2.4M over 18 months to reach ten paying firms, an audited contract on Midnight mainnet, and an Apache-licensed reference implementation with an independent governance body.</p>
+<p>The mechanism is two channels with opposite defaults. The <strong>Client Communication Protocol</strong> is where a client and their lawyer actually work: uploads, questions, drafts, advice, and AI the two of them use together. It is privileged, the firm edits it freely, and it leaves no per-document trace anywhere. <strong>Document Record</strong> is the deliberate act of notarizing one document, taken when a lawyer decides a specific item should be provable to someone outside the privilege. Identifiers are stripped on the firm’s own appliance before any model sees anything, and what reaches the chain is a salted commitment, never text, names or vectors.</p>
+<p>Three things make this buildable in 2026 rather than 2028. Confidential AI became practical at a price a mid-market firm can bear, because a box estimated at about $12,000 can now run a model good enough for redaction and retrieval without anything leaving the building. Midnight reached mainnet in the first half of 2026 as a Cardano partner chain with a working zero-knowledge contract language, Compact, which is what makes selective, deliberate provability possible instead of all-or-nothing. And the legal AI category acquired a credible open-source anchor in MikeOSS, which already speaks MCP and already integrates CourtListener, so the workflow layer can be integrated rather than rebuilt.</p>
+<p>The company is <strong>Bailment</strong> and the product is <strong>Bailee</strong>. A bailment is the legal doctrine covering delivery of property to another party for a specific purpose, without transfer of ownership. The bailee is the party who receives it: it holds and safeguards the property, owes a duty of care over it, and never owns it. That is exactly the job of the system the firm runs. It holds the client’s documents on the firm’s hardware, on the client’s behalf, and gives them back on demand. Bailment, the vendor, is not the bailee and holds nothing. Throughout this plan, Bailment is the actor in any sentence about what the vendor does or cannot do, and Bailee is the system a firm runs. Trademark clearance is an open item. Because bailee is an ordinary legal term, the mark is likely to be treated as descriptive and will need a distinctive logo or pairing with the company name to be protectable.</p>
+<p><strong>How the business works.</strong> Priced the way OpenAI and Anthropic price: usage for anyone, seats for teams, a contract for the enterprise, and none of it is access to a client’s documents. Every certification costs $0.10 and every notarization made while drafting costs $0.01. USDM on Cardano is charged there and then from a prepaid balance; dollars through Stripe are metered and invoiced at month end. Seats are priced from the certifications a lawyer is expected to need: about 50 a month at a mid-size firm, so a Team seat is $5 per lawyer per month, and about 100 a month at a large firm, so an Enterprise seat is $10, with drafting notarizations included in both. A 30-lawyer firm comes to about $1,800 a year and a 300-lawyer firm to about $36,000.</p>
+<p><strong>Why the substrate matters more than the wedge.</strong> Certification gets Bailment inside firms with a regulator creating the demand. What keeps it there is the class of products that only a privacy substrate can support: conflicts checking between firms that reveals neither client list, and blind industry benchmarking that no firm would otherwise contribute to. Those are clearinghouses with increasing returns rather than vendor relationships, and they are the reason this is built on Midnight rather than on a timestamp service.</p>
+<p><strong>The ask.</strong> A seed round of $2.4M over 18 months to reach ten paying firms, an audited contract on Midnight mainnet, and an Apache-licensed reference implementation with an independent governance body.</p>
 </section>
 <section class="plan-sec">
 <h2 id="company-description">Company Description</h2>
-<p class="lead">Bailment exists to make confidential collaboration between a client and their counsel safe to conduct with AI, and provable only where a firm chooses. Its product is Bailee.</p>
-<p>Legal form. A Delaware C corporation holding the commercial hosting business and the trademarks, paired with a separate non-profit foundation that holds the protocol specification and the reference contracts. This is the pattern used by Solana, Sui, and Cardano itself, and it matters here because law firms will not standardize on a protocol whose specification a single vendor can change unilaterally.</p>
-<p>Open-source posture. Apache 2.0 for the protocol, the Compact contracts, the x402 facilitator, and the client SDKs. Apache rather than MIT because of the express patent grant, which general counsel at large firms will ask about. The commercial layer is a separate hosted control plane: managed facilitator, managed indexer, GPU capacity brokerage, SOC 2 evidence, and support. Firms who want to run everything themselves can, and some will, which is the point.</p>
-<p>What we are not. Not a legal AI model vendor: models are swappable and the firm picks them. Not a document management system: Bailee integrates with iManage and NetDocuments rather than replacing them. Not a law firm, and not a source of legal advice, which is why nothing the software produces reaches a client without a lawyer sending it. And not a custodian: Bailment holds no client documents, no identities and no vectors, which is the constraint every other decision in this plan is built around.</p>
+<p class="lead">Bailment is an attestation company. It certifies how AI-assisted legal work was produced, using AI that runs on hardware the firm owns and a blockchain record that anchors each attestation. Its purpose is to make confidential collaboration between a client and their counsel safe to conduct with AI, and provable only where a firm chooses. Its product is Bailee.</p>
+<p><strong>Legal form.</strong> A Delaware C corporation holding the commercial hosting business and the trademarks, paired with a separate non-profit foundation that holds the protocol specification and the reference contracts. This is the pattern used by Solana, Sui, and Cardano itself, and it matters here because law firms will not standardize on a protocol whose specification a single vendor can change unilaterally.</p>
+<p><strong>Open-source posture.</strong> Apache 2.0 for the protocol, the Compact contracts, the x402 facilitator, and the client SDKs. Apache rather than MIT because of the express patent grant, which general counsel at large firms will ask about. The commercial layer is a separate hosted control plane: managed facilitator, managed indexer, GPU capacity brokerage, SOC 2 evidence, and support. Firms who want to run everything themselves can, and some will, which is the point.</p>
+<p><strong>What we are not.</strong> Not a legal AI model vendor: models are swappable and the firm picks them. Not a document management system: Bailee integrates with iManage and NetDocuments rather than replacing them. Not a law firm, and not a source of legal advice, which is why nothing the software produces reaches a client without a lawyer sending it. And not a custodian: Bailment holds no client documents, no identities and no vectors, which is the constraint every other decision in this plan is built around.</p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -276,7 +279,7 @@
 <h2 id="problem-and-market-opportunity">Problem and Market Opportunity</h2>
 <p class="lead">Lawyers are already using AI on privileged material, courts are now demanding they certify how, and nobody can prove anything.</p>
 <p>An associate with a deadline pastes three paragraphs of a client’s declaration into whatever model is open in the next tab. Nobody logged it, nobody approved it, and the firm cannot say afterwards what left the building. Then the filing goes out under a certificate saying the attorney disclosed their AI use and verified every citation, and that certificate is, in practice, a guess.</p>
-<p>The regulatory pressure is real and measurable, which is unusual for a legal technology market.</p>
+<p><strong>The regulatory pressure is real and measurable, which is unusual for a legal technology market.</strong></p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -313,18 +316,20 @@
 </tbody>
 </table>
 </div>
-<p>The precedential case. In Lnu v. Blanche, No. 24-4790 (9th Cir. June 3, 2026), a published opinion, the Ninth Circuit sanctioned two attorneys whose immigration briefs cited fabricated authority and misattributed quotations, and who denied using generative AI at oral argument before conceding it was possible. The court held that “a competent and diligent attorney must do more than prompt generative AI” and check citations; they must also “read” and “reason.”</p>
-<p>The sanctions matter more than the holding for present purposes. Alongside a six-month suspension and a referral to the State Bar of California, the court ordered the attorneys to file a statement under penalty of perjury disclosing AI use in every future filing. That is a court imposing a perpetual, personal certification duty on named lawyers, and it is precisely the obligation Bailment makes satisfiable. A lawyer under that order today has no mechanism to substantiate what they are swearing to.</p>
-<p>It is worth noting the counter-current. The Fifth Circuit considered a formal rule amendment on AI use in filings and declined to adopt it in June 2024, and the Eleventh Circuit issued non-binding guidance rather than a rule. The Second and Ninth Circuits have amendments pending. If the appellate courts continue to decline circuit-wide rules, the patchwork of individual standing orders persists, which makes the fragmentation worse rather than better and strengthens the case for a product that resolves it.</p>
+<p>These figures come from one secondary source, The Legal Stack’s 2026 report, as of May 2026. Before any investor meeting they need a second, independent count, and the report’s method for classifying orders should be stated beside them.</p>
+<p><strong>The precedential case.</strong> In <a href="https://www.courtlistener.com/opinion/10869591/lnu-v-blanche/">Lnu v. Blanche</a>, No. 24-4790 (9th Cir. June 3, 2026), a published opinion, the Ninth Circuit sanctioned two attorneys whose immigration briefs cited fabricated authority and misattributed quotations, and who denied using generative AI at oral argument before conceding it was possible. The court held that “a competent and diligent attorney must do more than prompt generative AI” and check citations; they must also “read” and “reason.”</p>
+<p><strong>The discipline matters more than the holding.</strong> The court fined each attorney $2,500, suspended both from practice before it for six months, and referred them to the State Bar of California. It then ordered them, and every other attorney at their firm, to include in all future filings for two years <strong>a statement under penalty of perjury saying whether generative AI was used, naming the tool, and certifying that the signing attorney personally reviewed the filing</strong> and that every citation and quotation refers to existing authority. That is a sworn duty on a whole firm. Bailee records evidence for two of its four elements outright, whether a model was used and which one, and for a third, that the citation check ran against the retrieval log. The fourth, personal review, belongs to the lawyer alone. Bailee cannot prove a person read a document and does not claim to. What it gives the lawyer is recorded evidence behind the sworn statement, where today there is only a signature.</p>
+<p>It is worth noting the counter-current. The Fifth Circuit considered a formal rule amendment on AI use in filings and <a href="https://www.kslaw.com/news-and-insights/us-fifth-circuit-decides-against-its-proposed-rule-amendment-on-ai-use-in-legal-filings">declined to adopt it</a> in June 2024, and the Eleventh Circuit issued non-binding guidance rather than a rule. The Second and Ninth Circuits have amendments pending. If the appellate courts continue to decline circuit-wide rules, the patchwork of individual standing orders persists, which makes the fragmentation worse rather than better and strengthens the case for a product that resolves it.</p>
+<p>The Tenth Circuit has since <a href="https://www.ca10.uscourts.gov/clerk/news/public-comment-period-open-revisions-2027-tenth-circuit-rules">opened public comment</a>, through October 18, 2026, on revisions to 10th Cir. R. 46.5, its rule on signing briefs and other papers. The court’s memo says the changes are meant to address the increased use of generative AI by lawyers and pro se litigants, and they take effect January 1, 2027. Press coverage describes the proposal as requiring a certification of human review. The final text is due by November 30, 2026, and should be read before this plan relies on that description.</p>
 <p>Three further pressures sit underneath it:</p>
 <ul class="ticks">
-<li>The disclosure question has no good answer yet. Privilege protects communications between a client and their lawyer. Text pasted into a third party’s model has been shown to a third party. Whether that waives anything is unsettled, and no firm wants to be the case that settles it.</li>
-<li>Clients are auditing their firms. Corporate legal departments send AI questionnaires alongside outside counsel guidelines, and they get more specific every cycle.</li>
-<li>Supervision duties do not scale by trust. A partner is responsible for how associates use these tools and currently has no way to see it. Shadow AI is invisible by construction.</li>
+<li><strong>The disclosure question has no good answer yet.</strong> Privilege protects communications between a client and their lawyer. Text pasted into a third party’s model has been shown to a third party. Whether that waives anything is unsettled, and no firm wants to be the case that settles it.</li>
+<li><strong>Clients are auditing their firms.</strong> Corporate legal departments send AI questionnaires alongside outside counsel guidelines, and they get more specific every cycle.</li>
+<li><strong>Supervision duties do not scale by trust.</strong> A partner is responsible for how associates use these tools and currently has no way to see it. Shadow AI is invisible by construction.</li>
 </ul>
-<p>Two things make the certification requirement a market rather than a nuisance. It is fragmented, so a litigation firm appearing before many judges cannot track the applicable rule by hand, and it is unverifiable, so even a scrupulous firm signs a certificate it cannot substantiate. The first is a database problem others are already solving. The second is a cryptography problem, and it is the one nobody has solved.</p>
+<p>Two things make the certification requirement a market rather than a nuisance. It is <strong>fragmented</strong>, so a litigation firm appearing before many judges cannot track the applicable rule by hand, and it is <strong>unverifiable</strong>, so even a scrupulous firm signs a certificate it cannot substantiate. The first is a database problem others are already solving. The second is a cryptography problem, and it is the one nobody has solved.</p>
 <p>The firms feeling this hardest are not the largest. An AmLaw 50 firm funds a private deployment and hires people to run it. A 60-lawyer litigation firm cannot, and appears before the same judges.</p>
-<p>Market sizing. These are working estimates to be validated with design partners, not sourced figures.</p>
+<p><strong>Market sizing.</strong> These are working estimates to be validated with design partners, not sourced figures.</p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -338,17 +343,17 @@
 <tr>
 <th scope="row">TAM: global legal technology spend</th>
 <td>All software and services bought by legal</td>
-<td>~$30B/yr</td>
+<td class="num">~$30B/yr</td>
 </tr>
 <tr>
 <th scope="row">SAM: document workflow, e-discovery, and legal AI</th>
 <td>The categories Bailee sits under</td>
-<td>~$6B/yr</td>
+<td class="num">~$6B/yr</td>
 </tr>
 <tr>
 <th scope="row">SOM year 3: US firms of 20 lawyers and up</th>
-<td>~250 on Team at ~$14K and ~30 on Enterprise at ~$120K</td>
-<td>~$7M/yr</td>
+<td>~250 on Team at ~$1.8K and ~30 on Enterprise at ~$36K</td>
+<td class="num">~$1.5M/yr</td>
 </tr>
 </tbody>
 </table>
@@ -357,7 +362,7 @@
 </section>
 <section class="plan-sec">
 <h2 id="product-and-technology">Product and Technology</h2>
-<p>The architecture exists to make one artifact trustworthy: a certificate a court can verify without seeing the document. Everything below is what has to be true for that certificate to mean anything. The sections run in the order a document travels, starting with the certificate itself and then working backwards through the channels it can take, where it is computed on, what it is retrieved against, how people and AI work on it together, and who is allowed to do any of that.</p>
+<p class="lead">The architecture exists to make one artifact trustworthy: a certificate a court can verify without seeing the document. Everything below is what has to be true for that certificate to mean anything. The sections run in the order a document travels, starting with the certificate itself and then working backwards through the channels it can take, where it is computed on, what it is retrieved against, how people and AI work on it together, and who is allowed to do any of that.</p>
 <figure class="plan-pre">
 <div class="scroll-x">
 <pre class="mono">flowchart LR
@@ -380,31 +385,31 @@
 <thead>
 <tr>
 <th scope="col">Claim</th>
-<th scope="col">What proves it</th>
+<th scope="col">What supports it, and where it stops</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <th scope="row">Which model, version and provider touched the text</th>
-<td>The signed model manifest pinned in the appliance’s licensed configuration. This is verbatim what the newest standing orders ask for.</td>
+<td>The signed model manifest pinned in the appliance’s licensed configuration. This is what the newest standing orders ask for, word for word.</td>
 </tr>
 <tr>
-<th scope="row">A named, licensed attorney reviewed and adopted it before filing</th>
-<td>The send record. Nothing reaches a client or a filing without a send, and the sending key is recorded.</td>
+<th scope="row">An attorney’s credential adopted and sent it</th>
+<td>The send record. Nothing reaches a client or a court without a send, and the sending key is recorded. This proves the send happened under that attorney’s credential. It does not prove the attorney read the filing; the attorney certifies that personally.</td>
 </tr>
 <tr>
-<th scope="row">Every citation was independently verified</th>
-<td>A required pipeline step, recorded as completed against the retrieval log.</td>
+<th scope="row">The citation check ran</th>
+<td>A required pipeline step, recorded against the retrieval log. It shows each citation resolved to a real authority, not that the authority says what the filing claims.</td>
 </tr>
 <tr>
-<th scope="row">No client identifier reached a model</th>
-<td>The template and vault split, with the redaction artifact version recorded.</td>
+<th scope="row">The approved redaction pipeline ran before any model saw the text</th>
+<td>The template and vault split, with the redactor version recorded. It shows the process ran. It does not guarantee that no fact in the text could identify a client, because some identifying facts are not names.</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The court receives the certificate and a URL. Anyone, including opposing counsel, can verify it against the public append-only registry of approved pipeline versions. The document itself is never revealed, and neither is the client, the matter, or which of the firm’s lawyers acted. What is proven is the process, not the content, which is exactly the shape of what a standing order asks for.</p>
-<p>A certificate is worth only as much as the pipeline behind it. Producing one requires knowing which model ran, on hardware nobody else can alter, with a human gate that cannot be bypassed and a registry a third party can check independently. That is the whole architecture described below, pointed at a court. It is also why a competitor cannot ship this as a feature: a certificate that attests to a black box attests to nothing.</p>
+<p>The court receives the certificate and a verification link. Anyone, including opposing counsel, can check it against the public, append-only registry of approved pipeline versions. <strong>The document is not revealed, and neither is the client, the matter, or which of the firm’s lawyers acted.</strong> What the certificate shows is the process, not the content, which is the shape of what a standing order asks for.</p>
+<p>A certificate is worth only as much as the pipeline behind it. Bailment’s signature proves that Bailment issued the certificate under a live license, and that the recorded pipeline was on the approved list. It does not by itself prove that pipeline behaved correctly. That is why the rest of the architecture matters more than the signature: signed model manifests, a reproducible and audited pipeline, a human gate that cannot be bypassed, and a registry a third party can check. It is also why a competitor that does not control the pipeline cannot ship this as a feature. A certificate about a black box says nothing about what happened inside it.</p>
 <p>The fragmentation problem is handled alongside it. Bailee maps the applicable rule to the court and judge, so the certificate produced matches what that judge actually requires rather than a generic form. Other vendors are building rule trackers and some are good; the tracker is table stakes and the proof is the product.</p>
 <h3 id="two-channels-with-opposite-defaults">2. Two channels with opposite defaults</h3>
 <p>Privileged material and work product have opposite requirements, so they get separate mechanisms rather than one configurable one.</p>
@@ -452,13 +457,13 @@
 </table>
 </div>
 <p>The defaults are inverted against risk deliberately. Document Record is opt-in because it has consequences; the Protocol is automatic because it has none. A lawyer only makes a judgment call when they want notarial proof, and forgetting to classify fails safe. Two separate contracts also make it much harder to push a privileged document through the notarial path by accident, which matters because notarizing cannot be undone.</p>
-<p>The Protocol leaks nothing for three reasons. It is batched, so no count of communications is ever published, and the count is the dangerous leak: a privilege log is prepared by the firm and already contested in discovery, and a chain that independently counts communications hands opposing counsel a way to attack it. It is shared, so every firm’s root lands in the same tree and an observer cannot attribute a change to a matter, a firm or a client. And it publishes on a fixed cadence whether or not anything happened, so the presence of a write says nothing.</p>
+<p>The Protocol publishes nothing about count, content, firm or matter, for three reasons. It is <strong>batched</strong>, so no count of communications is ever published, and the count is the dangerous leak: a privilege log is prepared by the firm and already contested in discovery, and a chain that independently counts communications hands opposing counsel a way to attack it. It is <strong>shared</strong>, so every firm’s root lands in the same tree and an observer cannot attribute a change to a matter, a firm or a client. And it publishes on a <strong>fixed cadence</strong> whether or not anything happened, so the presence of a write says nothing. That covers what is published. It does not cover traffic analysis: an observer watching network traffic, submission timing, or a firm’s own infrastructure could still learn something, and a small network is easier to watch than a large one. Those are operational risks, and the risk register treats them that way.</p>
 <p>What this buys the firm is an unusual asymmetry: it can prove a document existed on a date by producing a Merkle path, and nobody else can even tell the document exists. Evidence the holder may choose to use, without evidence that can be used against them.</p>
-<p>Either party may notarize. A client who wants proof their own submission was not altered does not need the firm’s permission, and the firm cannot block it. The privilege belongs to the client, not the firm, so a client may notarize privileged material over the firm’s objection. That is a deliberate position, and it belongs in the engagement letter.</p>
+<p>Either party may notarize. A client who wants proof their own submission was not altered does not need the firm’s permission, and the firm cannot block it. <strong>The attorney-client privilege belongs to the client</strong>, who can waive it, so a client may notarize their own privileged communications over the firm’s objection. Work product is different. In many jurisdictions the lawyer holds an independent protection over their own mental impressions and strategy, so the client’s right to notarize covers what the client wrote or received, not the lawyer’s internal drafts and notes. The product enforces that default: a client can notarize what is in the client’s own view of the thread, and nothing else. Where exactly the line falls varies by jurisdiction, needs counsel review before launch, and belongs in the engagement letter.</p>
 <p>In Compact, the public ledger holds only commitments, role bindings and dispositions. Document text, redaction maps and the identity of the acting individual are private state supplied through witnesses. disclose() is required to move anything from private to public, which makes every leak an explicit, reviewable line of code.</p>
 <p>One practical note on the ledger underneath both channels. Midnight reached mainnet in the first half of 2026 as a Cardano partner chain. Fees are paid in DUST, a shielded, non-transferable resource that regenerates from held NIGHT. That matters commercially: a firm’s per-transaction cost is bounded by a capital holding rather than a volatile spot price, and Bailment can hold NIGHT and subsidize client transactions to zero.</p>
 <h3 id="settlement-and-the-long-horizon-anchor">3. Settlement and the long-horizon anchor</h3>
-<p>Cardano L1 does two jobs. It is where money actually moves, in USDM or ADA, and it is the long-horizon anchor. Midnight state roots periodically checkpoint to Cardano, so a matter’s evidentiary record survives independently of Midnight’s own history. For a records-retention obligation measured in decades, that separation is worth the extra hop.</p>
+<p>Cardano L1 does two jobs. It is where money actually moves, in USDM or ADA, and it is the long-horizon anchor. Midnight state roots periodically checkpoint to Cardano, so a matter’s evidentiary record survives independently of Midnight’s own history. For a records-retention obligation measured in decades, that separation is worth the extra hop. The checkpoint protocol is not yet specified: what is committed, how often, in what transaction format, who submits it, what happens when a submission fails, and how a verifier matches a Midnight root to its Cardano checkpoint. That specification is a named open item before testnet.</p>
 <h3 id="what-gets-metered-and-what-does-not">4. What gets metered, and what does not</h3>
 <p>x402 is back at the centre of billing, because every certification and every notarization is now a priced event. The Protocol still batches to one root per period and the appliance still publishes it with Bailment not in the path. What is metered is the two deliberate acts, never the traffic, so there is still no per-call chokepoint to become a metadata honeypot.</p>
 <p>Two rails, one price. A firm paying in USDM on Cardano is charged there and then: an x402 top-up funds a prepaid balance, and each certification or notarization is debited from it the moment it happens. One on-chain payment per ten-cent event would not work, because the Cardano fee on each payment, about 0.17 ADA, is as large as the charge. A firm paying in dollars through Stripe is never asked to buy crypto: Bailment runs the transactions for it, keeps the ledger in Stripe metered billing, and invoices at the end of the month. DUST for every chain transaction is generated from the NIGHT treasury and is not passed on.</p>
@@ -491,9 +496,9 @@
 </tbody>
 </table>
 </div>
-<p>Seats are not metered. A Team plan includes 25 certifications and 400 notarizations per lawyer per month, pooled across the firm, which covers ordinary practice; Enterprise pays usage at list rates on top of its seat fee. Everything else, including the entire Client Communication Protocol, is never metered per event.</p>
+<p>Seats are not metered per event. A Team seat includes 50 certifications a month and an Enterprise seat 100, pooled across the firm, with notarizations made while drafting included; certifications beyond the pool are billed at $0.10. Everything else, including the entire Client Communication Protocol, is never metered per event.</p>
 <h3 id="where-the-compute-lives">5. Where the compute lives</h3>
-<p>The GPU business is split by data class, not by hosting model, and that is what allows a central GPU product and a no-custody promise to coexist.</p>
+<p>The GPU business is split by <strong>data class</strong>, not by hosting model, and that is what allows a central GPU product and a no-custody promise to coexist.</p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -512,22 +517,22 @@
 <tr>
 <th scope="row">Client matter data: redaction, templates, vectors</th>
 <td>The firm’s own appliance, never elsewhere</td>
-<td>Templates are pseudonymous, not anonymous, and embeddings are invertible. Hosting them is custody.</td>
+<td>Templates are pseudonymous, not anonymous, and embeddings can leak their source text to inversion attacks, so both are treated as confidential. Hosting them is custody.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>Redaction, template generation and matter embedding run on an appliance the firm owns. Bailment ships it, configures it and monitors its health, never its contents. Models are swappable behind a single OpenAI-compatible interface, so a firm can run Llama or Qwen locally for privileged work and route nothing at all outward if it chooses.</p>
-<p>Crucially, the vendor does not touch the document at all: Bailment never hashes anything. Hashing takes plaintext as input, so a vendor that hashes for the firm holds the unredacted document at the worst possible moment. Instead Bailment ships a signed, versioned hasher and redactor; the appliance runs it; Bailment attests that an approved pipeline produced the commitment. The license enforces a minimum artifact version, which gives Bailment a way to push redaction improvements without ever touching data.</p>
-<p>How redaction actually works: the template and the vault. A document is split into two things that are stored and protected differently. The template is the document with every identifier replaced by a stable placeholder, and it is what gets embedded, indexed, handed to a model and, if ever notarized, committed. The same person gets the same token everywhere in a matter, so a model can reason about one party across forty pages without learning who they are. The vault is a small, sealed map from token back to value, and it never touches a model or an index.</p>
+<p>Crucially, the vendor does not touch the document at all: <strong>Bailment never hashes anything</strong>. Hashing takes plaintext as input, so a vendor that hashes for the firm holds the unredacted document at the worst possible moment. Instead Bailment ships a signed, versioned hasher and redactor; the appliance runs it; Bailment attests that an approved pipeline produced the commitment. The license enforces a minimum artifact version, which gives Bailment a way to push redaction improvements without ever touching data.</p>
+<p><strong>How redaction actually works: the template and the vault.</strong> A document is split into two things that are stored and protected differently. The <strong>template</strong> is the document with every identifier replaced by a stable placeholder, and it is what gets embedded, indexed, handed to a model and, if ever notarized, committed. The same person gets the same token everywhere in a matter, so a model can reason about one party across forty pages without learning who they are. The <strong>vault</strong> is a small, sealed map from token back to value, and it never touches a model or an index.</p>
 <p>A hash cannot refill a template, so the vault uses two primitives for two jobs: an HMAC derives the deterministic placeholder, scoped to one matter key, and reversible sealing recovers the value. Production uses AES-GCM in an HSM. A separate digest over the sealed set proves the vault was not swapped later. Refilling a template is a disclosure event and is recorded as one, which turns the weakest point of the design into its best compliance artifact.</p>
 <p>Two limits are worth stating plainly. Named-entity redaction is necessary and not sufficient, because legal documents re-identify from quasi-identifiers: a docket number, a property description, an unusual occupation in a small county. And tokens must be keyed per matter, or an adversary holding the template corpus can link the same person across unrelated files.</p>
-<p>Firms that refuse to own hardware need confidential computing, H100 or H200 in CC mode behind SEV-SNP or TDX with remote attestation, because encryption at rest does not help when data must be decrypted in GPU memory to be computed on and whoever holds root can read that memory. That tier is unscoped. An ordinary hosted GPU tier is sellable, but the no-custody promise cannot be made on it.</p>
+<p>Firms that refuse to own hardware need confidential computing, which takes two separate layers working together. On the CPU side, a trusted execution environment, AMD SEV-SNP or Intel TDX, protects the virtual machine from the host. On the GPU side, the confidential computing mode of an NVIDIA H100 or H200 protects data in GPU memory. Both layers must attest remotely, and a verifier has to check both. Encryption at rest does not help here, because data must be decrypted in memory to be computed on, and whoever holds root on an ordinary host can read that memory. That tier is unscoped. An ordinary hosted GPU tier is sellable, but the no-custody promise cannot be made on it.</p>
 <p>The home-access problem is solved with WireGuard plus mutual TLS and short-lived certificates, not a shared VPN credential. A client at home connects to the portal over the public internet; the portal holds no plaintext. The firm user connects into the GPU plane over the tunnel. This is the one place where a conventional, boring answer beats a clever one.</p>
-<p>Bittensor was evaluated and dropped. Its subnet model, where miners produce a commodity and validators score it, is a reasonable source of price-competitive inference in general, but it does not fit here. Privileged work can never be sent to anonymous miners, which rules out the only inference workload with volume. The public corpus embedding is a one-time job of a few thousand dollars, far too small to justify a subnet, whose registration lock alone starts at a floor of 1,000 TAO and doubles with each registration. A subnet scoring redaction quality would need documents to score. Carrying it on the roadmap would be decoration.</p>
+<p><strong>Bittensor was evaluated and dropped.</strong> Its subnet model, where miners produce a commodity and validators score it, is a reasonable source of price-competitive inference in general, but it does not fit here. Privileged work can never be sent to anonymous miners, which rules out the only inference workload with volume. The public corpus embedding is a one-time job of a few thousand dollars, far too small to justify a subnet, whose registration lock alone starts at a floor of 1,000 TAO and doubles with each registration. A subnet scoring redaction quality would need documents to score. Carrying it on the roadmap would be decoration.</p>
 <h3 id="retrieval-two-tiers-in-two-places">6. Retrieval: two tiers, in two places</h3>
-<p>The platform is an MCP client, not a bespoke integration surface. CourtListener already has a working MCP server covering RECAP dockets, opinions, judges, and oral arguments. MikeOSS is an Apache-style open-source legal AI platform that already speaks MCP and already integrates CourtListener, which makes it the natural upstream for the document workflow layer rather than a competitor to route around.</p>
-<p>Retrieval is two-tier and the tiers live in different places. The public tier is Bailment’s shared corpus, embedded centrally and served to every firm. The private tier indexes only that firm’s own templates, on that firm’s own appliance. A query joins them at answer time, and every retrieved chunk carries a provenance tag, so a cited answer can always be traced back to whether it came from the client’s file or from public law. Nothing in the private tier is ever transmitted to build the public one.</p>
+<p>The platform is an MCP client, not a bespoke integration surface. CourtListener already has a working MCP server covering RECAP dockets, opinions, judges, and oral arguments. MikeOSS is an open-source legal AI platform that already speaks MCP and already integrates CourtListener, which makes it a natural integration partner rather than a competitor to route around. Integrating over MCP is the committed path. Building on MikeOSS’s code is a separate decision that waits on a review of its license, governance, API stability and maintainer commitment.</p>
+<p>Retrieval is two-tier and the tiers live in different places. The <strong>public tier</strong> is Bailment’s shared corpus, embedded centrally and served to every firm. The <strong>private tier</strong> indexes only that firm’s own templates, on that firm’s own appliance. A query joins them at answer time, and every retrieved chunk carries a provenance tag, so a cited answer can always be traced back to whether it came from the client’s file or from public law. Nothing in the private tier is ever transmitted to build the public one.</p>
 <h3 id="the-shared-ai-thread">7. The shared AI thread</h3>
 <p>Inside the Protocol, client and lawyer work with AI in the same thread. Both see what the other generates, both can iterate on it, and both can cite a notarized Document Record as reference. This is the part of the product people actually touch, and it is governed by four rules that are mechanisms rather than policies.</p>
 <div class="scroll-x">
@@ -597,12 +602,12 @@
 </table>
 </div>
 <p>The root is an authorization key and never a decryption key, and that distinction is load-bearing rather than fastidious. A vendor who can decrypt privileged material hands opposing counsel a waiver argument in every matter its customers litigate, becomes a subpoena target with no privilege of its own to assert, and gives nobody a reason to self-host. Bailment never holds a firm’s private key: the firm generates its own pair and sends only the public half, so a breach of Bailment cannot impersonate a firm.</p>
-<p>Enforcement sits in three places at once, because nothing can stop a firm publishing a contract to a permissionless chain. The contract’s constructor verifies the root’s signature over the license in circuit and sets a licensed flag that every other circuit asserts on, so an unlicensed deployment lands on chain and is inert. The gateway refuses to mint a fee receipt without a live license, and since every state change consumes a receipt, revocation freezes a firm in seconds rather than waiting for the chain. The signed registry of approved verifier keys lets a client’s own software confirm that the matter it is joining runs an approved contract.</p>
-<p>Standards compliance is checked, not trusted. Every Compact contract has a verifier key that is a deterministic function of its circuit. Approving a template means signing its verifier key; auditing a deployment means comparing the on-chain key against the registry. A firm that changes one line produces a key that is not in the registry. Firms that need variation get constructor parameters with in-circuit bounds, such as a retention period floor, rather than a fork, which keeps the verifier key constant while the behavior varies.</p>
+<p><strong>Enforcement sits in three places at once,</strong> because nothing can stop a firm publishing a contract to a permissionless chain. The contract’s constructor verifies the root’s signature over the license in circuit and sets a licensed flag that every other circuit asserts on, so an unlicensed deployment lands on chain and is inert. The gateway refuses to mint a fee receipt without a live license, and since every state change consumes a receipt, revocation freezes a firm in seconds rather than waiting for the chain. The signed registry of approved verifier keys lets a client’s own software confirm that the matter it is joining runs an approved contract.</p>
+<p><strong>Standards compliance is checked, not trusted.</strong> Every Compact contract has a verifier key that is a deterministic function of its circuit. Approving a template means signing its verifier key; auditing a deployment means comparing the on-chain key against the registry. A firm that changes one line produces a key that is not in the registry. Firms that need variation get constructor parameters with in-circuit bounds, such as a retention period floor, rather than a fork, which keeps the verifier key constant while the behavior varies.</p>
 <p>Licenses run 45 days and auto-renew, so expiry is the ordinary revocation path and there is no revocation list to distribute. When a firm goes dark its matters freeze, but committed history stays readable and provable: a client does not lose their file because their firm lost its license.</p>
-<p>Client keys: enrollment links, never emailed keys. Email is not confidential, and a key mailed to a client is held by anyone with access to that mailbox or any backup of it, forever, with no record it happened. It also puts the firm in custody of the client’s private key, which destroys non-repudiation. So nothing secret travels: the firm issues a one-time enrollment link, the client’s own browser generates the keypair and registers only the public half, and the token is single use with a 72-hour expiry. Delivery can be email, post, or read aloud over the phone, because the link is not the secret. Firms issue as many as they like; the license caps matters, not keys.</p>
-<p>Retention, legal hold and destruction. Retention is a parameter the firm sets, with a floor enforced in circuit. Bailment must not assert what a jurisdiction requires: periods vary by matter type, by whether a judgment exists, by trust-account rules and by whether the client was a minor, and a vendor that picks the number has made a legal judgment it is not licensed to make. A legal hold, which either party may place, blocks destruction outright rather than delaying it, because scheduled destruction during anticipated litigation is spoliation and an automated policy is not a defense. Destruction itself crypto-shreds the vault key, which renders every copy of the ciphertext inert including backups, and appends a tombstone beside the commitment. Nothing on chain is ever modified or deleted, so a permanent ledger and a destruction obligation stop being in conflict: years later a firm can prove a document existed and was destroyed on schedule without having retained it. Multi-stage warnings at 90, 30 and 7 days go to both firm and client and are themselves recorded, and a stale client contact extends the clock rather than triggering destruction.</p>
-<p>Subpoena exposure, stated accurately. Shielded contracts remove Bailment as a source of document content. They do not remove it as a party to a subpoena, and those are different problems. A demand for the documents in a matter gets the answer that Bailment does not have them and cannot obtain them, which is structurally true rather than a policy a court could order changed, and that is also what defeats the privilege-waiver argument, since waiver turns on third-party access. But Bailment still holds licensing records, payment records and, where a firm uses the hosted corpus, query metadata. Traffic analysis over that set is a real attack.</p>
+<p><strong>Client keys: enrollment links, never emailed keys.</strong> Email is not confidential, and a key mailed to a client is held by anyone with access to that mailbox or any backup of it, forever, with no record it happened. It also puts the firm in custody of the client’s private key, which destroys non-repudiation. So nothing secret travels: the firm issues a one-time enrollment link, the client’s own browser generates the keypair and registers only the public half, and the token is single use with a 72-hour expiry. Delivery can be email, post, or read aloud over the phone, because the link is not the secret. Firms issue as many as they like; the license caps matters, not keys.</p>
+<p><strong>Retention, legal hold and destruction.</strong> Retention is a parameter the firm sets, with a floor enforced in circuit. Bailment must not assert what a jurisdiction requires: periods vary by matter type, by whether a judgment exists, by trust-account rules and by whether the client was a minor, and a vendor that picks the number has made a legal judgment it is not licensed to make. A legal hold, which either party may place, blocks destruction outright rather than delaying it, because scheduled destruction during anticipated litigation is spoliation and an automated policy is not a defense. Destruction itself crypto-shreds the vault key and appends a tombstone beside the commitment. That makes every copy of the ciphertext unreadable, backups included, but only if no copy of the key or of the plaintext survives somewhere else: snapshots, backups of the key store itself, cached or downloaded plaintext, temporary files, swap, logs, and disaster-recovery systems. The key lifecycle is designed around that list, and a destruction report states which copies it reached and which it could not. Nothing on chain is ever modified or deleted, so a permanent ledger and a destruction obligation stop being in conflict: years later a firm can prove a document existed and was destroyed on schedule without having retained it. Multi-stage warnings at 90, 30 and 7 days go to both firm and client and are themselves recorded, and a stale client contact extends the clock rather than triggering destruction.</p>
+<p><strong>Subpoena exposure, stated accurately.</strong> Shielded contracts remove Bailment as a source of document content. They do not remove it as a party to a subpoena, and those are different problems. A demand for the documents in a matter gets the answer that Bailment does not have them and cannot obtain them, which is structurally true rather than a policy a court could order changed, and that is also what defeats the privilege-waiver argument, since waiver turns on third-party access. But Bailment still holds licensing records, payment records and, where a firm uses the hosted corpus, query metadata. Traffic analysis over that set is a real attack.</p>
 <p>The exposure that is easiest to overlook is prospective. A court cannot order the decryption of what cannot be decrypted, but it can in principle order a template approved, an update pushed, or a revocation withheld. The root key is the lever, and it exists precisely because compliance is enforceable. Three things answer it: a threshold root held across jurisdictions and entities, so no single company can be compelled quietly; a public append-only registry with client-side verification, which makes secret compliance technically impossible rather than merely against policy; and collecting less, since firms may run their own facilitator under the open-source license so the traffic never reaches Bailment at all. The claim to make in public is never that the company is subpoena-proof, but that it is not a source of client documents.</p>
 <h3 id="proving-a-document-to-a-chosen-reader">9. Proving a document to a chosen reader</h3>
 <p>Certification answers how a document was made. A second question arrives later and is answered separately: someone is holding a copy and wants to know it is the document that went through the system. Bailee answers that with a signed attestation, and the attestation can be aimed at one named reader instead of the world.</p>
@@ -638,12 +643,12 @@
 </tbody>
 </table>
 </div>
-<p>Tier 1 is the default and is meant to be permanent. A filing is public, the certificate attached to it should be too, and a firm that later loses its verification vendor still has a proof that checks out against a public key. The cost is that it cannot be taken back, which is the correct trade for a document already in the record and the wrong one for anything else.</p>
-<p>Tier 2 exists because privilege makes production expensive. Producing a privileged document to prove it is authentic can waive the privilege over it, and no amount of cryptography changes that. Sealing lets the lawyer hand the court a proof the court alone can open, which the court can then seal into the record where it stays checkable. The honest limit is stated in the product and in the documentation: sealing is a lock on the door, not a leash. A reader who opens it can forward it.</p>
-<p>There is no public key infrastructure, and that is a deliberate commercial choice. Courts do not publish encryption keys and will not start. Instead the reader opens the verification page, it generates a single-use keypair in their browser, and they read out a short public code. The private half never leaves their machine. Bailment runs no directory, holds no reader keys, and has nothing on this path to breach or to be subpoenaed for. The alternative, a key directory, would have recreated the custody problem the rest of the architecture exists to avoid.</p>
-<p>Both tiers ship inside the attestation license rather than as separate line items. Pricing the sealed tier above the public tier would give a firm a financial reason to file in the open when it should have filed under seal. The incentive has to point the other way, so the private option is never the expensive one.</p>
+<p><strong>Tier 1 is the default and is meant to be permanent.</strong> A filing is public, the certificate attached to it should be too, and a firm that later loses its verification vendor still has a proof that checks out against a public key. The cost is that it cannot be taken back, which is the correct trade for a document already in the record and the wrong one for anything else.</p>
+<p><strong>Tier 2 exists because privilege makes production expensive.</strong> Producing a privileged document to prove it is authentic can waive the privilege over it, and no amount of cryptography changes that. Sealing lets the lawyer hand the court a proof the court alone can open, which the court can then seal into the record where it stays checkable. The honest limit is stated in the product and in the documentation: sealing is a lock on the door, not a leash. A reader who opens it can forward it.</p>
+<p><strong>There is no public key infrastructure, and that is a deliberate commercial choice.</strong> Courts do not publish encryption keys and will not start. Instead the reader opens the verification page, it generates a single-use keypair in their browser, and they read out a short public code. The private half never leaves their machine. Bailment runs no directory, holds no reader keys, and has nothing on this path to breach or to be subpoenaed for. The alternative, a key directory, would have recreated the custody problem the rest of the architecture exists to avoid.</p>
+<p><strong>Both tiers ship inside the attestation license rather than as separate line items.</strong> Pricing the sealed tier above the public tier would give a firm a financial reason to file in the open when it should have filed under seal. The incentive has to point the other way, so the private option is never the expensive one.</p>
 <p>An attestation can also cover a partial disclosure rather than a whole document, which matters when only one clause or one page is in dispute. That mechanism is described in the technical documentation and is not a separate product.</p>
-<p>Tier 3, designated verifier: built, explained, and deliberately not in the plan. A third construction exists and works. It produces a proof that says either the lawyer signed this, or the reader did. The reader is convinced, because the reader knows perfectly well they did not sign it. To anyone else it is a coin flip, so it cannot be used to bind the lawyer in front of a third party. The intended use is a privilege fight or a settlement discussion, where the point is to show opposing counsel that a document is genuine without producing it and without handing them anything they can reuse later.</p>
+<p><strong>Tier 3, designated verifier: built, explained, and deliberately not in the plan.</strong> A third construction exists and works. It produces a proof that says either the lawyer signed this, or the reader did. The reader is convinced, because the reader knows perfectly well they did not sign it. To anyone else it is a coin flip, so it cannot be used to bind the lawyer in front of a third party. The intended use is a privilege fight or a settlement discussion, where the point is to show opposing counsel that a document is genuine without producing it and without handing them anything they can reuse later.</p>
 <p>It is not in the revenue plan or the pitch, for three reasons, in order of weight. It must never go in a filing, because a proof only one person can believe is not testable by the other side and a court may reasonably refuse it. It needs a bar ethics opinion before it is sold rather than after. And the cryptography behind it is a readable reference implementation, not production code. It stays in the repository as a working demonstration and as something to put in front of design partners, on the bet that the firms most interested in it are the ones worth having.</p>
 <h3 id="language-choice">Language choice</h3>
 <p>There is no single language that spans all of this, and any plan claiming otherwise is wrong. There is, however, a clean two-language answer with three small exceptions.</p>
@@ -660,12 +665,12 @@
 <tr>
 <th scope="row">Both Compact contracts</th>
 <td>Compact</td>
-<td>The only language Midnight compiles to zero-knowledge circuits</td>
+<td>Midnight’s supported language for zero-knowledge contracts</td>
 </tr>
 <tr>
 <th scope="row">Contract bindings, portal, shared AI thread UI</th>
 <td>TypeScript</td>
-<td>The Compact compiler emits TypeScript bindings, and Midnight.js and the DApp connector API are TypeScript only</td>
+<td>The Compact compiler emits TypeScript bindings, and Midnight.js and the DApp connector API are TypeScript-first</td>
 </tr>
 <tr>
 <th scope="row">Redaction, template and vault; retrieval; attestation service</th>
@@ -695,11 +700,11 @@
 </tbody>
 </table>
 </div>
-<p>So: Compact for the two contracts, TypeScript on the chain and browser side, Python for everything on the appliance and the server. The seam between them is HTTP and JSON. Go is a reasonable substitute for Python in the attestation service if throughput ever becomes the constraint, since x402 ships a Go SDK, but it costs the ML ecosystem and there is no reason to pay that yet. Rust appears only if someone ends up writing a custom Cardano serialization path, which is worth avoiding.</p>
+<p>So: <strong>Compact for the two contracts, TypeScript on the chain and browser side, Python for everything on the appliance and the server.</strong> The seam between them is HTTP and JSON. Go is a reasonable substitute for Python in the attestation service if throughput ever becomes the constraint, since x402 ships a Go SDK, but it costs the ML ecosystem and there is no reason to pay that yet. Rust appears only if someone ends up writing a custom Cardano serialization path, which is worth avoiding.</p>
 </section>
 <section class="plan-sec">
 <h2 id="market-analysis-and-competitive-landscape">Market Analysis and Competitive Landscape</h2>
-<p class="lead">Nobody is selling what Bailment sells, which is either the opportunity or the warning.</p>
+<p class="lead">At least one company now sells part of what Bailment sells. LegalSeal describes its product as cryptographic receipts that link an attorney’s bar number to a reviewed document, with a timestamp. That confirms the demand and ends any claim that nobody sells this. The difference is what the receipt can know. A receipt issued at the end of the process records that a credential signed off. It cannot say which model touched the text, which version, whether redaction ran first, or where the computation happened, because it does not sit inside the pipeline. Bailee does.</p>
 <p>The landscape splits into four groups, and Bailment competes directly with none of them. It competes with the status quo, which is a secure file share plus a vendor attestation letter.</p>
 <div class="scroll-x">
 <table>
@@ -719,6 +724,30 @@
 <td>Rival for budget. They cannot certify what their model did, because the firm does not control it</td>
 </tr>
 <tr>
+<th scope="row">LegalSeal</th>
+<td>Cryptographic receipts linking an attorney’s bar number to a reviewed document</td>
+<td>The attorney half of the certificate</td>
+<td>Direct rival. Their receipt records a sign-off; ours records the pipeline that produced the filing</td>
+</tr>
+<tr>
+<th scope="row">TrueScreen (Bologna, Italy)</th>
+<td>Forensic capture of web pages, chats and files, sealed with EU-qualified timestamps</td>
+<td>Proving a document has not changed</td>
+<td>Proves when something was captured, not how it was made, and its legal weight rests on EU law that U.S. courts do not recognize. The one to watch</td>
+</tr>
+<tr>
+<th scope="row">ProofEasy (Singapore)</th>
+<td>Blockchain QR codes for verifying documents, sold across many industries</td>
+<td>Scan-to-verify</td>
+<td>Does not say which chain it uses or what goes on it, claims documents “cannot be altered,” and knows nothing about court orders, privilege or AI</td>
+</tr>
+<tr>
+<th scope="row">Legal Chain (U.S.)</th>
+<td>AI contract drafting for individuals and small businesses</td>
+<td>Drafting</td>
+<td>Holds client documents on its own servers and runs AI on its own cloud, so it takes custody and cannot say which model touched a draft. Its blockchain proof is still “in development”</td>
+</tr>
+<tr>
 <th scope="row">AI rule trackers and disclosure tools</th>
 <td>Map which judge requires what</td>
 <td>The tracker half of certification</td>
@@ -728,7 +757,7 @@
 <th scope="row">MikeOSS</th>
 <td>Open legal AI, MCP native</td>
 <td>Workflow, retrieval</td>
-<td>Upstream dependency, integrate</td>
+<td>Integrate through MCP. Building on its code waits on a license, governance and stability review</td>
 </tr>
 <tr>
 <th scope="row">iManage, NetDocuments</th>
@@ -740,7 +769,7 @@
 <th scope="row">Intapp</th>
 <td>Conflicts and risk management</td>
 <td>The roadmap, not the wedge</td>
-<td>Direct rival later, and they cannot do the cross-firm case</td>
+<td>Direct rival later, and they have not solved the cross-firm case</td>
 </tr>
 <tr>
 <th scope="row">Midnight, Cardano</th>
@@ -751,9 +780,9 @@
 </tbody>
 </table>
 </div>
-<p>Where the real defensibility is. Not the cryptography, which is mostly other people’s open-source work, and not the models, which are commodities on a six-month cycle. It is the signed registry of approved pipelines, and the schema that goes with it: a standard way to say what was redacted, on what version of what software, who adopted the output, and under whose license. Whoever gets that registry accepted by a handful of corporate legal departments sets the format their outside counsel must produce. That is a distribution problem, not an engineering one.</p>
-<p>The honest gap. A $12,000 appliance runs a quantized model in the 8 to 30 billion parameter range. Harvey calls a frontier model and drafts better, and a buyer running the two side by side will see it. The privacy story costs output quality. The mitigation is real but partial: local models are strong at redaction and retrieval, which is most of the work, and already-templated content can optionally route to a frontier API as a per-matter judgment, since the template carries no direct identifiers. Quasi-identifiers still leak, so that stays a judgment rather than a default.</p>
-<p>The other honest risk. iManage or NetDocuments could ship a weak version of this in a release, on a permissioned ledger with no zero-knowledge layer. Worse product, far easier sale. Speed matters more than depth in the first eighteen months.</p>
+<p><strong>Where the real defensibility is.</strong> Not the cryptography, which is mostly other people’s open-source work, and not the models, which are commodities on a six-month cycle. It is the signed registry of approved pipelines, and the schema that goes with it: a standard way to say what was redacted, on what version of what software, who adopted the output, and under whose license. Whoever gets that registry accepted by a handful of corporate legal departments sets the format their outside counsel must produce. That is a distribution problem, not an engineering one.</p>
+<p><strong>The honest gap.</strong> An appliance estimated at about $12,000 runs a quantized model in the 8 to 30 billion parameter range. Harvey calls a frontier model and drafts better, and a buyer running the two side by side will see it. The privacy story costs output quality. The mitigation is real but partial: local models are strong at redaction and retrieval, which is most of the work, and already-templated content can optionally route to a frontier API as a per-matter judgment, since the template carries no direct identifiers. Quasi-identifiers still leak, so that stays a judgment rather than a default.</p>
+<p><strong>The other honest risk.</strong> iManage or NetDocuments could ship a weak version of this in a release, on a permissioned ledger with no zero-knowledge layer. Worse product, far easier sale. Speed matters more than depth in the first eighteen months.</p>
 </section>
 <section class="plan-sec">
 <h2 id="business-model-and-pricing">Business Model and Pricing</h2>
@@ -774,21 +803,21 @@
 <th scope="row">Pay as you go</th>
 <td>Solo and small firms</td>
 <td>$0.10 per certification, $0.01 per notarization</td>
-<td>~97%</td>
+<td class="num">~97%</td>
 <td>None</td>
 </tr>
 <tr>
 <th scope="row">Team</th>
 <td>Mid-size firms</td>
-<td>$40 per lawyer per month ($50 billed monthly), usage included</td>
-<td>~90%</td>
+<td>$5 per lawyer per month: 50 certifications, notarizations included</td>
+<td class="num">~38%</td>
 <td>None</td>
 </tr>
 <tr>
 <th scope="row">Enterprise</th>
 <td>Large firms, 50-seat minimum</td>
-<td>$30 per seat per month plus usage at list, annual</td>
-<td>~89%</td>
+<td>$10 per seat per month: 100 certifications, notarizations included, annual</td>
+<td class="num">~68%</td>
 <td>None</td>
 </tr>
 <tr>
@@ -801,7 +830,7 @@
 </tbody>
 </table>
 </div>
-<p>What a firm pays depends on its size. A lawyer handles about 26,000 documents a year, most of them email (MetaJure customer data). The model assumes 150 of them are certified and 2,400 drafting checkpoints are notarized, with a range of 60 to 300 certifications, which is about $39 of usage per lawyer per year at list prices.</p>
+<p>What a firm pays depends on its size. A lawyer handles about 26,000 documents a year, most of them email (MetaJure customer data), and court filings are a small share of that. A federal case carries about 27 docket entries (Free Law Project: some 350 million entries across 13 million cases since 2013), about a third of them one side’s own filings, and a litigator carries a median of about 27 active matters. That puts a litigator at roughly 10 to 15 court filings a month at a mid-size firm and 20 to 30 at a large one. The model assumes certification also covers AI-assisted work product sent to clients, at about 50 certifications per lawyer a month at a mid-size firm, 100 at a large firm and 12 to 13 at a small one. The court-filing figure is the floor: if only filings were certified, a seat would price nearer $1 to $3.</p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -819,32 +848,32 @@
 <td>5 (130,000)</td>
 <td>750 / 12,000</td>
 <td>Pay as you go</td>
-<td>$195</td>
+<td class="num">$195</td>
 </tr>
 <tr>
 <th scope="row">Mid-size</th>
 <td>30 (780,000)</td>
-<td>4,500 / 72,000</td>
+<td>18,000 / 207,000</td>
 <td>Team</td>
-<td>$14,400</td>
+<td class="num">$1,800</td>
 </tr>
 <tr>
 <th scope="row">Large</th>
 <td>300 (7.8 million)</td>
-<td>45,000 / 720,000</td>
+<td>360,000 / 3,870,000</td>
 <td>Enterprise</td>
-<td>$119,700</td>
+<td class="num">$36,000</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>Certification is the wedge because the demand is mandated. A firm does not adopt this because it finds the argument persuasive; it adopts because a judge it appears before requires a certificate it cannot otherwise produce, and because sanctions in this area have run to $15,000 per attorney. That converts a long consultative sale into a compliance purchase, which is a different and much faster motion. At ten cents a certificate the price is never the objection: certifying becomes a default rather than a purchase decision, and the money is in the seats of the firms that certify every day.</p>
-<p>Attestation is what makes certification possible. Anchoring a hash costs almost nothing and the code is open source, so a firm could do that alone. What a firm cannot do is self-issue a credible attestation, for the same reason a self-signed certificate is worthless. Bailment vouches that a commitment came from an approved pipeline, running a signed redactor, under a live licence. That is a certificate authority, high margin and recurring, and structurally impossible for the customer to replace with themselves.</p>
-<p>The business is also split by data class, not by hosting model, which is what lets a central GPU product coexist with a no-custody promise. Every firm needs the same statutory index, the same case law, the same court forms. That corpus contains no client data, so Bailment can embed and serve it centrally with real economy of scale. Client matter data never leaves the firm’s appliance. Retrieval joins the two at query time with a provenance tag on every chunk.</p>
-<p>Attestation is the core line. Anchoring a hash costs almost nothing and the code is open source, so a firm could do it alone. What a firm cannot do is self-issue a credible attestation, for the same reason a self-signed certificate is worthless. Bailment vouches that a commitment came from an approved pipeline, running a signed redactor, under a live license. That is a certificate authority, not a transaction service: high margin, recurring, and structurally impossible for the customer to replace with themselves.</p>
-<p>The public corpus is the line nobody else is building. Fifty firms building the same statutory index fifty times is pure waste. More importantly, it is also the line that makes the product good: a single firm’s own matter index is small and thin, and it is the public corpus that makes an answer useful. So the part that safely centralizes is also the part that drives quality.</p>
+<p><strong>Attestation is what makes certification possible.</strong> Anchoring a hash costs almost nothing and the code is open source, so a firm could do that alone. What a firm cannot do is self-issue a credible attestation, for the same reason a self-signed certificate is worthless. Bailment vouches that a commitment came from an approved pipeline, running a signed redactor, under a live licence. That makes Bailment a trust root the way a certificate authority is one: high margin, recurring, and hard for a customer to replace with themselves. The comparison carries the same limit. A signature proves who vouched and under what rules; it does not by itself prove the facts vouched for. That proof comes from the audited pipeline, the signed manifests and the public registry.</p>
+<p><strong>The business is also split by data class, not by hosting model,</strong> which is what lets a central GPU product coexist with a no-custody promise. Every firm needs the same statutory index, the same case law, the same court forms. That corpus contains no client data, so Bailment can embed and serve it centrally with real economy of scale. Client matter data never leaves the firm’s appliance. Retrieval joins the two at query time with a provenance tag on every chunk.</p>
+<p><strong>Attestation is the core line.</strong> Anchoring a hash costs almost nothing and the code is open source, so a firm could do it alone. What a firm cannot do is self-issue a credible attestation, for the same reason a self-signed certificate is worthless. Bailment vouches that a commitment came from an approved pipeline, running a signed redactor, under a live license. That makes it a trust service rather than a transaction service: high margin, recurring, and hard for the customer to replace with themselves, because a firm vouching for its own pipeline is the self-signed certificate problem again.</p>
+<p><strong>The public corpus is the line nobody else is building.</strong> Fifty firms building the same statutory index fifty times is pure waste. More importantly, it is also the line that makes the product good: a single firm’s own matter index is small and thin, and it is the public corpus that makes an answer useful. So the part that safely centralizes is also the part that drives quality.</p>
 <p>Its margin is possible because the underlying data is open. Bulk case law comes from CourtListener and the Free Law Project, statutes and court forms are public records, and there is no data licensing cost to pay. The spend is GPU compute and storage on a corpus built once and served to everyone.</p>
-<p>What it costs Bailment to run. The infrastructure is small and, importantly, flat.</p>
+<p><strong>What it costs Bailment to run.</strong> The infrastructure is small and, importantly, flat.</p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -878,16 +907,16 @@
 <tr>
 <th scope="row">Chain fees</th>
 <td></td>
-<td class="num">$0</td>
+<td>$0 cash; NIGHT held as capital</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>That is roughly $1,500 to $4,000 a month regardless of customer count, because the corpus is shared, which is why seat margins sit near 90%. Chain fees stay zero to the customer: DUST is generated from held NIGHT, a capital position rather than an operating cost. Stripe costs about 3.6% plus 30 cents per monthly invoice on the share billed in dollars. The real expense is people, and that is what the raise funds.</p>
-<p>On the firm’s side: $10,000 to $15,000 for an appliance with one or two 48GB cards, or $4,000 to $6,000 for a single-card build running quantized models, plus $100 to $200 a month in power.</p>
+<p>That is roughly $1,500 to $4,000 a month regardless of customer count, because the corpus is shared, which keeps it a shrinking share of revenue as firms join. Chain fees stay zero to the customer: DUST is generated from held NIGHT, a capital position rather than an operating cost. Stripe costs about 3.6% plus 30 cents per monthly invoice on the share billed in dollars. The real expense is people, and that is what the raise funds.</p>
+<p>On the firm’s side: $10,000 to $15,000 for an appliance with one or two 48GB cards, or $4,000 to $6,000 for a single-card build running quantized models, plus $100 to $200 a month in power. These are prototype estimates for the compute alone, not a costed production appliance. A production unit also needs ECC memory, redundant storage and networking, a UPS, backup, secure boot and a TPM, signed images, monitoring, remote administration, and a spare-parts plan. The real figure comes from building one and pricing the complete bill of materials, which is a milestone before the first paid installation.</p>
 <p>The appliance is firm-owned hardware, sold and supported through legal-vertical managed service providers, and it is not in the revenue model. A direct sale at about 30% margin would be upside, not plan.</p>
-<p><strong>Why seats, not usage alone.</strong> Usage at list prices is about $39 per lawyer per year. Covering 2029 operating costs on usage alone would take about 68,000 lawyers on pay-as-you-go; on seats it takes about 24 large firms, or about 197 mid-size firms, or a mix. Small firms are the funnel, as free and pay-as-you-go users are for OpenAI and Anthropic. Mid-size and large firms are the business, and they buy seats because they want a predictable bill, pooled usage, single sign-on and an audit export.</p>
-<p>What the firm can tell its own clients, which is the sentence the whole design exists to support: Bailment never holds our documents, our clients’ identities, or our vectors. Those stay on hardware we own. They anchor proofs that the work happened and attest that it ran an approved pipeline. They cannot read our files, and they cannot be compelled to produce what they cannot access. Every clause of that is defensible.</p>
+<p><strong>Why seats at usage prices.</strong> A seat costs what its lawyer is expected to certify, so a firm is never asked to pay for more than it uses: $5 buys a mid-size lawyer’s 50 certifications and $10 a large-firm lawyer’s 100, with the drafting notarizations included. What the seat adds is a predictable bill, pooled usage, single sign-on and an audit export. The cost is revenue. Covering 2029 operating costs takes about 105 large firms, about 3,800 mid-size firms, or about 68,000 lawyers on pay-as-you-go. Serving a seat is modelled at $3 a month, which leaves Team near 38% gross margin; that cost has to come down, or the Team price up, before scale.</p>
+<p><strong>What the firm can tell its own clients,</strong> which is the sentence the whole design exists to support: Bailment never holds our documents, our clients’ identities, or our vectors. Those stay on hardware we own. They anchor proofs that the work happened and attest that it ran an approved pipeline. They cannot read our files, and they cannot be compelled to produce what they cannot access. Every clause of that is defensible.</p>
 </section>
 <section class="plan-sec">
 <h2 id="the-multi-party-roadmap">The Multi-Party Roadmap</h2>
@@ -931,7 +960,7 @@
 </tbody>
 </table>
 </div>
-<p>Conflicts is the one worth building first, and it is a bigger business than certification. Every firm runs conflicts checks, the dangerous cases are exactly the ones that cannot be checked today, and a clearinghouse that reaches critical mass in a practice area is very hard to dislodge. Intapp sells into this market without solving the cross-firm case, because without this primitive it cannot be solved.</p>
+<p>Conflicts is the one worth building first, and it is a bigger business than certification. Every firm runs conflicts checks, the dangerous cases are exactly the ones that cannot be checked today, and a clearinghouse that reaches critical mass in a practice area is very hard to dislodge. The cryptography is the easier half: private set intersection is a well-understood primitive. The hard part is entity resolution, matching names across firms through aliases, misspellings, transliteration, subsidiaries, beneficial owners and common names, without so many false matches that lawyers stop trusting it or so few that it misses the conflict that matters. Add deciding who may query, and blocking inference attacks, where a firm probes the set to learn who another firm represents. Intapp sells into this market without solving the cross-firm case, and entity resolution is a large part of why.</p>
 <p>The honest risk is focus. Each of these is a separate product, and a seed-stage company that chases three of them ships none. The sequencing rule is that nothing on this roadmap starts until certification has paying firms, because the clearinghouse needs members and the members arrive through the wedge.</p>
 </section>
 <section class="plan-sec">
@@ -939,12 +968,12 @@
 <p class="lead">Let the courts create the demand. Close at the firm. Deliver through the integrator.</p>
 <p>This is the part the pivot to certification changes most, and it changes it for the better. The earlier plan had to manufacture demand by persuading corporate legal departments to write a clause. That work is slow and speculative. A standing order is a clause someone else already wrote, that is already binding, and that a litigation firm cannot ignore.</p>
 <p>So the entry point is a court calendar rather than a boardroom. Identify the judges whose orders require tool name, version and provider, find the firms that appear before them regularly, and lead with the certificate. The conversation is not about privacy architecture; it is about a document the firm has to file and currently cannot substantiate.</p>
-<p>The purchase is still unambiguously the firm’s: a $12,000 appliance bought through its managed service provider and a Team plan at $40 per lawyer per month, with the client buying nothing. And above the smallest firms delivery still runs through a managed service provider, because a firm handed hardware and left alone calls you in six months when it breaks.</p>
+<p>The purchase is still unambiguously the firm’s: a $12,000 appliance bought through its managed service provider and a Team plan at $5 per lawyer per month, with the client buying nothing. And above the smallest firms delivery still runs through a managed service provider, because a firm handed hardware and left alone calls you in six months when it breaks.</p>
 <p>The corporate guidelines clause has not gone away. It moves from being the wedge to being the expansion motion, and it gets easier to write once a certificate format exists to point at.</p>
-<p>Phase 1, months 0 to 6: two design partners, chosen by docket. One mid-market litigation firm in the 60 to 150 lawyer band that regularly appears before judges with certification orders, and one corporate legal department to author the guidelines clause later. Free, in exchange for reference rights and bi-weekly access. Legal aid organizations were an early candidate and are the wrong first partner: appliance-first makes small organizations the hardest to serve.</p>
-<p>Phase 2, months 6 to 12: the certificate format, in public. Publish the certificate schema and the verification tool as an open specification, and take it to court technology committees and the judges already writing these orders. A judge who names a verifiable format in a standing order is worth more than any amount of sales effort. In parallel, recruit two legal-vertical integrators who already sell these firms iManage, ship the reference implementation, and contribute upstream to MikeOSS rather than forking it.</p>
-<p>Phase 3, months 12 to 24: the guidelines play and the first multi-party product. Publish the model outside counsel guidelines clause. Work the ACC and state bar technology committees. Target five corporate legal departments citing it by month 24, and stand up the conflicts clearinghouse in one metro with the firms already on the platform.</p>
-<p>Sell through managed service providers, not direct, above the smallest firms. Feasibility splits hard by size, and the channel has to split with it.</p>
+<p><strong>Phase 1, months 0 to 6: two design partners, chosen by docket.</strong> One mid-market litigation firm in the 60 to 150 lawyer band that regularly appears before judges with certification orders, and one corporate legal department to author the guidelines clause later. Free, in exchange for reference rights and bi-weekly access. Legal aid organizations were an early candidate and are the wrong first partner: appliance-first makes small organizations the hardest to serve.</p>
+<p><strong>Phase 2, months 6 to 12: the certificate format, in public.</strong> Publish the certificate schema and the verification tool as an open specification, and take it to court technology committees and the judges already writing these orders. A judge who names a verifiable format in a standing order is worth more than any amount of sales effort. In parallel, recruit two legal-vertical integrators who already sell these firms iManage, ship the reference implementation, and contribute upstream to MikeOSS rather than forking it.</p>
+<p><strong>Phase 3, months 12 to 24: the guidelines play and the first multi-party product.</strong> Publish the model outside counsel guidelines clause. Work the ACC and state bar technology committees. Target five corporate legal departments citing it by month 24, and stand up the conflicts clearinghouse in one metro with the firms already on the platform.</p>
+<p><strong>Sell through managed service providers, not direct, above the smallest firms.</strong> Feasibility splits hard by size, and the channel has to split with it.</p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -974,32 +1003,33 @@
 </table>
 </div>
 <p>The MSP channel also solves the support problem that sinks appliance businesses. A firm that is handed hardware and left alone calls you in six months when it breaks, and you either absorb the cost or lose them loudly. An integrator who already has a support contract with that firm absorbs it as part of their existing relationship.</p>
-<p>Other channels, in order of expected yield: design partner referrals, the open-source repository, state bar CLE presentations, legal technology conferences, and the Cardano and Midnight ecosystem grant programs, which are a source of both capital and credibility with a crypto-skeptical audience.</p>
-<p>Channel we are avoiding. Anything that leads with the word blockchain to a legal audience. The product is sold as verifiable confidentiality and a private AI workspace. The ledger is an implementation detail that appears late or not at all.</p>
+<p><strong>Other channels, in order of expected yield:</strong> design partner referrals, the open-source repository, state bar CLE presentations, legal technology conferences, and the Cardano and Midnight ecosystem grant programs, which are a source of both capital and credibility with a crypto-skeptical audience.</p>
+<p><strong>How we describe ourselves.</strong> Lead with attestation: Bailment is an attestation company that uses AI and blockchain to prove how legal work was produced. Say what the proof does before how it works. The blockchain gets one mention, as the reason no one, including Bailment, can quietly rewrite the record, and it is never the headline. A pitch that opens with the word blockchain reads as crypto to a legal audience, and that costs the meeting.</p>
+<p><strong>Outside the U.S., one open technical question.</strong> In the EU, a qualified electronic timestamp from a licensed provider is presumed accurate under the eIDAS Regulation, and other countries have their own trust-service rules. If Bailee expands abroad, it should check whether pairing the on-chain anchor with a locally recognized timestamp makes the proof easier to rely on there. It is not a U.S. priority and changes nothing in this plan.</p>
 </section>
 <section class="plan-sec">
 <h2 id="operations-and-open-source-governance">Operations and Open-Source Governance</h2>
 <p class="lead">A protocol that law firms rely on for evidentiary claims has to be governed like infrastructure, not like a startup’s side repo.</p>
-<p>Repository layout. A single monorepo, because the Compact contract, its generated TypeScript bindings, and the Python gateway have to version together or they drift.</p>
+<p><strong>Repository layout.</strong> A single monorepo, because the Compact contract, its generated TypeScript bindings, and the Python gateway have to version together or they drift.</p>
 <div class="scroll-x">
-<pre class="mono">baliff/
-  contracts/      Compact: matter.compact (Document Record)
-                  custodian.compact (Protocol, network-wide)
-  sdk-ts/         Midnight.js bindings, DApp connector, portal client
-  gateway/        Python: x402 resource server, policy, routing
-  facilitator/    Python: Cardano verify + settle (forked from Masumi)
-  licensing/      Python: root authority, firm mini key, enrollment
-  redactor/       Python: template + vault, PII detection, provenance
-  thread/         Python: shared AI thread, attribution, taint tracking
-  rag/            Python: two-tier retrieval, MCP client
-  portal/         TypeScript: client and firm web app
-  appliance/      Images, health telemetry, signed model manifest
-  deploy/         Compose and Helm: proof server, node, indexer
-  spec/           The protocol specification and test vectors</pre>
+<pre class="mono">bailee/
+  contracts/        Compact: matter.compact (Document Record)
+                             custodian.compact (Protocol, network-wide)
+  sdk-ts/           Midnight.js bindings, DApp connector, portal client
+  gateway/          Python: x402 resource server, policy, routing
+  facilitator/      Python: Cardano verify + settle (forked from Masumi)
+  licensing/        Python: root authority, firm mini key, enrollment
+  redactor/         Python: template + vault, PII detection, provenance
+  thread/           Python: shared AI thread, attribution, taint tracking
+  rag/              Python: two-tier retrieval, MCP client
+  portal/           TypeScript: client and firm web app
+  appliance/        Images, health telemetry, signed model manifest
+  deploy/           Compose and Helm: proof server, node, indexer
+  spec/             The protocol specification and test vectors</pre>
 </div>
-<p>Licensing. Apache 2.0 throughout, with a Developer Certificate of Origin rather than a contributor license agreement. A CLA would let the company relicense later, which is exactly the power a firm’s general counsel does not want a vendor to hold. Giving it up is a feature.</p>
-<p>Governance. The foundation controls spec/ and contracts/. Changes to either need two maintainer approvals from different organizations. The company controls the hosted plane and can ship whatever it wants there. This split is the promise that makes self-hosting credible.</p>
-<p>Security cadence. This is not optional overhead; it is the product.</p>
+<p><strong>Licensing.</strong> Apache 2.0 throughout, with a Developer Certificate of Origin rather than a contributor license agreement. A CLA would let the company relicense later, which is exactly the power a firm’s general counsel does not want a vendor to hold. Giving it up is a feature.</p>
+<p><strong>Governance.</strong> The foundation controls spec/ and contracts/. Changes to either need two maintainer approvals from different organizations. The company controls the hosted plane and can ship whatever it wants there. This split is the promise that makes self-hosting credible.</p>
+<p><strong>Security cadence.</strong> This is not optional overhead; it is the product.</p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -1073,12 +1103,12 @@
 </tbody>
 </table>
 </div>
-<p>Key management. The hard operational problem, addressed in the risk register below. Clients will lose keys. The architecture must survive that without a backdoor, which means threshold recovery through the firm plus a designated escrow, never a platform-held master key.</p>
+<p><strong>Key management.</strong> The hard operational problem, addressed in the risk register below. Clients will lose keys. The architecture must survive that without a backdoor, which means threshold recovery through the firm plus a designated escrow, never a platform-held master key.</p>
 </section>
 <section class="plan-sec">
 <h2 id="team-milestones-and-roadmap">Team, Milestones and Roadmap</h2>
 <p class="lead">The rare combination this venture needs is one person who understands both privilege and proving systems. That person is the founder or the company does not work.</p>
-<p>Hiring plan, first eighteen months. Eight people, in this order.</p>
+<p><strong>Hiring plan, first eighteen months.</strong> Eight people, in this order.</p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -1132,8 +1162,8 @@
 </tbody>
 </table>
 </div>
-<p>Advisory board to recruit: a former state bar ethics committee member, a corporate deputy GC who writes outside counsel guidelines, and a practicing ZK cryptographer. The first two matter more than the third.</p>
-<h3 id="milestones">Milestones</h3>
+<p><strong>Advisory board to recruit:</strong> a former state bar ethics committee member, a corporate deputy GC who writes outside counsel guidelines, and a practicing ZK cryptographer. The first two matter more than the third.</p>
+<p><strong>Milestones.</strong></p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -1196,7 +1226,7 @@
 </section>
 <section class="plan-sec">
 <h2 id="financial-plan-and-risk-register">Financial Plan and Risk Register</h2>
-<p class="lead">The ask: $2.4M seed, 18 months of runway, priced to reach the audit and ten paying firms.</p>
+<p class="lead"><strong>The ask: $2.4M seed, 18 months of runway, priced to reach the audit and ten paying firms.</strong></p>
 <div class="scroll-x">
 <table>
 <thead>
@@ -1250,7 +1280,7 @@
 </tbody>
 </table>
 </div>
-<p>The corpus line buys GPU compute and storage, not data. Bulk case law comes from CourtListener and the Free Law Project, and statutes and court forms are public records, so there is no licensing bill of the kind Westlaw and Lexis carry. That absence is why the shared corpus costs a few thousand dollars a month instead of a licence fee, and why seat margins can sit near 90%.</p>
+<p>The corpus line buys GPU compute and storage, not data. Bulk case law comes from CourtListener and the Free Law Project, and statutes and court forms are public records, so there is no licensing bill of the kind Westlaw and Lexis carry. That absence is why the shared corpus costs a few thousand dollars a month instead of a licence fee, and why the platform cost stays flat as firms join.</p>
 <p>Four-year revenue model, illustrative. Built bottom-up in docs/financial_model.py from the per-firm figures above and a customer plan by firm size. Appliances are left out because managed service providers sell them. Every figure needs design-partner validation.</p>
 <div class="scroll-x">
 <table>
@@ -1267,36 +1297,36 @@
 <tr>
 <th scope="row">2027</th>
 <td>40 / 4 / 1</td>
-<td>$93,000</td>
-<td>~51%</td>
-<td>($1,409,000)</td>
+<td class="num">$26,000</td>
+<td>negative</td>
+<td class="num">($1,475,000)</td>
 </tr>
 <tr>
 <th scope="row">2028</th>
 <td>300 / 20 / 5</td>
-<td>$565,000</td>
-<td>~83%</td>
-<td>($1,209,000)</td>
+<td class="num">$163,000</td>
+<td class="num">~48%</td>
+<td class="num">($1,603,000)</td>
 </tr>
 <tr>
 <th scope="row">2029</th>
 <td>1,200 / 60 / 16</td>
-<td>$1,979,000</td>
-<td>~88%</td>
-<td>($778,000)</td>
+<td class="num">$596,000</td>
+<td class="num">~65%</td>
+<td class="num">($2,131,000)</td>
 </tr>
 <tr>
 <th scope="row">2030</th>
 <td>3,000 / 140 / 35</td>
-<td>$4,902,000</td>
-<td>~89%</td>
-<td>$1,372,000</td>
+<td class="num">$1,508,000</td>
+<td class="num">~70%</td>
+<td class="num">($1,949,000)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><strong>Breakeven.</strong> Run-rate breakeven arrives in the fourth quarter of 2029, when year-end recurring gross profit passes operating cost, and 2030 is the first profitable year. Covering 2029 costs takes about 24 Enterprise firms, or about 197 Team firms, or a mix; pay-as-you-go alone would need about 68,000 lawyers. Losses through 2029 total about $3.4M, so the Series A in late 2028 is required rather than optional. Nothing in these figures assumes a dollar from the multi-party roadmap, which is deliberate.</p>
-<p><strong>Liquidity.</strong> The two payment rails pull cash in opposite directions, and the seats settle it. Stripe usage is billed in arrears, so about 32 days of it is always owed to Bailment: roughly $22,000 at the end of 2029. USDM customers prepay, and about $14,000 of balance is held at the same date. Team seats bill a month in advance and Enterprise prepays the year, about $936,000 of prepayment at the end of 2029. Net working capital is positive in every year of the plan, so billing in arrears costs a bad-debt reserve, which the model does not yet carry, and nothing more. DUST is funded from the $72,000 NIGHT treasury and is not a cash cost per transaction.</p>
+<p><strong>Breakeven.</strong> At these prices the plan does not break even by 2030. Operating losses run from about $1.5M in 2027 to about $1.9M in 2030, about $7.2M in all, so the Series A in late 2028 is required and must be larger than the earlier plan assumed. Covering 2029 costs alone takes about 105 Enterprise firms or about 3,800 Team firms. The levers are volume, because costs stay mostly flat as firms join, and price: the seat is set at expected usage, and the court-filing research above is its floor, not its ceiling. Nothing in these figures assumes a dollar from the multi-party roadmap, which is deliberate.</p>
+<p><strong>Liquidity.</strong> The two payment rails pull cash in opposite directions, and the seats settle it. Stripe usage is billed in arrears, so about 32 days of it is always owed to Bailment: roughly $75,000 at the end of 2029. USDM customers prepay, and about $47,000 of balance is held at the same date. Team seats bill a month in advance and Enterprise prepays the year, about $297,000 of prepayment at the end of 2029. Net working capital is positive in every year of the plan, so billing in arrears costs a bad-debt reserve, which the model does not yet carry, and nothing more. DUST is funded from the $72,000 NIGHT treasury and is not a cash cost per transaction.</p>
 <p>One variable still dominates: whether the outside counsel guidelines strategy works. If it does, 2029 is conservative by a wide margin, because adoption becomes mandated rather than chosen. If it does not, 2029 is optimistic by about the same margin. That is worth saying plainly rather than hiding in a sensitivity table.</p>
 <p>The second-largest variable is appliance attach rate. The revenue model assumes every paying firm runs one, because certification and notarization happen on it; the hardware itself is sold by managed service providers and is not in the revenue. Firms that refuse hardware need the confidential computing tier, which is unscoped and unbuilt, and until it exists those firms are not addressable without giving up the no-custody promise.</p>
 <h3 id="risk-register">Risk register</h3>
@@ -1408,7 +1438,7 @@
 <tr>
 <th scope="row">Client notarizes privileged material over the firm’s objection</th>
 <td>Medium</td>
-<td>The privilege belongs to the client, so this is permitted by design. Address it in the engagement letter, not in code</td>
+<td>Permitted for the client’s own communications, since the client holds the attorney-client privilege. Limited by design to what is in the client’s view, so the lawyer’s unsent drafts and notes, which may be protected work product, cannot be notarized by the client. Needs jurisdiction-specific review and an engagement-letter term</td>
 </tr>
 <tr>
 <th scope="row">Incumbent DMS ships a cheaper, weaker version</th>
@@ -1436,6 +1466,12 @@
 <li>Running a subnet. Bittensor Documentation, bittensor.com/docs/guides/subnets.</li>
 <li>Mike: open-source legal AI platform. MikeOSS, mikeoss.com.</li>
 <li>Mike OSS: open source legal AI tool “changes the negotiation.” Legal IT Insider, legaltechnology.com.</li>
+<li>Lnu v. Blanche. No. 24-4790, U.S. Court of Appeals for the Ninth Circuit, 3 June 2026, courtlistener.com/opinion/10869591/lnu-v-blanche.</li>
+<li>The Legal AI Judicial Response Report 2026. The Legal Stack, thelegalstack.org/research/the-legal-ai-judicial-response-report-2026-how-federal-and.</li>
+<li>Public Comment Period Open for Revisions to the 2027 Tenth Circuit Rules. U.S. Court of Appeals for the Tenth Circuit, 18 Sept. 2026, ca10.uscourts.gov/clerk/news/public-comment-period-open-revisions-2027-tenth-circuit-rules.</li>
+<li>AI Disclosure Requirements by Court. LegalSeal, legalseal.io/ai-disclosure-requirements.html.</li>
+<li>Federal Cases and Filings. Free Law Project, CourtListener data coverage, wiki.free.law/c/courtlistener/help/data-coverage/federal-cases-and-filings.</li>
+<li>How Many Cases Does a Lawyer Have at Once. LegalFactPro, legalfactpro.com/how-many-cases-does-a-lawyer-have-at-once (reporting a 2019 ABA survey median of 27 active matters per litigator).</li>
 </ol>
 </section>
     </div>
