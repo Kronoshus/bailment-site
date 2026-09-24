@@ -243,7 +243,7 @@
       <p class="wm-hint">Optional, and the only thing on this page that leaves the tab.
       It sends the <strong>digest and the nonce</strong> to an appliance you name so it
       can write the Document Record and sign it. The file itself still never moves. Out
-      of credit, the appliance answers <code>402</code> with terms you can actually pay
+      of balance, the appliance answers <code>402</code> with terms you can actually pay
       &mdash; a real address, on a real testnet, in an asset that exists there.</p>
       <div class="inline">
         <div class="field" style="flex:2 1 220px">
@@ -282,7 +282,7 @@
       if (r.status === 200) {
         out.innerHTML = settledHTML(r.body.settlement, base)
           || `<div class="nt-settled"><p><span class="mark">\u2713</span>
-              <strong>Recorded.</strong> Taken off this licence's prepaid filings; nothing
+              <strong>Recorded.</strong> Charged $0.01 to this licence; nothing
               was settled on chain.</p></div>`;
       } else if (r.status === 402 && !payment) {
         s.terms = payTerms(r.body);

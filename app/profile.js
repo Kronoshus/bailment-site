@@ -179,11 +179,11 @@
     if (tab === 'firm') {
       return line('Firm', f.name) + line('Address', (f.address || []).join(', '))
         + line('Email', f.email) + line('Phone', f.phone)
-        + line('Licence key', f.licence, 'The firm\u2019s password for the appliance. It opens cases and pays for filings at $25 each. It can never send a message; only a named lawyer can.')
+        + line('Licence key', f.licence, 'The firm\u2019s password for the appliance. It opens cases and pays for each certification ($0.10) and notarization ($0.01). It can never send a message; only a named lawyer can.')
         + line('Appliance API', f.appliance || 'http://127.0.0.1:8402', 'The appliance is the firm\u2019s own server. It runs the AI and stores the case. Without one, the demo uses a built-in stand-in.')
         + line('Registry entry', f.registryEntry)
         + line('Signing key id', k.id) + line('Key fingerprint', k.fingerprint)
-        + '<p class="muted">The licence is what pays for a certified filing. The registry entry is '
+        + '<p class="muted">The licence is what pays for certifications and notarizations. The registry entry is '
         + 'the pipeline a verifier checks this firm\u2019s certificates against.</p>';
     }
     if (tab === 'keys') {

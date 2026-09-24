@@ -8,7 +8,7 @@
 //   <p  data-config="subline">
 //   <a  data-config="contactEmail" href="mailto:">
 //   <span data-config="demoBanner">
-//   <b  data-config="pricing.certifiedFiling">
+//   <b  data-config="pricing.certification">
 //   <div data-config="announcement">               optional; one is made if none exists
 //
 // It also applies the developer section of the same config — the part an administrator

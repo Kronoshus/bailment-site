@@ -12,10 +12,10 @@
     "text": ""
   },
   "pricing": {
-    "certifiedFiling": 25,
-    "attestationMonthly": 1400,
-    "corpusMonthly": 600,
-    "applianceMonthly": 500
+    "certification": 0.10,
+    "notarization": 0.01,
+    "teamSeat": 40,
+    "enterpriseSeat": 30
   },
   "maintenance": false,
   "theme": {

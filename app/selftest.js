@@ -203,7 +203,7 @@
     /* ------------------------------------------------- x402, actually settled */
     // The 402 used to be the end of the road: the server quoted a price and nothing on
     // either side could act on it. RECORDED_402 below is a REAL answer this backend gave
-    // on 2026-09-22 to a licence with no filings left. Nothing here touches the network:
+    // on 2026-09-23 to a licence with no balance left. Nothing here touches the network:
     // the call takes its `fetch` as an argument so a stub can stand in for one.
     //
     // The thing this section exists to hold still is that the page shows terms a human
@@ -214,38 +214,39 @@
       const N = B.notarize;
       const RECORDED_402 = {
         "error": "payment_required",
-        "message": "This licence has no certified filings left. One notarisation is one certified filing at $25.00. Pay the amount below and retry this request with the payment header, or top the licence up on the subscription.",
+        "message": "This call costs $0.01 and the licence's prepaid balance is $0.00. Top it up with the payment below and retry this request with the payment header: the whole amount is added to the balance and this call is taken off it. Or ask for Stripe billing, which invoices at month end.",
+        "price": {"usd": "0.01", "cents": 1, "balanceUsd": "0.00"},
         "x402Version": 1,
         "accepts": [
           {
             "scheme": "exact",
             "network": "cardano-preprod",
             "asset": "lovelace",
-            "amount": "25.00",
-            "maxAmountRequired": "25000000",
+            "amount": "10.00",
+            "maxAmountRequired": "10000000",
             "payTo": "addr_test1qptn0hsk2z8wpygayemqetnt0lh694e60p0htrtj0z25fvces7r4ar3usmzmtxp2vpnj62ytuej023a7n60kfan6q0fqpm90vk",
             "resource": "http://127.0.0.1:8402/v1/notarize",
-            "description": "Notarize one document to the Document Record (one certified filing)",
+            "description": "Top up the prepaid balance; this call costs $0.01",
             "mimeType": "application/json",
             "maxTimeoutSeconds": 300,
             "extra": {
               "name": "tADA",
               "decimals": 6,
-              "unit": "per document",
-              "amountDisplay": "25.000000 tADA"
+              "unit": "top-up",
+              "amountDisplay": "10.000000 tADA"
             }
           }
         ],
         "settlement": {
           "status": "live",
-          "detail": "Send exactly 25.000000 tADA (25000000 lovelace) to addr_test1qptn0hsk2z8wpygayemqetnt0lh694e60p0htrtj0z25fvces7r4ar3usmzmtxp2vpnj62ytuej023a7n60kfan6q0fqpm90vk, wait for it to be in a block, then retry this same request with the header `X-PAYMENT: <transaction hash>`. The server reads that transaction off cardano-preprod through Blockfrost and sums only the outputs that go to the address above in the quoted asset. One transaction settles one charge, ever.",
+          "detail": "Send exactly 10.000000 tADA (10000000 lovelace) to addr_test1qptn0hsk2z8wpygayemqetnt0lh694e60p0htrtj0z25fvces7r4ar3usmzmtxp2vpnj62ytuej023a7n60kfan6q0fqpm90vk, wait for it to be in a block, then retry this same request with the header `X-PAYMENT: <transaction hash>`. The server reads that transaction off cardano-preprod through Blockfrost and sums only the outputs that go to the address above in the quoted asset. One transaction is one top-up, ever.",
           "header": "X-PAYMENT: <64-hex transaction hash>",
           "payTo": "addr_test1qptn0hsk2z8wpygayemqetnt0lh694e60p0htrtj0z25fvces7r4ar3usmzmtxp2vpnj62ytuej023a7n60kfan6q0fqpm90vk",
           "network": "cardano-preprod",
           "asset": "lovelace",
           "assetName": "tADA",
-          "amountBaseUnits": 25000000,
-          "amountDisplay": "25.000000 tADA",
+          "amountBaseUnits": 10000000,
+          "amountDisplay": "10.000000 tADA",
           "minConfirmations": 1,
           "maxAgeSeconds": 86400,
           "receipt": "GET /v1/payments/{txHash} — free, no key, like verification",
@@ -256,15 +257,15 @@
       const t = N.payTerms(RECORDED_402);
 
       ok('the terms come out of the server\u2019s own 402: address, amount and network',
-        t.payTo === TREASURY && t.amountBaseUnits === 25000000
+        t.payTo === TREASURY && t.amountBaseUnits === 10000000
           && t.network === 'cardano-preprod', t.network);
       ok('preprod is quoted in tADA, the asset that exists there, and never in USDM',
         t.asset === 'lovelace' && t.assetName === 'tADA'
           && JSON.stringify(RECORDED_402).indexOf('USDM') < 0);
       ok('base units are turned into the string a wallet is typed with',
-        N.baseUnits(25000000, 6) === '25.000000' && N.baseUnits(1, 6) === '0.000001'
+        N.baseUnits(10000000, 6) === '10.000000' && N.baseUnits(1, 6) === '0.000001'
           && N.baseUnits(0, 6) === '0.000000' && N.baseUnits(999, 6) === '0.000999',
-        N.baseUnits(25000000, 6) + ' tADA');
+        N.baseUnits(10000000, 6) + ' tADA');
 
       const panel = N.payTermsHTML(t);
       ok('the address is shown in full, not shortened \u2014 an elided address cannot be checked',
@@ -272,7 +273,7 @@
       ok('the address has a copy button carrying the exact address',
         new RegExp('data-copy="' + TREASURY + '"\\s*>Copy address').test(panel));
       ok('the amount has its own copy button, and it copies the number, not a sentence',
-        /data-copy="25\.000000"\s*>Copy amount/.test(panel));
+        /data-copy="10\.000000"\s*>Copy amount/.test(panel));
       ok('there is a box for the transaction hash and a button to retry with it',
         /id="nt-tx"/.test(panel) && /id="nt-retry"/.test(panel)
           && panel.indexOf('X-PAYMENT') >= 0);
@@ -306,12 +307,12 @@
         status: 'settled',
         txHash: 'c3a4f1b2e5d6079a8b4c2d1e3f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a',
         network: 'cardano-preprod', asset: 'lovelace', assetName: 'tADA',
-        payTo: TREASURY, amount: '25.000000 tADA', amountBaseUnits: 25000000,
-        requiredBaseUnits: 25000000, confirmations: 4, spendableAgain: false,
+        payTo: TREASURY, amount: '10.000000 tADA', amountBaseUnits: 10000000,
+        requiredBaseUnits: 10000000, confirmations: 4, spendableAgain: false,
       };
       const done = N.settledHTML(SETTLED, 'http://127.0.0.1:8402');
       ok('a settlement says what settled: the amount, the address and the transaction',
-        done.indexOf('25.000000 tADA') >= 0 && done.indexOf(TREASURY) >= 0
+        done.indexOf('10.000000 tADA') >= 0 && done.indexOf(TREASURY) >= 0
           && done.indexOf(SETTLED.txHash) >= 0 && /4\s+confirmations/.test(done));
       ok('it points at the free receipt, so a reader can check it without a key',
         done.indexOf('/v1/payments/' + SETTLED.txHash) >= 0 && done.indexOf('needs no key') >= 0);
@@ -1071,20 +1072,19 @@
     /* ---------------------------------------------------------- pricing */
     if (B.pricing) {
       group('Pricing');
-      const p = B.pricing.computePricing({ firms: 88, filings: 250 });
-      ok('250 filings gives about $36,000 per firm per year',
-        Math.abs(p.revenuePerFirm - 36250) < 1, '$' + p.revenuePerFirm.toLocaleString('en-US'));
-      ok('blended margin lands near the plan\u2019s 82%',
-        Math.abs(p.blendedMargin - 0.82) < 0.01, (p.blendedMargin * 100).toFixed(1) + '%');
-      ok('vendor infrastructure stays inside $1,500\u2013$4,000 a month',
-        p.vendorMonthly[0] > 1400 && p.vendorMonthly[1] < 4200,
-        '$' + Math.round(p.vendorMonthly[0]) + '\u2013$' + Math.round(p.vendorMonthly[1]));
-      ok('at 88 firms the corpus costs near $30 per firm per month',
-        Math.abs(p.midCorpusCost - 30) < 8, '$' + p.midCorpusCost.toFixed(2));
-      const big = B.pricing.computePricing({ firms: 880, filings: 250 });
-      ok('vendor cost does not move when firm count does (it is flat)',
-        big.vendorMonthly[0] === p.vendorMonthly[0] && big.vendorMonthly[1] === p.vendorMonthly[1]);
-      ok('ten times the firms, ten times the revenue', Math.abs(big.arr - p.arr * 10) < 1);
+      const yr = (n) => B.pricing.computePricing({ lawyers: n, certsPerLawyer: 150 });
+      const tier = (r, id) => r.tiers.find((t) => t.id === id).annual;
+      ok('a certification is $0.10 and a notarization $0.01',
+        B.pricing.PLAN.cert === 0.10 && B.pricing.PLAN.notary === 0.01);
+      ok('5 lawyers pay about $195 a year as they go (financial_model.py)',
+        Math.abs(tier(yr(5), 'payg') - 195) < 0.01, '$' + tier(yr(5), 'payg').toFixed(2));
+      ok('30 lawyers on Team pay $14,400, usage included',
+        tier(yr(30), 'team') === 14400, '$' + tier(yr(30), 'team'));
+      ok('300 lawyers on Enterprise pay $119,700',
+        Math.abs(tier(yr(300), 'enterprise') - 119700) < 0.01, '$' + tier(yr(300), 'enterprise'));
+      ok('Enterprise never bills fewer than 50 seats', yr(10).seats === 50);
+      ok('each firm size is pointed at its own plan',
+        yr(5).suggested === 'payg' && yr(30).suggested === 'team' && yr(300).suggested === 'enterprise');
     }
 
     report('', null, '');

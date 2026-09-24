@@ -839,10 +839,10 @@
     });
     const noted = await st.api.notarize(session(st, 'client'), st.matterId,
       { documentId: clean.id });
-    ok('a clean document notarises and spends a certified filing',
+    ok('a clean document notarises and is charged one cent',
       !!(noted.notarized && noted.notarized.commitment) && noted.charged
-      && noted.charged.certified_filings === 1,
-      noted.charged ? String(noted.charged.certified_filings_left) + ' filings left' : '');
+      && noted.charged.cents === 1,
+      noted.charged ? '$' + noted.charged.balanceUsd + ' left' : '');
 
     await reload(st);
     ok('the document list survives a reload, with its state', st.docs.length === 2
@@ -1039,7 +1039,7 @@
         : '<button class="btn ghost" data-act="certify-chat">Certify this chat</button>')
       : '<button class="btn ghost" data-act="notarize-chat">Notarize Chat</button>'
         + help('Records a tamper-proof fingerprint of every sent message in this chat, with names '
-          + 'and contact details removed first. Costs one certified filing ($25).');
+          + 'and contact details removed first. Costs one notarization ($0.01).');
     const sendRow = pending
       ? '<button class="btn" data-act="send" data-id="' + esc(pending.id) + '">Send (this is adoption)</button>'
         + '<button class="btn ghost" data-act="send-auto" data-id="' + esc(pending.id)
@@ -1133,7 +1133,7 @@
   function paymentHtml(st) {
     const p = st.payment;
     if (!p) return '';
-    return '<div class="panel wp-pay"><h3>Payment Required \u2014 402' + help('This is the price, not an error. Each certified filing costs $25 from the licence. This licence has none left, so nothing was saved or charged.') + '</h3>'
+    return '<div class="panel wp-pay"><h3>Payment Required \u2014 402' + help('This is the price, not an error. A notarization costs $0.01 from the licence balance. This licence has too little left, so nothing was saved or charged.') + '</h3>'
       + '<p><span class="chip on">' + esc(p.amount) + ' ' + esc(p.asset) + '</span> '
       + '<span class="chip">' + esc(p.network) + '</span></p>'
       + '<p class="mono wp-path">pay to ' + esc(p.payTo) + '</p>'
@@ -1169,7 +1169,7 @@
       + '</div>'
       // The free key, in plain sight. Nobody should have to open a panel to find it.
       + '<p class="wp-lic">Free demo licence key <code data-copy="' + esc(DEMO_LICENCE) + '">'
-      + esc(DEMO_LICENCE) + '</code>' + help('The firm\u2019s password for the appliance. It opens cases and pays for filings at $25 each. It can never send a message; only a named lawyer can.') + '</p>';
+      + esc(DEMO_LICENCE) + '</code>' + help('The firm\u2019s password for the appliance. It opens cases and pays for each certification ($0.10) and notarization ($0.01). It can never send a message; only a named lawyer can.') + '</p>';
   }
 
   function connectHtml(st) {
@@ -1178,7 +1178,7 @@
       + '<div class="inline">'
       + wmField({ id: 'wp-base', label: 'API base', options: API_BASES, value: st.base || undefined })
       + '<div class="field"><span class="wm-labelrow"><label for="wp-key">Firm licence key</label>'
-      + help('The firm\u2019s password for the appliance. It opens cases and pays for filings at $25 each. It can never send a message; only a named lawyer can.') + '</span>'
+      + help('The firm\u2019s password for the appliance. It opens cases and pays for each certification ($0.10) and notarization ($0.01). It can never send a message; only a named lawyer can.') + '</span>'
       + '<input id="wp-key" class="wm-box" value="' + esc(DEMO_LICENCE) + '" placeholder="bearer key"></div>'
       + '<button class="btn" data-act="connect">Connect</button>'
       + '</div>'
@@ -1385,11 +1385,11 @@
             });
           }
           note(st, 'ok', 'Notarized. Commitment published, document not.'
-            + (d.charged ? ' One certified filing spent; '
-                + d.charged.certified_filings_left + ' left on this licence.' : ''));
+            + (d.charged ? ' Charged $' + d.charged.usd + '; paid by '
+                + d.charged.paidBy + '.' : ''));
         } catch (e) {
           // 402 is not a failure. It is the price, quoted. One Document Record entry is
-          // one certified filing whichever door it came through, so this endpoint bills
+          // one notarization whichever door it came through, so this endpoint bills
           // exactly like POST /v1/notarize and says so in x402 terms a wallet can act on.
           if (e.status !== 402) throw e;
           st.payment = paymentTerms(e, id);

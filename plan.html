@@ -142,7 +142,7 @@
     <span class="eyebrow">Bailment</span>
     <h1>Business plan</h1>
     <p class="lead">Verifiable AI-use certification for court filings, on a private workspace the firm owns.</p>
-    <p class="plan-meta">Kevin Mohr &middot; 19 September 2026</p>
+    <p class="plan-meta">Kevin Mohr &middot; 23 September 2026</p>
     <p class="stage-note">This is the plan. Parts of it are built, parts of it are planned.</p>
   </div>
 </section>
@@ -202,7 +202,7 @@
 <p>The mechanism is two channels with opposite defaults. The Client Communication Protocol is where a client and their lawyer actually work: uploads, questions, drafts, advice, and AI the two of them use together. It is privileged, the firm edits it freely, and it leaves no per-document trace anywhere. Document Record is the deliberate act of notarizing one document, taken when a lawyer decides a specific item should be provable to someone outside the privilege. Identifiers are stripped on the firm’s own appliance before any model sees anything, and what reaches the chain is a salted commitment, never text, names or vectors.</p>
 <p>Three things make this buildable in 2026 rather than 2028. Confidential AI became practical at a price a mid-market firm can bear, because a $12,000 box now runs a model good enough for redaction and retrieval without anything leaving the building. Midnight reached mainnet in the first half of 2026 as a Cardano partner chain with a working zero-knowledge contract language, Compact, which is what makes selective, deliberate provability possible instead of all-or-nothing. And the legal AI category acquired a credible open-source anchor in MikeOSS, which already speaks MCP and already integrates CourtListener, so the workflow layer is something to build on rather than rebuild.</p>
 <p>The company is <strong>Bailment</strong> and the product is <strong>Bailee</strong>. A bailment is the legal doctrine covering delivery of property to another party for a specific purpose, without transfer of ownership: the bailee holds and safeguards, and never owns. The firm holds the client’s documents; Bailment holds nothing. A bailee holds custody of the evidence, controls who enters the room, keeps order, and neither testifies nor adjudicates. Both words descend from the same Old French root, bail, meaning custody or charge. Throughout this plan, Bailment is the actor in any sentence about what the vendor does or cannot do, and Bailee is the system a firm runs. Trademark clearance is an open item, including whether to ship the one-L spelling of the product name.</p>
-<p>How the business works. Four lines, none of which is access to a client’s documents. Certification, at $25 per certified filing, is the wedge: mandated demand, near-zero marginal cost, and impossible to produce without the pipeline underneath it. An attestation subscription licenses that pipeline and is the certificate authority. A shared public corpus of statutes, case law and court forms, embedded once on Bailment’s GPUs, is safe to centralize because it holds no client data and is what makes any answer useful. And the managed appliance is the hardware that makes the no-custody promise true. About $36,000 per firm per year at roughly 82% blended margin.</p>
+<p><strong>How the business works.</strong> Priced the way OpenAI and Anthropic price: usage for anyone, seats for teams, a contract for the enterprise, and none of it is access to a client’s documents. Every certification costs $0.10 and every notarization made while drafting costs $0.01, whoever pays and however. USDM on Cardano is charged there and then from a prepaid balance; dollars through Stripe are metered and invoiced at month end. Mid-size firms buy a Team plan at $40 per lawyer per month with that usage included, and large firms sign an Enterprise contract at $30 per seat per month plus usage at list rates. A 300-lawyer firm comes to about $120,000 a year and a 30-lawyer firm to about $14,400, at roughly 89% gross margin.</p>
 <p>Why the substrate matters more than the wedge. Certification gets Bailment inside firms with a regulator creating the demand. What keeps it there is the class of products that only a privacy substrate can support: conflicts checking between firms that reveals neither client list, and blind industry benchmarking that no firm would otherwise contribute to. Those are clearinghouses with increasing returns rather than vendor relationships, and they are the reason this is built on Midnight rather than on a timestamp service.</p>
 <p>The ask. A seed round of $2.4M over 18 months to reach ten paying firms, an audited contract on Midnight mainnet, and an Apache-licensed reference implementation with an independent governance body.</p>
 </section>
@@ -346,9 +346,9 @@
 <td>~$6B/yr</td>
 </tr>
 <tr>
-<th scope="row">SOM year 3: mid-market US firms, 20 to 300 lawyers</th>
-<td>~7,000 firms, ~4% reached, ~$28K/yr average</td>
-<td>~$8M/yr</td>
+<th scope="row">SOM year 3: US firms of 20 lawyers and up</th>
+<td>~250 on Team at ~$14K and ~30 on Enterprise at ~$120K</td>
+<td>~$7M/yr</td>
 </tr>
 </tbody>
 </table>
@@ -460,8 +460,8 @@
 <h3 id="settlement-and-the-long-horizon-anchor">3. Settlement and the long-horizon anchor</h3>
 <p>Cardano L1 does two jobs. It is where money actually moves, in USDM or ADA, and it is the long-horizon anchor. Midnight state roots periodically checkpoint to Cardano, so a matter’s evidentiary record survives independently of Midnight’s own history. For a records-retention obligation measured in decades, that separation is worth the extra hop.</p>
 <h3 id="what-gets-metered-and-what-does-not">4. What gets metered, and what does not</h3>
-<p>x402’s role shrank as the architecture settled, and it is worth being precise about what is left. The original plan metered every read, write and inference call. That is no longer true: the Protocol batches to one root per period, the appliance publishes it directly with Bailment not in the path, and the firm pays a flat subscription. There is no per-call chokepoint left to meter, which was a deliberate choice, because a chokepoint is a metadata honeypot.</p>
-<p>Two places still earn it. Document Record notarizations are genuinely per-event and priced that way, so a 402 in front of that endpoint is the natural fit. And public corpus access sold to machine consumers is the line where x402 is clearly the right answer rather than merely a workable one: other legal AI tools, self-hosted MikeOSS instances, and agents buying statutory retrieval per query, with no account to open and no contract to sign.</p>
+<p>x402 is back at the centre of billing, because every certification and every notarization is now a priced event. The Protocol still batches to one root per period and the appliance still publishes it with Bailment not in the path. What is metered is the two deliberate acts, never the traffic, so there is still no per-call chokepoint to become a metadata honeypot.</p>
+<p>Two rails, one price. A firm paying in USDM on Cardano is charged there and then: an x402 top-up funds a prepaid balance, and each certification or notarization is debited from it the moment it happens. One on-chain payment per ten-cent event would not work, because the Cardano fee on each payment, about 0.17 ADA, is as large as the charge. A firm paying in dollars through Stripe is never asked to buy crypto: Bailment runs the transactions for it, keeps the ledger in Stripe metered billing, and invoices at the end of the month. DUST for every chain transaction is generated from the NIGHT treasury and is not passed on.</p>
 <p>The mechanics, where it is used: the gateway returns a 402 Payment Required with a payment requirements object naming the scheme, the network (cardano-mainnet), the asset and the exact amount. The client signs through a CIP-30 wallet, resubmits with the payment header, and a facilitator verifies and settles through Blockfrost before the resource is released. Masumi has shipped exactly this as a Flask resource server plus facilitator against USDM on Cardano mainnet, which removes most of the invention risk. x402 is Apache 2.0, with official SDKs in TypeScript, Python, Go and Java, and the exact scheme specification covers Cardano alongside the EVM and SVM chains.</p>
 <div class="scroll-x">
 <table>
@@ -469,29 +469,29 @@
 <tr>
 <th scope="col">Priced operation</th>
 <th scope="col">Scheme</th>
-<th scope="col">Unit</th>
+<th scope="col">Price</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<th scope="row">Notarize a document (Document Record)</th>
-<td>exact</td>
-<td>per document</td>
+<th scope="row">Certification</th>
+<td>exact; debited from prepaid USDM, or metered in Stripe</td>
+<td>$0.10 each</td>
+</tr>
+<tr>
+<th scope="row">Notarization while drafting</th>
+<td>exact; same two rails</td>
+<td>$0.01 each</td>
 </tr>
 <tr>
 <th scope="row">Public corpus query, machine consumers</th>
 <td>exact</td>
 <td>per query</td>
 </tr>
-<tr>
-<th scope="row">Public corpus bulk retrieval</th>
-<td>upto</td>
-<td>per 1K tokens</td>
-</tr>
 </tbody>
 </table>
 </div>
-<p>Everything else, including the entire Client Communication Protocol, is covered by the subscription and is never metered per event.</p>
+<p>Seats are not metered. A Team plan includes 25 certifications and 400 notarizations per lawyer per month, pooled across the firm, which covers ordinary practice; Enterprise pays usage at list rates on top of its seat fee. Everything else, including the entire Client Communication Protocol, is never metered per event.</p>
 <h3 id="where-the-compute-lives">5. Where the compute lives</h3>
 <p>The GPU business is split by data class, not by hosting model, and that is what allows a central GPU product and a no-custody promise to coexist.</p>
 <div class="scroll-x">
@@ -757,13 +757,13 @@
 </section>
 <section class="plan-sec">
 <h2 id="business-model-and-pricing">Business Model and Pricing</h2>
-<p class="lead">Bailment sells four things and not one of them is access to a client’s documents.</p>
+<p class="lead">Bailment sells usage, seats and a contract, the way OpenAI and Anthropic sell to people, teams and enterprises, and not one of them is access to a client’s documents.</p>
 <div class="scroll-x">
 <table>
 <thead>
 <tr>
-<th scope="col">Revenue line</th>
-<th scope="col">Unit</th>
+<th scope="col">Tier</th>
+<th scope="col">Who it fits</th>
 <th scope="col">Price</th>
 <th scope="col">Gross margin</th>
 <th scope="col">Custody</th>
@@ -771,38 +771,74 @@
 </thead>
 <tbody>
 <tr>
-<th scope="row">Certification</th>
-<td>per certified filing</td>
-<td class="num">$25</td>
-<td class="num">~92%</td>
+<th scope="row">Pay as you go</th>
+<td>Solo and small firms</td>
+<td>$0.10 per certification, $0.01 per notarization</td>
+<td>~97%</td>
 <td>None</td>
 </tr>
 <tr>
-<th scope="row">Attestation subscription</th>
-<td>per firm, monthly</td>
-<td class="num">$1,400</td>
-<td class="num">~95%</td>
+<th scope="row">Team</th>
+<td>Mid-size firms</td>
+<td>$40 per lawyer per month ($50 billed monthly), usage included</td>
+<td>~90%</td>
 <td>None</td>
 </tr>
 <tr>
-<th scope="row">Shared public corpus</th>
-<td>per firm, monthly</td>
-<td class="num">$600</td>
-<td class="num">~86%</td>
-<td>None, no client data in it</td>
+<th scope="row">Enterprise</th>
+<td>Large firms, 50-seat minimum</td>
+<td>$30 per seat per month plus usage at list, annual</td>
+<td>~89%</td>
+<td>None</td>
 </tr>
 <tr>
-<th scope="row">Managed appliance</th>
-<td>hardware, amortized monthly</td>
-<td class="num">$500</td>
-<td class="num">~30%</td>
+<th scope="row">Appliance</th>
+<td>Every firm</td>
+<td>Firm-owned hardware, sold through managed service providers</td>
+<td>Not in the model</td>
 <td>None, the firm owns it</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>At roughly 250 certified filings a year for a mid-market litigation firm, that is about $36,000 per firm per year at a blended 82% margin.</p>
-<p>Certification is the wedge because the demand is mandated. A firm does not adopt this because it finds the argument persuasive; it adopts because a judge it appears before requires a certificate it cannot otherwise produce, and because sanctions in this area have run to $15,000 per attorney. That converts a long consultative sale into a compliance purchase, which is a different and much faster motion. It also prices naturally: a filing is a discrete billable event and $25 disappears into a disbursement line next to the filing fee.</p>
+<p>What a firm pays depends on its size. A lawyer handles about 26,000 documents a year, most of them email (MetaJure customer data). The model assumes 150 of them are certified and 2,400 drafting checkpoints are notarized, with a range of 60 to 300 certifications, which is about $39 of usage per lawyer per year at list prices.</p>
+<div class="scroll-x">
+<table>
+<thead>
+<tr>
+<th scope="col">Firm</th>
+<th scope="col">Lawyers (documents handled a year)</th>
+<th scope="col">Certifications / notarizations a year</th>
+<th scope="col">Plan</th>
+<th scope="col">Bailment revenue a year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">Small</th>
+<td>5 (130,000)</td>
+<td>750 / 12,000</td>
+<td>Pay as you go</td>
+<td>$195</td>
+</tr>
+<tr>
+<th scope="row">Mid-size</th>
+<td>30 (780,000)</td>
+<td>4,500 / 72,000</td>
+<td>Team</td>
+<td>$14,400</td>
+</tr>
+<tr>
+<th scope="row">Large</th>
+<td>300 (7.8 million)</td>
+<td>45,000 / 720,000</td>
+<td>Enterprise</td>
+<td>$119,700</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Certification is the wedge because the demand is mandated. A firm does not adopt this because it finds the argument persuasive; it adopts because a judge it appears before requires a certificate it cannot otherwise produce, and because sanctions in this area have run to $15,000 per attorney. That converts a long consultative sale into a compliance purchase, which is a different and much faster motion. At ten cents a certificate the price is never the objection: certifying becomes a default rather than a purchase decision, and the money is in the seats of the firms that certify every day.</p>
 <p>Attestation is what makes certification possible. Anchoring a hash costs almost nothing and the code is open source, so a firm could do that alone. What a firm cannot do is self-issue a credible attestation, for the same reason a self-signed certificate is worthless. Bailment vouches that a commitment came from an approved pipeline, running a signed redactor, under a live licence. That is a certificate authority, high margin and recurring, and structurally impossible for the customer to replace with themselves.</p>
 <p>The business is also split by data class, not by hosting model, which is what lets a central GPU product coexist with a no-custody promise. Every firm needs the same statutory index, the same case law, the same court forms. That corpus contains no client data, so Bailment can embed and serve it centrally with real economy of scale. Client matter data never leaves the firm’s appliance. Retrieval joins the two at query time with a provenance tag on every chunk.</p>
 <p>Attestation is the core line. Anchoring a hash costs almost nothing and the code is open source, so a firm could do it alone. What a firm cannot do is self-issue a credible attestation, for the same reason a self-signed certificate is worthless. Bailment vouches that a commitment came from an approved pipeline, running a signed redactor, under a live license. That is a certificate authority, not a transaction service: high margin, recurring, and structurally impossible for the customer to replace with themselves.</p>
@@ -847,10 +883,10 @@
 </tbody>
 </table>
 </div>
-<p>That is roughly $1,500 to $4,000 a month regardless of customer count, because the corpus is shared. At 88 firms it works out near $30 per firm per month against $600 of corpus revenue, which is where the 86% margin comes from. Chain fees are zero because the appliance publishes its own period root and DUST is generated from held NIGHT, which is a capital position rather than an operating cost. The real expense is people, and that is what the raise funds.</p>
+<p>That is roughly $1,500 to $4,000 a month regardless of customer count, because the corpus is shared, which is why seat margins sit near 90%. Chain fees stay zero to the customer: DUST is generated from held NIGHT, a capital position rather than an operating cost. Stripe costs about 3.6% plus 30 cents per monthly invoice on the share billed in dollars. The real expense is people, and that is what the raise funds.</p>
 <p>On the firm’s side: $10,000 to $15,000 for an appliance with one or two 48GB cards, or $4,000 to $6,000 for a single-card build running quantized models, plus $100 to $200 a month in power.</p>
-<p>The appliance is the wedge, not the margin. Thirty percent is thin, but it is cash up front, it is what makes the no-custody promise true, and it is the thing that gets a Bailee appliance inside the firm. Sold direct at first, then through legal-vertical managed service providers who already sit inside these firms.</p>
-<p>Margins went up, not down, when the inference line was dropped. Hosted inference was the weakest line in the previous plan at 58%. Replacing it with attestation at 95% and the shared corpus at 86% lifts the blend from roughly 70% to roughly 80% at scale, on about $32,000 per firm per year.</p>
+<p>The appliance is firm-owned hardware, sold and supported through legal-vertical managed service providers, and it is not in the revenue model. A direct sale at about 30% margin would be upside, not plan.</p>
+<p><strong>Why seats, not usage alone.</strong> Usage at list prices is about $39 per lawyer per year. Covering 2029 operating costs on usage alone would take about 68,000 lawyers on pay-as-you-go; on seats it takes about 24 large firms, or about 197 mid-size firms, or a mix. Small firms are the funnel, as free and pay-as-you-go users are for OpenAI and Anthropic. Mid-size and large firms are the business, and they buy seats because they want a predictable bill, pooled usage, single sign-on and an audit export.</p>
 <p>What the firm can tell its own clients, which is the sentence the whole design exists to support: Bailment never holds our documents, our clients’ identities, or our vectors. Those stay on hardware we own. They anchor proofs that the work happened and attest that it ran an approved pipeline. They cannot read our files, and they cannot be compelled to produce what they cannot access. Every clause of that is defensible.</p>
 </section>
 <section class="plan-sec">
@@ -903,7 +939,7 @@
 <p class="lead">Let the courts create the demand. Close at the firm. Deliver through the integrator.</p>
 <p>This is the part the pivot to certification changes most, and it changes it for the better. The earlier plan had to manufacture demand by persuading corporate legal departments to write a clause. That work is slow and speculative. A standing order is a clause someone else already wrote, that is already binding, and that a litigation firm cannot ignore.</p>
 <p>So the entry point is a court calendar rather than a boardroom. Identify the judges whose orders require tool name, version and provider, find the firms that appear before them regularly, and lead with the certificate. The conversation is not about privacy architecture; it is about a document the firm has to file and currently cannot substantiate.</p>
-<p>The purchase is still unambiguously the firm’s: a $12,000 appliance and a $2,500 monthly subscription, with the client buying nothing. And above the smallest firms delivery still runs through a managed service provider, because a firm handed hardware and left alone calls you in six months when it breaks.</p>
+<p>The purchase is still unambiguously the firm’s: a $12,000 appliance bought through its managed service provider and a Team plan at $40 per lawyer per month, with the client buying nothing. And above the smallest firms delivery still runs through a managed service provider, because a firm handed hardware and left alone calls you in six months when it breaks.</p>
 <p>The corporate guidelines clause has not gone away. It moves from being the wedge to being the expansion motion, and it gets easier to write once a certificate format exists to point at.</p>
 <p>Phase 1, months 0 to 6: two design partners, chosen by docket. One mid-market litigation firm in the 60 to 150 lawyer band that regularly appears before judges with certification orders, and one corporate legal department to author the guidelines clause later. Free, in exchange for reference rights and bi-weekly access. Legal aid organizations were an early candidate and are the wrong first partner: appliance-first makes small organizations the hardest to serve.</p>
 <p>Phase 2, months 6 to 12: the certificate format, in public. Publish the certificate schema and the verification tool as an open specification, and take it to court technology committees and the judges already writing these orders. A judge who names a verifiable format in a standing order is worth more than any amount of sales effort. In parallel, recruit two legal-vertical integrators who already sell these firms iManage, ship the reference implementation, and contribute upstream to MikeOSS rather than forking it.</p>
@@ -1214,47 +1250,55 @@
 </tbody>
 </table>
 </div>
-<p>The corpus line buys GPU compute and storage, not data. Bulk case law comes from CourtListener and the Free Law Project, and statutes and court forms are public records, so there is no licensing bill of the kind Westlaw and Lexis carry. That absence is what makes an 86% margin on the corpus line possible.</p>
-<p>Three-year revenue model, illustrative. Built bottom-up from $32,000 blended annual revenue per firm and the phased customer plan, with no assumed enterprise deals. Every figure needs design-partner validation.</p>
+<p>The corpus line buys GPU compute and storage, not data. Bulk case law comes from CourtListener and the Free Law Project, and statutes and court forms are public records, so there is no licensing bill of the kind Westlaw and Lexis carry. That absence is why the shared corpus costs a few thousand dollars a month instead of a licence fee, and why seat margins can sit near 90%.</p>
+<p>Four-year revenue model, illustrative. Built bottom-up in docs/financial_model.py from the per-firm figures above and a customer plan by firm size. Appliances are left out because managed service providers sell them. Every figure needs design-partner validation.</p>
 <div class="scroll-x">
 <table>
 <thead>
 <tr>
 <th scope="col">Year</th>
-<th scope="col">Paying firms</th>
+<th scope="col">Paying firms (small / mid / large)</th>
 <th scope="col">Revenue</th>
 <th scope="col">Gross margin</th>
-<th scope="col">Operating loss</th>
+<th scope="col">Operating result</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <th scope="row">2027</th>
-<td class="num">4</td>
-<td class="num">$126,000</td>
-<td class="num">~68%</td>
-<td class="num">($1,370,000)</td>
+<td>40 / 4 / 1</td>
+<td>$93,000</td>
+<td>~51%</td>
+<td>($1,409,000)</td>
 </tr>
 <tr>
 <th scope="row">2028</th>
-<td class="num">26</td>
-<td class="num">$936,000</td>
-<td class="num">~78%</td>
-<td class="num">($950,000)</td>
+<td>300 / 20 / 5</td>
+<td>$565,000</td>
+<td>~83%</td>
+<td>($1,209,000)</td>
 </tr>
 <tr>
 <th scope="row">2029</th>
-<td class="num">88</td>
-<td class="num">$3,170,000</td>
-<td class="num">~82%</td>
-<td class="num">$80,000</td>
+<td>1,200 / 60 / 16</td>
+<td>$1,979,000</td>
+<td>~88%</td>
+<td>($778,000)</td>
+</tr>
+<tr>
+<th scope="row">2030</th>
+<td>3,000 / 140 / 35</td>
+<td>$4,902,000</td>
+<td>~89%</td>
+<td>$1,372,000</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Breakeven lands during the second half of 2029 at roughly 85 firms, about a year earlier than the pre-certification model, driven by the fourth revenue line and the margin mix rather than by faster customer growth. A Series A in late 2028 is assumed, though the improved profile makes a smaller round or none a live option. Nothing in these figures assumes a single dollar from the multi-party roadmap, which is deliberate: the clearinghouse is the reason to keep the substrate, not a line in the model.</p>
+<p><strong>Breakeven.</strong> Run-rate breakeven arrives in the fourth quarter of 2029, when year-end recurring gross profit passes operating cost, and 2030 is the first profitable year. Covering 2029 costs takes about 24 Enterprise firms, or about 197 Team firms, or a mix; pay-as-you-go alone would need about 68,000 lawyers. Losses through 2029 total about $3.4M, so the Series A in late 2028 is required rather than optional. Nothing in these figures assumes a dollar from the multi-party roadmap, which is deliberate.</p>
+<p><strong>Liquidity.</strong> The two payment rails pull cash in opposite directions, and the seats settle it. Stripe usage is billed in arrears, so about 32 days of it is always owed to Bailment: roughly $22,000 at the end of 2029. USDM customers prepay, and about $14,000 of balance is held at the same date. Team seats bill a month in advance and Enterprise prepays the year, about $936,000 of prepayment at the end of 2029. Net working capital is positive in every year of the plan, so billing in arrears costs a bad-debt reserve, which the model does not yet carry, and nothing more. DUST is funded from the $72,000 NIGHT treasury and is not a cash cost per transaction.</p>
 <p>One variable still dominates: whether the outside counsel guidelines strategy works. If it does, 2029 is conservative by a wide margin, because adoption becomes mandated rather than chosen. If it does not, 2029 is optimistic by about the same margin. That is worth saying plainly rather than hiding in a sensitivity table.</p>
-<p>The second-largest variable is appliance attach rate. The model assumes every firm takes one. Firms that refuse hardware need the confidential computing tier, which is unscoped and unbuilt, and until it exists those firms are not addressable without giving up the no-custody promise.</p>
+<p>The second-largest variable is appliance attach rate. The revenue model assumes every paying firm runs one, because certification and notarization happen on it; the hardware itself is sold by managed service providers and is not in the revenue. Firms that refuse hardware need the confidential computing tier, which is unscoped and unbuilt, and until it exists those firms are not addressable without giving up the no-custody promise.</p>
 <h3 id="risk-register">Risk register</h3>
 <div class="scroll-x">
 <table>
