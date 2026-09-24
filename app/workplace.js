@@ -802,6 +802,10 @@
 
     st.party = 'lawyer';
     await reload(st);
+    ok('the lawyer pane opens with no model draft until someone asks the model',
+      !st.messages.some((m) => m.side === 'lawyer' && !m.sent && m.origin === 'model'));
+    await st.api.assist(session(st, 'lawyer'), st.matterId, { prompt: 'do we have a claim' });
+    await reload(st);
     const draft = st.messages.filter((m) => m.side === 'lawyer' && !m.sent)[0];
     ok('the model output is in the lawyer pane, unsent and attributed to a model',
       !!draft && draft.origin === 'model' && !!draft.modelId, draft ? draft.modelId : 'no draft');
@@ -1275,11 +1279,11 @@
     await st.api.postMessage({ role: 'client', key: st.clientToken }, st.matterId, {
       body: OPENING_MESSAGE, origin: 'human', kind: 'draft',
     });
-    await st.api.assist(session(st, 'lawyer'), st.matterId, { prompt: 'do we have a claim' });
+    // No model draft yet: the lawyer asks for one with "Ask the model".
     note(st, 'ok', 'Matter opened. ' + (st.lawyerToken
       ? 'Both sides enrolled: the lawyer holds an interactive session, the client holds theirs. '
       : 'Client enrolled. ')
-      + 'One draft is waiting in the lawyer pane.');
+      + 'Press Ask the model for a draft.');
   }
 
   async function act(st, el, name, target) {
