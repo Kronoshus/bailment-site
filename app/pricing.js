@@ -38,7 +38,7 @@
       { id: 'enterprise', label: 'Enterprise', fits: 'Large firms, ' + e.minSeats + '-seat minimum',
         annual: seatPlan(e, seats) },
     ];
-    const suggested = lawyers < 10 ? 'payg' : lawyers < 100 ? 'team' : 'enterprise';
+    const suggested = lawyers < e.minSeats ? 'payg' : 'enterprise';
     return { lawyers, perLawyer, certs, notaries, usage, overage, seats, tiers, suggested };
   }
 
@@ -47,8 +47,7 @@
   function prRender(el) {
     el.innerHTML = `
       <h2>What a firm pays</h2>
-      <p class="lede">Usage for anyone, seats for teams, a contract for the enterprise.
-      None of it is access to a client's documents.</p>
+      <p class="lede">Usage for anyone, seats for teams, a contract for the enterprise.</p>
       <div class="panel builder">
         <div class="inline">
           <div class="field"><label>Lawyers in the firm</label>
@@ -77,7 +76,7 @@
         <table>
           <thead><tr><th>Plan</th><th class="num">Per year</th></tr></thead>
           <tbody>
-            ${r.tiers.map((t) => `<tr>
+            ${r.tiers.filter((t) => t.id !== 'team').map((t) => `<tr>
               <td>${esc(t.label)}${t.id === r.suggested ? ' <strong>&larr; this firm</strong>' : ''}
                 <br><span class="muted">${esc(t.fits)}</span></td>
               <td class="num">${money(t.annual)}</td></tr>`).join('')}

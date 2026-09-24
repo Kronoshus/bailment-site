@@ -95,6 +95,33 @@
   const CITE_EXAMPLE = 'The right recognised in Obergefell v. Hodges, 576 U.S. 644 (2015), '
     + 'controls. See also Smith v. Tri-State Logistics, 678 F. Supp. 3d 443 (S.D.N.Y. 2023), '
     + 'and Varghese v. China Southern Airlines Co., 925 F.3d 1339 (11th Cir. 2019).';
+  const CITE_CORRECTED = 'The right recognised in Obergefell v. Hodges, 576 U.S. 644 (2015), controls.';
+
+  // With no appliance running, the demo answers the example passage from a recorded
+  // CourtListener lookup, so the reader still sees the bad cites caught and corrected.
+  const OBERGEFELL_HIT = { citation: '576 U.S. 644', status: 200, found: true, verdict: 'verified',
+    note: '', clusters: [{ id: 2812209, caseName: 'Obergefell v. Hodges', court: '',
+      dateFiled: '2015-06-26', absolute_url: '/opinion/2812209/obergefell-v-hodges/' }] };
+  const DEMO_LOOKUPS = {
+    [CITE_EXAMPLE]: [OBERGEFELL_HIT,
+      { citation: '678 F. Supp. 3d 443', status: 404, found: false, verdict: 'not found',
+        note: 'No case at this cite.', clusters: [],
+        fix: 'Smith v. Tri-State Logistics is not a reported case. Strike the "See also".' },
+      { citation: '925 F.3d 1339', status: 404, found: false, verdict: 'not found',
+        note: 'No case at this cite.', clusters: [],
+        fix: 'Varghese v. China Southern Airlines was invented by a model and filed in Mata v. '
+          + 'Avianca (S.D.N.Y. 2023), where the lawyers were sanctioned. Strike it.' }],
+    [CITE_CORRECTED]: [OBERGEFELL_HIT],
+  };
+  async function demoCitationCheck(text) {
+    const citations = DEMO_LOOKUPS[String(text || '').trim()];
+    if (!citations) return null;
+    const verified = citations.filter((c) => c.status === 200).length;
+    return { checked: true, demo: true, source: 'courtlistener/v4 citation-lookup (recorded)',
+      citations, total: citations.length, verified, unverified: citations.length - verified,
+      corrected: verified < citations.length ? CITE_CORRECTED : null,
+      retrievalLogDigest: hex(await sha256(canonical(citations))) };
+  }
 
   // The appliance, not a cloud. The default is the one a reader running the backend
   // beside this page already has; anything else they type is their own deployment.
@@ -643,10 +670,11 @@
     const v = citeVerdict(entry);
     const found = (entry.clusters || []).map(citeCaseHTML).join(', ');
     const said = entry.note && !found ? `<span class="ct-cite-note">${esc(entry.note)}</span>` : '';
+    const fix = entry.fix ? ` <span class="ct-cite-fix">Fix: ${esc(entry.fix)}</span>` : '';
     return `<li class="ct-cite-row ${v.cls}">
       <span class="ct-cite-cite">${esc(entry.citation || '')}</span>
       <span class="ct-cite-verdict">${esc(v.label)}</span>
-      <span class="ct-cite-detail">${found || said}</span></li>`;
+      <span class="ct-cite-detail">${found || said}${fix}</span></li>`;
   }
 
   // One line that a reader can act on, whether the check ran or not. An answer that did
@@ -674,6 +702,8 @@
       digest of nothing.${all ? '' : ' A certificate issued from this passage records '
         + 'both true numbers, so a verifier checking that every citation was verified '
         + 'will fail claim 3. That is the honest answer and the demo does not hide it.'}</p>
+      ${r.corrected ? `<p><strong>Corrected passage:</strong> ${esc(r.corrected)}</p>
+      <button type="button" class="btn ghost ct-citefix">Use the corrected passage</button>` : ''}
       </div>`;
   }
 
@@ -1367,11 +1397,21 @@
         const btn = ev.currentTarget;
         btn.disabled = true;
         citeOut.innerHTML = '<p class="wm-hint">Looking every citation up\u2026</p>';
-        const r = await runCitationCheck({
+        let r = await runCitationCheck({
           base: raw('#ct-citebase'), key: raw('#ct-citekey'), text: raw('#ct-citetext'),
         });
+        if (r.error === 'unreachable' || r.error === 'no_fetch') {
+          r = (await demoCitationCheck(raw('#ct-citetext'))) || r;
+        }
         btn.disabled = false;
         citeOut.innerHTML = citeResultHTML(r);
+        const fixBtn = citeOut.querySelector('button.ct-citefix');
+        if (fixBtn) {
+          fixBtn.addEventListener('click', () => {
+            $(el, '#ct-citetext').value = r.corrected;
+            btn.click();
+          });
+        }
         if (!r.checked) { lastCheck = null; lockCounts(false); return; }
         // Read the boxes BEFORE the answer overwrites them. Those two numbers are the
         // filer's assertion, and this is the last moment they exist.
@@ -1469,7 +1509,7 @@
 
   root.Bailee.certificate = { CERT_TYPE, VERIFY_BASE, CLAIM_SPEC, CERT_DEFAULTS, CERT_OPTIONS, MAX_CLAIMS, DEMO_SIGNER,
     DEMO_FIRM, NA, MODEL_VERSIONS, modelVersion, EXAMPLES, HELP,
-    CITE_EXAMPLE, CITE_BASE, CITE_VERDICTS, COURTLISTENER,
+    CITE_EXAMPLE, CITE_CORRECTED, demoCitationCheck, CITE_BASE, CITE_VERDICTS, COURTLISTENER,
     citeVerdict, citeRowHTML, citeResultHTML, runCitationCheck,
     ASSERTION_KEYS, ASSERTION_SOURCE, assertedBlock, assertionLine, assertedNoteHTML,
     certAssertedHTML, verdictHTML, claimRows,

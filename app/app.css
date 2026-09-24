@@ -626,6 +626,7 @@
 .widget .ct-cite-case{color:var(--brand-200)}
 .widget .ct-cite-when,.widget .ct-cite-court{color:var(--fg-muted)}
 .widget .ct-cite-note{color:var(--fg-muted)}
+.widget .ct-cite-fix{display:block;margin-top:4px;color:var(--ink)}
 .widget .ct-cite-digest{font-family:var(--font-mono);font-size:.95rem;color:var(--brand-200)}
 
 @media (max-width:560px){

@@ -1089,7 +1089,7 @@
         Math.abs(tier(yr(30, 110), 'team') - (5400 + 30 * 10 * 12 * 0.15)) < 0.01);
       ok('Enterprise never bills fewer than 50 seats', yr(10, 100).seats === 50);
       ok('each firm size is pointed at its own plan',
-        yr(5, 100).suggested === 'payg' && yr(30, 100).suggested === 'team' && yr(300, 100).suggested === 'enterprise');
+        yr(5, 100).suggested === 'payg' && yr(30, 100).suggested === 'payg' && yr(300, 100).suggested === 'enterprise');
     }
 
     report('', null, '');

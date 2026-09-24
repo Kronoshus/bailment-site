@@ -136,10 +136,6 @@
             <h3>Published on chain</h3>
             ${row('Period', esc(period))}
             ${row('Network root', `<code>${esc(hex(S.net))}</code>`, 'mono')}
-            <p class="note">That is the whole write. No firm. No matter. No count.
-            ${n} communications and 1 communication produce the same 32 bytes, and a period with
-            nothing in it still publishes &mdash; set the count to 0 and watch a root come out
-            anyway &mdash; so the presence of a write says nothing either.</p>
           </div>
           <div class="panel local">
             <h3>Held only by the firm</h3>
@@ -148,9 +144,6 @@
             ${row('Other firms in the tree', String(f - 1))}
             ${row('Your position', `#${S.ourFirm + 1} of ${f} \u2014 unknowable from outside`)}
             ${row('Tree shape', `${TREE_SLOTS} fixed slots, depth ${TREE_DEPTH} \u2014 the rest are random dummies`)}
-            <p class="note">Counting is the dangerous leak. A privilege log is prepared by the firm
-            and already contested in discovery; a chain that independently counts communications
-            hands opposing counsel a way to attack it.</p>
           </div>
         </div>
         <hr>

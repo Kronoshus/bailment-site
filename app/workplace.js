@@ -1160,7 +1160,6 @@
   }
 
   function barHtml(st) {
-    const live = st.api.mode === 'live';
     return '<div class="wp-bar">'
       + '<div class="wp-switch" role="group" aria-label="View as">'
       + '<button class="' + (st.party === 'client' ? 'on' : '') + '" aria-pressed="'
@@ -1168,8 +1167,6 @@
       + '<button class="' + (st.party === 'lawyer' ? 'on' : '') + '" aria-pressed="'
       + (st.party === 'lawyer') + '" data-act="role" data-role="lawyer">View as lawyer</button>'
       + '</div>'
-      + '<button class="btn ghost" data-act="connect-toggle">' + (live ? 'Go offline' : 'Connect an appliance')
-      + '</button>' + help('The appliance is the firm\u2019s own server. It runs the AI and stores the case. Without one, this page uses a built-in stand-in, so the demo still works.')
       + '</div>'
       // The free key, in plain sight. Nobody should have to open a panel to find it.
       + '<p class="wp-lic">Free demo licence key <code data-copy="' + esc(DEMO_LICENCE) + '">'
